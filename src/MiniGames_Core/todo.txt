@@ -8,5 +8,5 @@ TODO LIST:
 7. Do bugfixing and perfection
 8. Repair major errors
 9. Ask for suggestions
-10. Add suggestions (as seperate plugins if needed)
+10. Add suggestions
 11. Repeat 2 - 11 until no more suggestions

@@ -5,7 +5,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.wundero.MiniGames_Core.Arena.Arena;
 import com.wundero.MiniGames_Core.Utils.ChatUtils;
 
-public class StartCountdown extends BukkitRunnable { //TODO make it work for all countdowns
+public class StartCountdown extends BukkitRunnable {
 	public static int timeUntilStart;
 	private Arena arena;
 	
@@ -24,7 +24,7 @@ public class StartCountdown extends BukkitRunnable { //TODO make it work for all
 			if(!arena.canStart())
 			{
 				arena.restartCountdown();
-				ChatUtils.broadcast("Restarting countdown!");
+				ChatUtils.broadcast("Restarting countdown, arena could not start!");
 				return;
 			}
 			arena.startArena();
@@ -35,6 +35,8 @@ public class StartCountdown extends BukkitRunnable { //TODO make it work for all
 		{
 			ChatUtils.broadcast(String.valueOf(timeUntilStart)+" seconds until the game starts!");
 		}
+		
+		if(arena.getPlayers().size()<arena.getMinPlayers()) arena.stopCountdown();
 		
 		timeUntilStart--;
 	}

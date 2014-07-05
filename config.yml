@@ -1,0 +1,31 @@
+#
+#    MiniGames-Core - By Wundero
+#
+#    WARNING - DO NOT USE TABS, BUKKIT WILL COMPLAIN
+#
+#  If you want to change something in a mini game, preset or custom, it will be stored in the <minigame>.yml file.
+#
+#  If something confuses you, look at the MiniGames-Core wiki page. 
+#
+global:
+  #This feature uses the CoreProtect API to rollback arenas. This means players can destroy and place
+  #blocks at will, and it will be reverted. It requires CoreProtect v2.0.9 or up to use, and some game types
+  #(e.g. Siege) require this function. To enable the CoreProtect API, go to your coreprotect plguin's folder
+  #and set api-enabled to true. CoreProtect download: http://dev.bukkit.org/bukkit-plugins/coreprotect/
+  use-rollbacks: false
+
+  #The MiniGames-Core API is an API developpers can use to link to the plugin and get easy functions
+  #to develop advanced minigames with ease. If you have plugins using this API, set this to true.
+  enable-api: true
+
+  #This function will allow MiniGames-Core, and all plugins hooked into it via the API, to use BungeeCord.
+  #This allows for servers with minigames split over many servers to use this plugin. You can set up servers
+  #for minigames. If you have BungeeCord and spigot and would like to use this feature, set this to true.
+  use-bungeecord: false
+
+  #Leaderboards are a great way of keeping track of who the best of the best are. Enabling this feature will
+  #keep track of who your best players are, per minigame. If the above feature is enabled, the plugin will 
+  #function with multiple servers as well. 
+  use-leaderboards: true
+
+  #TODO - add more stuff here later as it comes up

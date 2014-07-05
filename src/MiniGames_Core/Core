@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.wundero.MiniGames_Core.Arena.Arena;
 import com.wundero.MiniGames_Core.Arena.ArenaManager;
 import com.wundero.MiniGames_Core.Handlers.Commands;
+import com.wundero.MiniGames_Core.api.MiniGameAPI;
 
 
 public class Core extends JavaPlugin {
@@ -26,7 +27,7 @@ public class Core extends JavaPlugin {
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public final static Logger loggerTwo = Logger.getLogger("Minecraft");
 	
-	
+	private MiniGameAPI mga;
 	private FileConfiguration conf = getConfig();
 	
 	@Override
@@ -53,12 +54,19 @@ public class Core extends JavaPlugin {
 		{
 			coreProtect.testAPI(); 
 		}
+		
+		mga = MiniGameAPI.get(this);
 	}
 	
 	public static void registerListener(Listener l)
 	{
 		Core c = (Core) Bukkit.getServer().getPluginManager().getPlugin("MiniGames-Core");
 		Bukkit.getServer().getPluginManager().registerEvents(l, c);
+	}
+	
+	public MiniGameAPI getAPI()
+	{
+		return mga;
 	}
 	
 	public void resetArena(int timeOfGame, Arena a)

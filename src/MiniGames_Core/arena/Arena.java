@@ -254,6 +254,31 @@ public class Arena {
 		startCountdown();
 	}
 	
+	public boolean isInArena(Location loc) //3,4
+	{
+		double maxX,maxY,maxZ,minX,minY,minZ;
+		maxX = Math.max(locations.get(3).getX(),locations.get(4).getX());
+		minX = Math.min(locations.get(3).getX(),locations.get(4).getX());
+		maxY = Math.max(locations.get(3).getY(),locations.get(4).getY());
+		minY = Math.min(locations.get(3).getY(),locations.get(4).getY());
+		maxZ = Math.max(locations.get(3).getZ(),locations.get(4).getZ());
+		minZ = Math.min(locations.get(3).getZ(),locations.get(4).getZ());
+		
+		if(loc.getX()>minX&&loc.getX()<maxX)
+		{
+			if(loc.getY()>minY&&loc.getY()<maxY)
+			{
+				if(loc.getZ()>minZ&&loc.getZ()<maxZ)
+				{
+					return true;
+				}
+				else return false;
+			}
+			else return false;
+		}
+		else return false;
+	}
+	
 	//TODO add config stuff
 	
 	

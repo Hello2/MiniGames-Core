@@ -15,7 +15,7 @@ public class InventoryClick extends MGListener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e)
 	{
-		
+		//TODO make stuff happen, do after other things are done
 	}
 	
 }

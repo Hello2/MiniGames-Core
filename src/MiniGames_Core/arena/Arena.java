@@ -34,6 +34,7 @@ public class Arena {
 	private Team[] teams;
 	private Core c;
 	private int tE;
+	private int minPlayers;
 	private ArrayList<Location> locations; //Numbers to locations, in order:
 	/* -NOTE- any location that is not needed should be set to null -NOTE- FFA spawns will be random
 	 * Index = location - extra information
@@ -59,11 +60,12 @@ public class Arena {
 	
 	
 	
-	public Arena(ArrayList<Location> locations, ArrayList<Location> misclocs, String ID, ArenaType type, int mp, Core core) //TODO add spawn areas for team stuffs, use 0.5 for x and z to center player
+	public Arena(ArrayList<Location> locations, ArrayList<Location> misclocs, String ID, ArenaType type, int maxp, int minp, Core core) //TODO add spawn areas for team stuffs, use 0.5 for x and z to center player
 	{
 		
 		id = ID;
-		maxPlayers = mp;
+		maxPlayers = maxp;
+		minPlayers = minp;
 		this.type = type;
 		gs = GameState.EDIT;
 		canStart = false;
@@ -157,8 +159,12 @@ public class Arena {
 	
 	public void startCountdown()
 	{
-		StartCountdown.timeUntilStart = 120;
-		startCountdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new StartCountdown(this), 20l, 20l);
+		if(players.size()>=minPlayers)
+		{
+			StartCountdown.timeUntilStart = 120;
+			startCountdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new StartCountdown(this), 20l, 20l);
+		}
+		else return;
 	}
 	
 	public void stopCountdown()
@@ -169,6 +175,11 @@ public class Arena {
 	public int getMaxPlayers()
 	{
 		return maxPlayers;
+	}
+	
+	public int getMinPlayers()
+	{
+		return minPlayers;
 	}
 	
 	public GameState getState()

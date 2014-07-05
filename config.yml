@@ -39,9 +39,6 @@ global:
   #The amount of time after a game ends until the next one starts, in milliseconds
   timer-time: 0
   
-  #Enable this file
-  enable-this: true
-  
   #Enables if you are able to choose which team you want
   enable-teamchoose: false
   

@@ -28,4 +28,33 @@ global:
   #function with multiple servers as well. 
   use-leaderboards: true
 
+
+
+  #Enables spectators
+  enable-spectator: true
+  
+  #Enables playesr to join mid game/rejoin a game
+  enable-midjoin: true
+  
+  #The amount of time after a game ends until the next one starts, in milliseconds
+  timer-time: 0
+  
+  #Enable this file
+  enable-this: true
+  
+  #Enables if you are able to choose which team you want
+  enable-teamchoose: false
+  
+  #Enables a voting option for the next minigame
+  enable-voting: false
+  
+  #Enables speed, flying, and teleport after the game has ended, last until the next game is started
+  enable-hacks: false
+  
+  #Global chat
+  enable-gchat: true
+  
+  
+  
+  
   #TODO - add more stuff here later as it comes up

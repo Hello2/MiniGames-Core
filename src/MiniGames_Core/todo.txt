@@ -1,12 +1,14 @@
 TODO LIST:
-1. Create game folder with it's classes
-2. Code the classes - including API
-3. Test plugin
-4. Do bugfixing
-5. Repeat 3 and 4 until it works
-6. Open to public as beta testing
-7. Do bugfixing and perfection
-8. Repair major errors
-9. Ask for suggestions
-10. Add suggestions
-11. Repeat 2 - 11 until no more suggestions
+1. Code the classes - including API
+2. Test plugin
+3. Do bugfixing
+4. Repeat 2 and 3 until it works
+5. Open to public as beta testing
+6. Do bugfixing and perfection
+7. Repair major errors
+8. Ask for suggestions
+9. Add suggestions
+10. Repeat 1 - 10 until no more suggestions
+
+
+Add more things here later that are more specific as to what is left in the plugin to code.

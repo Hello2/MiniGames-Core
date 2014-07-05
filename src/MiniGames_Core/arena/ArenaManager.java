@@ -26,6 +26,8 @@ public class ArenaManager {
 	
 	private static ArenaManager am;
 	
+	private boolean b = false;
+	
 	private Core c;
 	
 	Map<String, ItemStack[]> inv = new HashMap<String, ItemStack[]>();
@@ -67,13 +69,7 @@ public class ArenaManager {
 		return null;
 	}
 	
-//	public boolean isInArena(Location loc)
-//	{
-//		for(Arena a : arenas)
-//		{
-//			//TODO add location check thingy mcjiggy
-//		}
-//	}
+
 	
 	public void addPlayer(Player p, String id)
 	{
@@ -86,7 +82,7 @@ public class ArenaManager {
 		
 		if(!a.getState().canJoin())
 		{
-			ChatUtils.sendMessage(p, ChatColor.RED+"You cannot join this arena, it is "+getMessageForState(a.getState())+".");
+			ChatUtils.sendMessage(p, ChatColor.RED+"You cannot join this arena, it is "+getMessageForState(a.getState())+"."); return;
 		}
 		
 		if(a.getPlayers().size()==a.getMaxPlayers()) { ChatUtils.sendMessage(p, ChatColor.RED+"You cannot join this arena, it is full."); return; }
@@ -106,6 +102,12 @@ public class ArenaManager {
 			
 			locs.put(p.getName(), p.getLocation());
 			p.teleport(a.getLocations().get(0));
+			
+			if(a.getMinPlayers()<=a.getPlayers().size()&&!b)
+			{
+				b = true;
+				a.stopCountdown();
+			}
 		}
 		
 	}
@@ -149,13 +151,19 @@ public class ArenaManager {
 			locs.remove(p.getName());
 			
 			p.setFireTicks(0);
+			
+			if(a.getMinPlayers()>a.getPlayers().size())
+			{
+				b = false;
+				a.stopCountdown();
+			}
 		}
 	}
 	
-	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, ArenaType r, int m)
+	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, ArenaType r, int m, int f)
 	{
 		
-		Arena a = new Arena(locs, locs2, id, r, m, c);
+		Arena a = new Arena(locs, locs2, id, r, m, f, c);
 		ArenaCreateEvent event = new ArenaCreateEvent(a);
 		if(!event.isCancelled())
 		{
@@ -180,6 +188,7 @@ public class ArenaManager {
 	public String serializeLoc(Location l){
         return l.getWorld().getName()+","+l.getBlockX()+","+l.getBlockY()+","+l.getBlockZ();
     }
+	
     public Location deserializeLoc(String s){
         String[] st = s.split(",");
         return new Location(Bukkit.getWorld(st[0]), Integer.parseInt(st[1]), Integer.parseInt(st[2]), Integer.parseInt(st[3]));

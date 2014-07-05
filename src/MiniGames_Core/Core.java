@@ -30,6 +30,8 @@ public class Core extends JavaPlugin {
 	private MiniGameAPI mga;
 	private FileConfiguration conf = getConfig();
 	
+	private static Core c;
+	
 	@Override
 	public void onDisable()
 	{
@@ -67,6 +69,15 @@ public class Core extends JavaPlugin {
 	public MiniGameAPI getAPI()
 	{
 		return mga;
+	}
+	
+	public static Core getCore()
+	{
+		if(c==null)
+		{
+			c = (Core) Bukkit.getServer().getPluginManager().getPlugin("MiniGames-Core");
+		}
+		return c;
 	}
 	
 	public void resetArena(int timeOfGame, Arena a)

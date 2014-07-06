@@ -1,6 +1,12 @@
+#DO NOT CHANGE THESE
 name: MiniGames-Core
 main: me.wundero.MiniGames_Core.Core
-version: 1.0.0
+version: 0.0.0
+#DO NOT CHANGE THESE
 
-author: Wundero
-prefex: [MiniGames]
+authors: [hellostanleylee, Wundero]
+website: 
+
+prefex: [MiniGames-Core]
+softdepend: [Vault, CoreProtect, WorldEdit]
+#TODO add commands, permissions and authors list

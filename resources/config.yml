@@ -45,8 +45,8 @@ global:
   #Enables a voting option for the next minigame
   enable-voting: false
   
-  #Enables speed, flying, and teleport after the game has ended, last until the next game is started
-  enable-hacks: false
+  #Use MiniGames-Core's antihack system. Disable this if you want other anti-hack plugins to override.
+  enable-anti-hacks: false
   
   #Global chat
   enable-gchat: true

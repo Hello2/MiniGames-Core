@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import com.wundero.MiniGames_Core.ArenaType;
 import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.GameState;
+import com.wundero.MiniGames_Core.MessageLevel;
 import com.wundero.MiniGames_Core.Events.ArenaCreateEvent;
 import com.wundero.MiniGames_Core.Events.PlayerJoinArenaEvent;
 import com.wundero.MiniGames_Core.Events.PlayerLeaveArenaEvent;
@@ -77,16 +77,16 @@ public class ArenaManager {
 		Arena a = getArena(id);
 		if(a==null)
 		{
-			ChatUtils.sendMessage(p, ChatColor.RED+id+" is not a valid arena!");
+			ChatUtils.sendMessage(p, id+" is not a valid arena!", MessageLevel.ERROR);
 			return;
 		}
 		
 		if(!a.getState().canJoin())
 		{
-			ChatUtils.sendMessage(p, ChatColor.RED+"You cannot join this arena, it is "+getMessageForState(a.getState())+"."); return;
+			ChatUtils.sendMessage(p, "You cannot join this arena, it is "+getMessageForState(a.getState())+".", MessageLevel.WARNING); return;
 		}
 		
-		if(a.getPlayers().size()==a.getMaxPlayers()) { ChatUtils.sendMessage(p, ChatColor.RED+"You cannot join this arena, it is full."); return; }
+		if(a.getPlayers().size()==a.getMaxPlayers()) { ChatUtils.sendMessage(p, "You cannot join this arena, it is full.", MessageLevel.WARNING); return; }
 		
 		PlayerJoinArenaEvent event = new PlayerJoinArenaEvent(p, a);
 		
@@ -126,12 +126,12 @@ public class ArenaManager {
 		Arena a = getArena(id);
 		if(a==null)
 		{
-			ChatUtils.sendMessage(p, ChatColor.RED+id+" is not a valid arena!");
+			ChatUtils.sendMessage(p, id+" is not a valid arena!", MessageLevel.ERROR);
 			return;
 		}
 		
 		if(a.getState()==GameState.EDIT||a.getState()==GameState.RESETTING||a.getState()==GameState.POST_GAME||a.getState()==GameState.DISABLED) {
-			ChatUtils.sendMessage(p, ChatColor.RED+"You cannot spectate "+id+" right now, it is "+a.getState().getMessage());
+			ChatUtils.sendMessage(p, "You cannot spectate "+id+" right now, it is "+a.getState().getMessage(), MessageLevel.WARNING);
 			return;
 		}
 		
@@ -164,7 +164,7 @@ public class ArenaManager {
 		}
 		if(a==null||!a.getPlayers().contains(p.getName()))
 		{
-			ChatUtils.sendMessage(p, ChatColor.RED+"Invalid Operation.");
+			ChatUtils.sendMessage(p, "Invalid Operation.", MessageLevel.ERROR);
 			return;
 		}
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(p, a);

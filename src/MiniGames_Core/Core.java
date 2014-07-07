@@ -7,7 +7,6 @@ import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -68,6 +67,7 @@ public class Core extends JavaPlugin {
 	
 	public MiniGameAPI getAPI()
 	{
+		if(!mga.isEnabled()) return null;
 		return mga;
 	}
 	
@@ -76,29 +76,18 @@ public class Core extends JavaPlugin {
 		if(c==null)
 		{
 			c = (Core) Bukkit.getServer().getPluginManager().getPlugin("MiniGames-Core");
+			if(c==null||!(c instanceof Core)) return null;
 		}
 		return c;
 	}
 	
-	public void resetArena(int timeOfGame, Arena a)
+	public void resetArena(int timeOfGame, Arena a, ArrayList<String> players)
 	{
 		CoreProtectAPI cp = getCoreProtect();
-		ArrayList<Location> locs = a.getLocations();
-		//TODO make sure entire arena is rolled back
-		double x,y,z;
-		x = (locs.get(1).getX() - locs.get(0).getX())/2;
-		y = (locs.get(1).getY() - locs.get(0).getY())/2;
-		z = (locs.get(1).getZ() - locs.get(0).getZ())/2;
-		
-		int r;
-		int mx,mz;
-		mx = (int) Math.abs(locs.get(0).getX())+(int)Math.abs(locs.get(1).getX());
-		mz = (int) Math.abs(locs.get(0).getZ())+(int)Math.abs(locs.get(1).getZ());
-		r = Math.max(mx, mz);
-		
-		
-		Location l = new Location(a.getLocations().get(0).getWorld(), x, y ,z);
-		cp.performRollback(null, timeOfGame, r, l, null, null);
+		for(String p : players)
+		{
+			cp.performRollback(p, timeOfGame, 0, null, null, null);
+		}
 		
 	}
 	

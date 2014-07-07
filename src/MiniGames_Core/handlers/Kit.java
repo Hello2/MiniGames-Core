@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 
+import com.wundero.MiniGames_Core.MessageLevel;
 import com.wundero.MiniGames_Core.Utils.ChatUtils;
 import com.wundero.MiniGames_Core.Utils.InventoryUtils;
 
@@ -83,7 +84,7 @@ public class Kit {
 	{
 		if(!(p.hasPermission(k.getPermissionNode())))
 		{
-			ChatUtils.sendMessage(p, "You do not have permission for this kit!");
+			ChatUtils.sendMessage(p, "You do not have permission for this kit!", MessageLevel.ERROR);
 			return;
 		}
 		playerKits.put(p.getName(), k);

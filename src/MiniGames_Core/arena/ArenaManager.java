@@ -16,6 +16,7 @@ import com.wundero.MiniGames_Core.GameState;
 import com.wundero.MiniGames_Core.Events.ArenaCreateEvent;
 import com.wundero.MiniGames_Core.Events.PlayerJoinArenaEvent;
 import com.wundero.MiniGames_Core.Events.PlayerLeaveArenaEvent;
+import com.wundero.MiniGames_Core.Events.PlayerSpectateArenaEvent;
 import com.wundero.MiniGames_Core.Utils.ChatUtils;
 
 public class ArenaManager {
@@ -94,20 +95,54 @@ public class ArenaManager {
 		if(!event.isCancelled())
 		{
 			a.getPlayers().add(p.getName());
-			inv.put(p.getName(), p.getInventory().getContents());
-			armor.put(p.getName(), p.getInventory().getArmorContents());
-			
-			p.getInventory().setArmorContents(null);
-			p.getInventory().clear();
-			
 			locs.put(p.getName(), p.getLocation());
-			p.teleport(a.getLocations().get(0));
 			
-			if(a.getMinPlayers()<=a.getPlayers().size()&&!b)
+			teleport(p, a.getLocations().get(0));
+			
+			if(a.getMinPlayers()<=a.getPlayers().size()&&!b&&a.getState().equals(GameState.IN_LOBBY))
 			{
 				b = true;
-				a.stopCountdown();
+				a.startCountdown();
 			}
+		}
+		
+	}
+	
+	private void teleport(Player p, Location l)
+	{
+		inv.put(p.getName(), p.getInventory().getContents());
+		armor.put(p.getName(), p.getInventory().getArmorContents());
+		
+		p.getInventory().setArmorContents(null);
+		p.getInventory().clear();
+		
+		p.teleport(l);
+		
+		p.setFireTicks(0);
+	}
+	
+	public void addSpectator(Player p, String id)
+	{
+		Arena a = getArena(id);
+		if(a==null)
+		{
+			ChatUtils.sendMessage(p, ChatColor.RED+id+" is not a valid arena!");
+			return;
+		}
+		
+		if(a.getState()==GameState.EDIT||a.getState()==GameState.RESETTING||a.getState()==GameState.POST_GAME||a.getState()==GameState.DISABLED) {
+			ChatUtils.sendMessage(p, ChatColor.RED+"You cannot spectate "+id+" right now, it is "+a.getState().getMessage());
+			return;
+		}
+		
+		PlayerSpectateArenaEvent event = new PlayerSpectateArenaEvent(p,a);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		
+		if(!event.isCancelled())
+		{
+			locs.put(p.getName(), p.getLocation());
+			a.getSpectators().add(p.getName());
+			teleport(p, a.getLocations().get(0));
 		}
 		
 	}
@@ -138,26 +173,20 @@ public class ArenaManager {
 		
 		if(!event.isCancelled())
 		{
-			p.getInventory().clear();
-			p.getInventory().setArmorContents(null);
-			
-			p.getInventory().setContents(inv.get(p.getName()));
-			p.getInventory().setArmorContents(armor.get(p.getName()));
-			
-			inv.remove(p.getName());
-			armor.remove(p.getName());
-			
-			p.teleport(locs.get(p.getName()));
+			teleport(p, locs.get(p.getName()));
 			locs.remove(p.getName());
 			
-			p.setFireTicks(0);
-			
-			if(a.getMinPlayers()>a.getPlayers().size())
+			if(a.getMinPlayers()>a.getPlayers().size()&&a.getState().equals(GameState.IN_LOBBY)&&!(a.getSpectators().contains(p.getName())))
 			{
 				b = false;
 				a.stopCountdown();
 			}
 		}
+	}
+	
+	public ArrayList<Arena> getArenas()
+	{
+		return arenas;
 	}
 	
 	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, ArenaType r, int m, int f)
@@ -171,6 +200,12 @@ public class ArenaManager {
 			return a;
 		}
 		else return null;
+	}
+	
+	public Arena createArena(Player p)
+	{
+		//TODO add conversation
+		return null;
 	}
 	
 	public boolean isInGame(Player p)

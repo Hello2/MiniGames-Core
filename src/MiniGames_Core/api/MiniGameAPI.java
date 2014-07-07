@@ -3,14 +3,11 @@ package com.wundero.MiniGames_Core.api;
 import java.util.ArrayList;
 
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.Arena.Arena;
 import com.wundero.MiniGames_Core.Arena.ArenaManager;
-import com.wundero.MiniGames_Core.Handlers.Commands;
 import com.wundero.MiniGames_Core.Handlers.Team;
 
 public class MiniGameAPI { //TODO more documentation
@@ -169,22 +166,19 @@ public class MiniGameAPI { //TODO more documentation
 	}
 	
 	/**
-	 * Sends a command to the MiniGames-Core command handler
-	 * Will be checked through MiniGames-Core, 
-	 * @param sender
-	 * @param cmd
-	 * @param label
-	 * @param args
-	 * @return
+	 * 
 	 */
-	public boolean sendCommand(CommandSender sender, Command cmd, String label, String[] args)
+	public boolean sendCommand()
 	{
-		return Commands.execCommand(sender, cmd, label, args, core);
+		//TODO add implementation 
+		return true;
 	}
 	
 	public boolean isInArena(Location loc, String arenaID)
 	{
 		return ArenaManager.getArenaManager().getArena(arenaID).isInArena(loc);
 	}
+	
+	
 	
 }

@@ -12,6 +12,7 @@ import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.GameState;
 import com.wundero.MiniGames_Core.Handlers.Team;
 import com.wundero.MiniGames_Core.Misc_Multiple.Randomizer;
+import com.wundero.MiniGames_Core.Threads.EndCountdown;
 import com.wundero.MiniGames_Core.Threads.GameTimer;
 import com.wundero.MiniGames_Core.Threads.StartCountdown;
 
@@ -21,11 +22,13 @@ public class Arena {
 	
 	public static int startCountdownId = 0;
 	public static int gameTimerId = 0;
+	public static int endCountdownId = 0;
 	
 	
 //	private static int x;
 	
 	private ArrayList<String> players = new ArrayList<String>();
+	private ArrayList<String> specs = new ArrayList<String>();
 	private int maxPlayers;
 	private boolean inProgress;
 	private GameState gs;
@@ -98,6 +101,11 @@ public class Arena {
 	public ArrayList<String> getPlayers()
 	{
 		return players;
+	}
+	
+	public ArrayList<String> getSpectators()
+	{
+		return specs;
 	}
 	
 	public boolean isInProgress()
@@ -201,13 +209,13 @@ public class Arena {
 	
 	public void disable()
 	{
-		gs = GameState.DISABLED;
+		//TODO add failsafe logic if in game
 	}
 	
 	public void endArena()
 	{
 		gs = GameState.POST_GAME;
-		tE = GameTimer.getTimeElapsed();
+		tE = GameTimer.getTimeElapsed()+110; //TODO add check for pregame lobby timer, through configs
 		Bukkit.getScheduler().cancelTask(gameTimerId);
 		if(locations.get(8)!=null)//Checks for death location, and tps all game players there. If not, tps all players to spec loc
 		{
@@ -235,11 +243,13 @@ public class Arena {
 				}
 			}
 		}
+		endCountdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new EndCountdown(this, 60), 20l, 20l);
 		//TODO add more stuff to make ending game better
 	}
 	public void resetArena()
 	{
 		//TODO make sure this is triggered after x time in POST_GAME gamestate
+		Bukkit.getScheduler().cancelTask(endCountdownId);
 		gs = GameState.RESETTING;
 		for(Player p : Bukkit.getOnlinePlayers()) //kicks in game players from game
 		{
@@ -248,8 +258,16 @@ public class Arena {
 				ArenaManager.getArenaManager().removePlayer(p);
 			}
 		}
+		ArrayList<String> playas = players;
+		for(String p : specs)
+		{
+			playas.add(p);
+		}
+		specs.clear();
+		players.clear();
 		if(c.getConfig().getBoolean("global.use-rollbacks"))
-			c.resetArena(tE, this);
+			c.resetArena(tE, this, playas);
+		
 		//TODO do arena resetting - block rollback is done
 		
 	}

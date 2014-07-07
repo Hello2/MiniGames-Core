@@ -17,9 +17,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wundero.MiniGames_Core.Arena.Arena;
 import com.wundero.MiniGames_Core.Arena.ArenaManager;
-import com.wundero.MiniGames_Core.Handlers.Commands;
 import com.wundero.MiniGames_Core.api.MiniGameAPI;
+import com.wundero.MiniGames_Core.commands.CommandsManager;
 
+/*
+ * MiniGames-Core - A bukkit plugin
+ * TODO add licensing
+ */
 
 public class Core extends JavaPlugin {
 	
@@ -57,6 +61,10 @@ public class Core extends JavaPlugin {
 		}
 		
 		mga = MiniGameAPI.get(this);
+		
+		CommandsManager cm = new CommandsManager();
+		cm.setup();
+		getCommand("minigame").setExecutor(cm); //TODO make sure this works with aliases like /mg and /minigames
 	}
 	
 	public static void registerListener(Listener l)
@@ -149,7 +157,7 @@ public class Core extends JavaPlugin {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
-		boolean ret = Commands.execCommand(sender, cmd, label, args, this);
-		return ret;
+		//TODO add CommandsManager implementation
+		return true;
 	}
 }

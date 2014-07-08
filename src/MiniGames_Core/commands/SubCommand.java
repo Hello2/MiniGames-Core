@@ -10,4 +10,6 @@ public abstract class SubCommand {
 	public abstract String info();
 	
 	public abstract String[] aliases();
+	
+	public abstract String permission();
 }

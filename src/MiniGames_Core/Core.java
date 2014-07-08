@@ -7,8 +7,6 @@ import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -32,6 +30,8 @@ public class Core extends JavaPlugin {
 	
 	private MiniGameAPI mga;
 	private FileConfiguration conf = getConfig();
+	
+	private CommandsManager cm;
 	
 	private static Core c;
 	
@@ -62,7 +62,7 @@ public class Core extends JavaPlugin {
 		
 		mga = MiniGameAPI.get(this);
 		
-		CommandsManager cm = new CommandsManager();
+		cm = CommandsManager.getCommandsManager();
 		cm.setup();
 		getCommand("minigame").setExecutor(cm); //TODO make sure this works with aliases like /mg and /minigames
 	}
@@ -155,9 +155,4 @@ public class Core extends JavaPlugin {
 		ArenaManager.getArenaManager().getArena(a.getID()).endArena();
 	}
 	
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-	{
-		//TODO add CommandsManager implementation
-		return true;
-	}
 }

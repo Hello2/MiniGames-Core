@@ -270,6 +270,8 @@ public class Arena {
 		
 		//TODO do arena resetting - block rollback is done
 		
+		inProgress = false;
+		canStart = true;
 	}
 	
 	public boolean canStart()

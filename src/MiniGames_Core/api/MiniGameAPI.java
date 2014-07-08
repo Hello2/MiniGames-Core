@@ -9,6 +9,8 @@ import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.Arena.Arena;
 import com.wundero.MiniGames_Core.Arena.ArenaManager;
 import com.wundero.MiniGames_Core.Handlers.Team;
+import com.wundero.MiniGames_Core.commands.CommandsManager;
+import com.wundero.MiniGames_Core.commands.SubCommand;
 
 public class MiniGameAPI { //TODO more documentation
 	
@@ -166,12 +168,14 @@ public class MiniGameAPI { //TODO more documentation
 	}
 	
 	/**
-	 * 
+	 * Add a command to the main plugin (For example, /mg funstuff)
+	 * MAKE SURE TO EXTEND THE SubCommand ABSTRACT CLASS, OR ELSE THIS WILL NOT WORK
+	 * As well as that, make sure to add the methods SubCommand has in it.
+	 * @param cmd
 	 */
-	public boolean sendCommand()
+	public void addSubCommand(SubCommand cmd)
 	{
-		//TODO add implementation 
-		return true;
+		CommandsManager.getCommandsManager().addCommand(cmd); //TODO add checks and stuff
 	}
 	
 	public boolean isInArena(Location loc, String arenaID)

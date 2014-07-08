@@ -21,3 +21,4 @@ Minigame creation - add methods to make new minigame types
 Configuration - add controllers and such to manage: config.yml, (in arenas folder) <arenaname>.yml, (in minigames folder) <minigamename>.yml
 Kit/Class selection - in lobby selection of classes (if minigame has this enabled)
 Configuration options - add options that make plugin more controllable
+Statistics tracker - tracks wins, losses, kills (if applicable), currency (if applicab;le, global or per minigame), and other things - per minigame (maybe ad per arena function)

@@ -231,13 +231,16 @@ public class ArenaManager {
 	
     public boolean deleteArena(Arena arena)
     {
-    	
     	for(Arena a : arenas)
     	{
     		if(a==arena)
     		{
+    			for(String p : a.getPlayers())
+    			{
+    				removePlayer(Bukkit.getPlayer(p)); //TODO convert all stuff to UUID if necessary
+    			}
     			arenas.remove(a);
-    			a = null;
+    			a = null; //Do this to make sure garbage collector in Java gets it
     			return true;
     		}
     	}

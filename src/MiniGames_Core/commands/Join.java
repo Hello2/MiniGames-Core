@@ -12,6 +12,7 @@ public class Join extends SubCommand {
 	private String name = "join";
 	private String info = "Join an arena";
 	private String[] aliases = {"j"};
+	private String permission = "minigames-core.use.join";
 	
 	@Override
 	public void onCommand(Player p, String[] args) {
@@ -48,6 +49,12 @@ public class Join extends SubCommand {
 	@Override
 	public String[] aliases() {
 		return aliases;
+	}
+
+	
+	public String permission() {
+		
+		return permission;
 	}
 	
 }

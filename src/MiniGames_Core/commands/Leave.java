@@ -11,6 +11,7 @@ public class Leave extends SubCommand {
 	private String name = "leave";
 	private String info = "Leave an arena";
 	private String[] aliases = {"l"};
+	private String permission = "minigames-core.use.leave";
 	
 	@Override
 	public void onCommand(Player p, String[] args) {
@@ -36,6 +37,11 @@ public class Leave extends SubCommand {
 	@Override
 	public String[] aliases() {
 		return aliases;
+	}
+
+	@Override
+	public String permission() {
+		return permission;
 	}
 
 }

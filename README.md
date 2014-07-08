@@ -9,7 +9,7 @@ For more information, check the Wiki! (Not set up yet)
 
 Contribution
 ====
-Commits should fall into one of 3 areas:
+Commits should fall into one of 4 areas:
 
 * [Feature]: Commits which are features should start with [Feature] and be followed by a quick summary on the top line, followed by some extra details in the commit body.
 

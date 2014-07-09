@@ -1,0 +1,4 @@
+NOTICE---NOTICE---NOTICE
+
+This section of the plugin is incomplete. DO NOT USE THIS CODE UNDER ANY CIRCUMSTANCES, IT WILL NOT WORK.
+Wundero will update the code when it is in a more usable state.

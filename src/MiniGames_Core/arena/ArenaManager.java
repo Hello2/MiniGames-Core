@@ -184,6 +184,15 @@ public class ArenaManager {
 		}
 	}
 	
+	public boolean isSpectator(Player p)
+	{
+		for(Arena a : arenas)
+		{
+			if(a.getSpectators().contains(p.getName())) return true;
+		}
+		return false;
+	}
+	
 	public ArrayList<Arena> getArenas()
 	{
 		return arenas;

@@ -1,6 +1,7 @@
 package com.wundero.MiniGames_Core.Arena;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -96,6 +97,11 @@ public class Arena {
 	public ArenaType getType()
 	{
 		return type;
+	}
+	
+	public ArrayList<Team> getTeams()
+	{
+		return (ArrayList<Team>) Arrays.asList(teams);
 	}
 	
 	public ArrayList<String> getPlayers()

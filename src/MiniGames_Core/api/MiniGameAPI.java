@@ -17,7 +17,7 @@ public class MiniGameAPI { //TODO more documentation
 	private static MiniGameAPI mga;
 	private static Core core;
 	
-	private MiniGameAPI() {}
+	private MiniGameAPI() {} //TODO remove instance requirements of Arena or other plugin classes
 	
 	
 	/**
@@ -40,7 +40,7 @@ public class MiniGameAPI { //TODO more documentation
 	 * @return
 	 */
 	
-	public String getVersion() //Version: 1.0.0 in int form: 100. biggest.medium.build. if 1.2.5 is version, return 125
+	public String getVersion() 
 	{
 		return "0.0.0"; //TODO make better
 	}
@@ -97,9 +97,9 @@ public class MiniGameAPI { //TODO more documentation
 		ArenaManager.getArenaManager().removePlayer(player);
 	}
 	
-	public void spectateArena(Player p, Arena a)
+	public void spectateArena(Player p, String id)
 	{
-		
+		ArenaManager.getArenaManager().addSpectator(p, id);
 	}
 	
 	public ArrayList<Arena> getArenas()
@@ -107,9 +107,14 @@ public class MiniGameAPI { //TODO more documentation
 		return ArenaManager.getArenaManager().getArenas();
 	}
 	
-	public ArrayList<Team> getTeams()
+	public ArrayList<Team> getAllTeams()
 	{
 		return Team.getAllTeams();
+	}
+	
+	public ArrayList<Team> getTeams(String id)
+	{
+		return ArenaManager.getArenaManager().getArena(id).getTeams();
 	}
 	
 	/**
@@ -175,7 +180,7 @@ public class MiniGameAPI { //TODO more documentation
 	 */
 	public void addSubCommand(SubCommand cmd)
 	{
-		CommandsManager.getCommandsManager().addCommand(cmd); //TODO add checks and stuff
+		CommandsManager.getCommandsManager().addCommand(cmd);
 	}
 	
 	public boolean isInArena(Location loc, String arenaID)

@@ -67,10 +67,17 @@ public class Core extends JavaPlugin {
 		getCommand("minigame").setExecutor(cm); //TODO make sure this works with aliases like /mg and /minigames
 	}
 	
-	public static void registerListener(Listener l)
+	
+	
+	public static void registerStaticListener(Listener l)
 	{
 		Core c = (Core) Bukkit.getServer().getPluginManager().getPlugin("MiniGames-Core");
 		Bukkit.getServer().getPluginManager().registerEvents(l, c);
+	}
+	
+	public void registerListener(Listener l)
+	{
+		getServer().getPluginManager().registerEvents(l, this);
 	}
 	
 	public MiniGameAPI getAPI()

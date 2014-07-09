@@ -41,7 +41,7 @@ public class Delete extends SubCommand {
 			return;
 		}
 		
-		
+		ArenaManager.getArenaManager().deleteArena(a);
 	}
 
 	@Override

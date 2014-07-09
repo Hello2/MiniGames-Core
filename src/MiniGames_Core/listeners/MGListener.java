@@ -11,5 +11,6 @@ public class MGListener implements Listener {
 	public MGListener(Core pl)
 	{
 		plugin = pl;
+		plugin.registerListener(this);
 	}
 }

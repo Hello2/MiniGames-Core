@@ -45,13 +45,15 @@ global:
   #Enables a voting option for the next minigame
   enable-voting: false
   
-  #Use MiniGames-Core's antihack system. Disable this if you want other anti-hack plugins to override.
-  enable-anti-hacks: false
-  
   #Global chat
   enable-gchat: true
   
-  
-  
+  #This checks to see what other plugins your server has running that are minigame related. 
+  #If the value is true, the other plugin (For example, MobArena) will handle the minigame instead of MiniGames-Core.
+  #If you set it to true, all MiniGames-Core commands relating to said plugin will be handled by the other plugin.
+  #If it is false, MiniGames-Core will not use the other plugin. Note that this does NOT include overriding the
+  #commands. It will 
+  override-plugins:
+    MobArena: true
   
   #TODO - add more stuff here later as it comes up

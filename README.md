@@ -7,6 +7,8 @@ A minigame management plugin for Minecraft servers! You can use this plugin in t
 
 For more information, check the Wiki! (Not set up yet)
 
+If you wish to get this plugin, DO NOT DOWNLOAD IT AS A ZIP. IT WILL NOT WORK. Instead, visit the BukkitDev page.
+
 Contribution
 ====
 Commits should fall into one of 4 areas:

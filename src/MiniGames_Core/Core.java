@@ -65,6 +65,16 @@ public class Core extends JavaPlugin {
 		cm = CommandsManager.getCommandsManager();
 		cm.setup();
 		getCommand("minigame").setExecutor(cm); //TODO make sure this works with aliases like /mg and /minigames
+		
+		//This part will check for other plugins that handle minigames and ask for an override choice - this or those plugins. This plugins other parts will function normally.
+		if(getServer().getPluginManager().getPlugin("MobArena")!=null)
+		{
+			//TODO add logic for overrides - config to override defaults to TRUE, not false.
+		}
+		if(getServer().getPluginManager().getPlugin("BattleArena")!=null) //TODO add other minigame plugins here
+		{
+			//TODO add logic for overrides - config to override defaults to TRUE, not false.
+		}
 	}
 	
 	

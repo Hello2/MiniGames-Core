@@ -26,45 +26,51 @@ import com.wundero.MiniGames_Core.commands.CommandsManager;
 public class Core extends JavaPlugin {
 	
 	public final Logger logger = Logger.getLogger("Minecraft");
-	public final static Logger loggerTwo = Logger.getLogger("Minecraft");
+	public final static Logger loggerTwo = Logger.getLogger("Minecraft"); //Two loggers, static one that can be retrieved by other classes
 	
-	private MiniGameAPI mga;
-	private FileConfiguration conf = getConfig();
+	private MiniGameAPI mga; //API for other plugins to hook into
+	private FileConfiguration conf = getConfig(); //Idunno, will make this better
 	
-	private CommandsManager cm;
+	private CommandsManager cm; //This is to register all the commands
 	
-	private static Core c;
+	private static Core c; //Static instance to be able to get an instance with other classes
 	
 	@Override
 	public void onDisable()
 	{
-		this.saveConfig();
-		PluginDescriptionFile pdfFile = this.getDescription();
+		this.saveConfig();//Saves config. TODO move to configuration
+		PluginDescriptionFile pdfFile = this.getDescription();//Logs that the plugin is being disabled.
 		this.logger.info(pdfFile.getName()+" has been disabled!");
+	}
+	
+	public void reload()
+	{
+		//TODO kick all players out and reload config, do other stuff
 	}
 	
 	@Override
 	public void onEnable()
 	{
-		PluginDescriptionFile pdfFile = this.getDescription();
+		PluginDescriptionFile pdfFile = this.getDescription();//Logs the enable
 		this.logger.info(pdfFile.getName()+" version "+pdfFile.getVersion()+" has been enabled!");
-		if(getConfig()==null)
+		if(getConfig()==null)//If no config, create new one
 		{
 			this.saveDefaultConfig();
 		}
-		this.reloadConfig();
+		this.reloadConfig();//Reloads config, essentially a load
 		
-		CoreProtectAPI coreProtect = getCoreProtect();
+		CoreProtectAPI coreProtect = getCoreProtect();//Loads coreprotect to use for arena resets
 		if(coreProtect!=null)
 		{
 			coreProtect.testAPI(); 
 		}
 		
-		mga = MiniGameAPI.get(this);
+		mga = MiniGameAPI.get(this);//Gets the API
 		
-		cm = CommandsManager.getCommandsManager();
+		cm = CommandsManager.getCommandsManager();//sets up commands
 		cm.setup();
 		getCommand("minigame").setExecutor(cm); //TODO make sure this works with aliases like /mg and /minigames
+		//^This sets the command executor as the commands manager
 		
 		//This part will check for other plugins that handle minigames and ask for an override choice - this or those plugins. This plugins other parts will function normally.
 		if(getServer().getPluginManager().getPlugin("MobArena")!=null)
@@ -79,24 +85,24 @@ public class Core extends JavaPlugin {
 	
 	
 	
-	public static void registerStaticListener(Listener l)
+	public static void registerStaticListener(Listener l)//Registers a listener with static reference
 	{
 		Core c = (Core) Bukkit.getServer().getPluginManager().getPlugin("MiniGames-Core");
-		Bukkit.getServer().getPluginManager().registerEvents(l, c);
+		Bukkit.getServer().getPluginManager().registerEvents(l, c);//Registers listener with core
 	}
 	
 	public void registerListener(Listener l)
 	{
-		getServer().getPluginManager().registerEvents(l, this);
+		getServer().getPluginManager().registerEvents(l, this);//Register listener with core instance
 	}
 	
-	public MiniGameAPI getAPI()
+	public MiniGameAPI getAPI()//Gets the API, this is what other plugins will use
 	{
 		if(!mga.isEnabled()) return null;
 		return mga;
 	}
 	
-	public static Core getCore()
+	public static Core getCore()//Gets the core from a static reference
 	{
 		if(c==null)
 		{
@@ -106,7 +112,7 @@ public class Core extends JavaPlugin {
 		return c;
 	}
 	
-	public void resetArena(int timeOfGame, Arena a, ArrayList<String> players)
+	public void resetArena(int timeOfGame, Arena a, ArrayList<String> players)//resets arena based on who played in it and how long the game lasted
 	{
 		CoreProtectAPI cp = getCoreProtect();
 		for(String p : players)
@@ -116,7 +122,7 @@ public class Core extends JavaPlugin {
 		
 	}
 	
-	private CoreProtectAPI getCoreProtect()
+	private CoreProtectAPI getCoreProtect()//returns coreprotect api
 	{
 		Plugin cp = getServer().getPluginManager().getPlugin("CoreProtect");
 		if(cp==null||!(cp instanceof CoreProtect))
@@ -136,38 +142,32 @@ public class Core extends JavaPlugin {
 	}
 	
 	
-	public static Logger getPluginLogger()
+	public static Logger getPluginLogger()//static logger getter
 	{
 		return loggerTwo;
 	}
 	
 //	public void setupConfig()
 //	{
-//		
+//		//TODO register
 //	}
 	
-	public void registerKits(){
+	public void registerKits(){//will register kits
 		//TODO get kits from files
 		//TODO store kit info
 	}
 	
-//	public void registerListeners() // - NOTE - No longer required - register listener is better method - add back if necessary
-//	{
-//		PluginManager pm = getServer().getPluginManager();
-//		pm.registerEvents(new PlayerJoinListener(this), this);
-//		//TODO add more listeners as more are made
-//	}
 	
-	public FileConfiguration getPluginConfig()
+	public FileConfiguration getPluginConfig()//Gets config
 	{
 		return conf;
 	}
 	
-	public static void start(Arena a)
+	public static void start(Arena a)//Starts an arena, TODO make smoother
 	{
 		ArenaManager.getArenaManager().getArena(a.getID()).startCountdown();
 	}
-	public static void stop(Arena a)
+	public static void stop(Arena a)//Stops an arena, TODO make smoother
 	{
 		ArenaManager.getArenaManager().getArena(a.getID()).endArena();
 	}

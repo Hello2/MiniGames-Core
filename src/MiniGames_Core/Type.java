@@ -2,7 +2,7 @@ package com.wundero.MiniGames_Core;
 
 //TODO Make better
 
-public enum ArenaType {
+public enum Type {
 	TEAM_DEATH_MATCH("Team Deathmatch", true),
 	FREE_FOR_ALL("Free for All", true),
 	CAPTURE_THE_FLAG("Capture the Flag", true),
@@ -23,7 +23,7 @@ public enum ArenaType {
 	private String name;
 	private boolean enabled;
 	
-	ArenaType(String name, boolean b)
+	Type(String name, boolean b)
 	{
 		this.name = name;
 		this.enabled = b;

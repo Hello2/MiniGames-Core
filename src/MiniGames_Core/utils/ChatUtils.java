@@ -9,19 +9,19 @@ import org.bukkit.entity.Player;
 import com.wundero.MiniGames_Core.MessageLevel;
 
 public class ChatUtils {
-	public static void broadcast(String msg)
+	public static void broadcast(String msg, MessageLevel level)
 	{
 		for(Player p : Bukkit.getOnlinePlayers())
 		{
-			p.sendMessage(prefix()+msg);
+			p.sendMessage(prefix()+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
 		}
 	}
 	
 	private static String prefix()
 	{
-		String prefix = DARK_GRAY + "[" + 
+		String prefix = BLACK + "[" + 
 		//Insert custom thingy from config, or game type
-		RED + "MiniGame-Core" + DARK_GRAY +"]" + WHITE+" ";
+		GREEN + "MiniGame-Core" + BLACK +"]" + WHITE+" ";
 		return prefix;
 	}
 	
@@ -33,5 +33,16 @@ public class ChatUtils {
 	public static void sendMessage(CommandSender s, String msg, MessageLevel level)
 	{
 		s.sendMessage(prefix()+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
+	}
+	
+	public static void sendMessage(ArrayList<String> players, String msg, MessageLevel level)
+	{
+		for(Player p : Bukkit.getServer().getOnlinePlayers())
+		{
+			if(players.contains(p.getName()))
+			{
+				sendMessage(p, msg, level);
+			}
+		}
 	}
 }

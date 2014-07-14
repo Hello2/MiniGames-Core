@@ -21,7 +21,7 @@ public class Spectate extends SubCommand {
 		}
 		else
 		{
-			ChatUtils.sendMessage(p, "You must specify an arena!", MessageLevel.WARNING)
+			ChatUtils.sendMessage(p, "You must specify an arena!", MessageLevel.WARNING);
 		}
 		
 	}

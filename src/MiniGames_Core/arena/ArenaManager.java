@@ -76,7 +76,7 @@ public class ArenaManager {
 	{
 		for(Arena a : arenas)
 		{
-			if(a.getPlayers().contains(p.getName())||a.getSpectators.contains(p.getName()))
+			if(a.getPlayers().contains(p.getName())||a.getSpectators().contains(p.getName()))
 			{
 				return a;
 			}
@@ -111,13 +111,30 @@ public class ArenaManager {
 			
 			teleport(p, a.getLocations().get(0));
 			
+			a.getReady().put(p.getName(), false);
+			
 			if(a.getMinPlayers()<=a.getPlayers().size()&&!b&&a.getState().equals(GameState.IN_LOBBY))
 			{
-				b = true;
-				a.startCountdown();
+				int i = 0;
+				for(Boolean bool : a.getReady().values())
+				{
+					if(bool)
+					{
+						i++;
+					}
+				}
+				if(i>a.getMinReady())
+				{
+					b = true;
+					a.startCountdown();
+				}
 			}
-		}
-		
+		}	
+	}
+	
+	public void setReady(Player p, boolean b, String id)
+	{
+		arenas.get(arenas.indexOf(id)).setReady(p, b);
 	}
 	
 	private void teleport(Player p, Location l)
@@ -188,12 +205,37 @@ public class ArenaManager {
 			teleport(p, locs.get(p.getName()));
 			locs.remove(p.getName());
 			
+			if(!a.getSpectators().contains(p.getName()))
+			{
+				a.getReady().remove(p.getName());
+			}
+			
 			if(a.getMinPlayers()>a.getPlayers().size()&&a.getState().equals(GameState.IN_LOBBY)&&!(a.getSpectators().contains(p.getName())))
 			{
-				b = false;
-				a.stopCountdown();
+				int i = 0;
+				for(Boolean bool : a.getReady().values())
+				{
+					if(bool)
+					{
+						i++;
+					}
+				}
+				if(i<a.getMinReady()||a.getMinPlayers()>a.getPlayers().size())
+				{
+					b = false;
+					a.stopCountdown();
+				}
 			}
 		}
+	}
+	
+	public boolean isSpectator(Player p, String id)
+	{
+		if(getArena(id).getSpectators().contains(p.getName()))
+		{
+			return true;
+		}
+		else return false;
 	}
 	
 	public boolean isSpectator(Player p)
@@ -210,10 +252,10 @@ public class ArenaManager {
 		return arenas;
 	}
 	
-	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, Type r, int m, int f)
+	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, Type r, int m, int f, int mr)
 	{
 		
-		Arena a = new Arena(locs, locs2, id, r, m, f, c);
+		Arena a = new Arena(locs, locs2, id, r, m, f, mr, c);
 		ArenaCreateEvent event = new ArenaCreateEvent(a);
 		if(!event.isCancelled())
 		{

@@ -1,6 +1,12 @@
 package com.wundero.MiniGames_Core.commands;
 
+import java.util.ArrayList;
+
 import org.bukkit.entity.Player;
+
+import com.wundero.MiniGames_Core.MessageLevel;
+import com.wundero.MiniGames_Core.Arena.ArenaManager;
+import com.wundero.MiniGames_Core.Utils.ChatUtils;
 
 public class Players extends SubCommand {
 
@@ -11,34 +17,37 @@ public class Players extends SubCommand {
 	
 	@Override
 	public void onCommand(Player p, String[] args) {
-		// TODO Auto-generated method stub
-		String[] allPlaying = {};//String array that should contain the players currently playing in the arena
-		String[] allSpec = {};//String array that should contain all the spectators
-		String[] allPlayers = {};//String array that should contain both playing and spectators
-		String allPlayer;//Contains allPlayer[] but just in string form
-		String arenaName;//String containing the name of the arena
-		if(args[0]!=null){//checks if the player specified any arena name
-			arenaName = args[1];
-			//^if the player did specify an arena name, then set the arena name to what he/she stated
-		}else{// runs if the player didn't specify any arena name
-			arenaName = ArenaManager.getArenaManager().isInGame(p);
-			//^sets the arena name to the arena the player is currently in	
+		
+		if(ArenaManager.getArenaManager().isInGame(p)||ArenaManager.getArenaManager().isSpectator(p))
+		{
+			ArrayList<String> pl = ArenaManager.getArenaManager().getArena(p).getPlayers();
+			for(String s : ArenaManager.getArenaManager().getArena(p).getSpectators())
+			{
+				pl.add(s);
+			}
+			//TODO add check for readyness
+			String names = pl.toString();
+			ChatUtils.sendMessage(p, names, MessageLevel.INFO);
+			return;
+		}
+		else if(args[0]!=null)
+		{
+			ArrayList<String> pl = ArenaManager.getArenaManager().getArena(args[0]).getPlayers();
+			for(String s : ArenaManager.getArenaManager().getArena(p).getSpectators())
+			{
+				pl.add(s);
+			}
+			//TODO add check for readyness
+			String names = pl.toString();
+			ChatUtils.sendMessage(p, names, MessageLevel.INFO);
+			return;
+		}
+		else
+		{
+			ChatUtils.sendMessage(p, "You must either be in an arena or specify an arena!", MessageLevel.WARNING);
+			return;
 		}
 		
-		allPlaying = (ArenaManager.getArenaManager().getArena(arenaID(arenaName)).getPlayers()).toArray();
-		//^ sets the array allPlaying to contain the players currently playing in the arena specified
-		allSpec = (ArenaManager.getArenaManager().getArena(arenaID(arenaName)).getSpectators()).toArray();
-		//^ sets the array allSpec to contain all the spectators in the arena
-		allPlayers = allPlaying + allSpec;//combines the arrays
-		
-		for(int x; x >= allPlayers.length; x ++){
-			//^loops through allPlayers[] and adds the "x" element to allPlayer
-			allPlayer += allPlayers[x];//adds the player to allPlayer
-			allPlayer += ", ";//adds a comma after each player name for clarity
-		}
-		
-		ChatUtils.sendMessage(p, allPlayer);
-			
 	}
 
 	@Override

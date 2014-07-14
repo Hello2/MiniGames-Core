@@ -2,6 +2,9 @@ package com.wundero.MiniGames_Core.commands;
 
 import org.bukkit.entity.Player;
 
+import com.wundero.MiniGames_Core.arena.ArenaManager;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
+
 public class Spectate extends SubCommand {
 	
 	private String name = "spectate";
@@ -11,7 +14,14 @@ public class Spectate extends SubCommand {
 
 	@Override
 	public void onCommand(Player p, String[] args) {
-		// TODO Auto-generated method stub
+		if(args[0]!=null)
+		{
+			ArenaManager.getArenaManager().addSpectator(p);//TODO add checks and stuff
+		}
+		else
+		{
+			ChatUtils.sendMessage(p, "You must specify an arena!", MessageLevel.WARNING)
+		}
 		
 	}
 

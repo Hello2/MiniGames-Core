@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.wundero.MiniGames_Core.ArenaType;
+import com.wundero.MiniGames_Core.Type;
 import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.GameState;
 import com.wundero.MiniGames_Core.MessageLevel;
@@ -23,22 +23,24 @@ public class ArenaManager {
 	
 	//TODO Make class better
 	
-	public Map<String, Location> locs = new HashMap<String, Location>();
+	//TODO rename variables
 	
-	private static ArenaManager am;
+	public Map<String, Location> locs = new HashMap<String, Location>();//Player locations
 	
-	private boolean b = false;
+	private static ArenaManager am;//Static instance
 	
-	private Core c;
+	private boolean b = false;//I dunno what this is or does, trying to figure this out :P
+	
+	private Core c;//Core instance
 	
 	Map<String, ItemStack[]> inv = new HashMap<String, ItemStack[]>();
-	Map<String, ItemStack[]> armor = new HashMap<String, ItemStack[]>();
+	Map<String, ItemStack[]> armor = new HashMap<String, ItemStack[]>();//Players inventories and armor - TODO store XP
 	
 	ArrayList<Arena> arenas = new ArrayList<Arena>();
 	
-	private ArenaManager(){}
+	private ArenaManager(){}//Private constructor to prevent multiple instances
 	
-	public static ArenaManager getArenaManager()
+	public static ArenaManager getArenaManager()//Returns instance from static reference
 	{
 		if(am==null)
 		{
@@ -48,17 +50,17 @@ public class ArenaManager {
 		return am;
 	}
 	
-	public void hook(Core core)
+	public void hook(Core core)//Hooks to core, unused method at the moment
 	{
 		c = core;
 	}
 	
-	public Core getCore()
+	public Core getCore()//gets core
 	{
 		return c;
 	}
 	
-	public Arena getArena(String id)
+	public Arena getArena(String id)//Gets an arena with the id
 	{
 		for(Arena a : arenas)
 		{
@@ -70,7 +72,17 @@ public class ArenaManager {
 		return null;
 	}
 	
-
+	public Arena getArena(Player p)
+	{
+		for(Arena a : arenas)
+		{
+			if(a.getPlayers().contains(p.getName())||a.getSpectators.contains(p.getName()))
+			{
+				return a;
+			}
+		}
+		return null;
+	}
 	
 	public void addPlayer(Player p, String id)
 	{
@@ -84,7 +96,7 @@ public class ArenaManager {
 		if(!a.getState().canJoin())
 		{
 			ChatUtils.sendMessage(p, "You cannot join this arena, it is "+getMessageForState(a.getState())+".", MessageLevel.WARNING); return;
-		}
+		}//Makes sure arena exists and is joinable
 		
 		if(a.getPlayers().size()==a.getMaxPlayers()) { ChatUtils.sendMessage(p, "You cannot join this arena, it is full.", MessageLevel.WARNING); return; }
 		
@@ -198,7 +210,7 @@ public class ArenaManager {
 		return arenas;
 	}
 	
-	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, ArenaType r, int m, int f)
+	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, Type r, int m, int f)
 	{
 		
 		Arena a = new Arena(locs, locs2, id, r, m, f, c);

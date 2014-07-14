@@ -2,6 +2,8 @@ package com.wundero.MiniGames_Core.Utils;
 
 import static org.bukkit.ChatColor.*;
 
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

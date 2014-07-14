@@ -2,9 +2,9 @@ package com.wundero.MiniGames_Core.commands;
 
 import org.bukkit.entity.Player;
 
-import com.wundero.MiniGames_Core.arena.ArenaManager;
-import com.wundero.MiniGames_Core.utils.ChatUtils;
 import com.wundero.MiniGames_Core.MessageLevel;
+import com.wundero.MiniGames_Core.Arena.ArenaManager;
+import com.wundero.MiniGames_Core.Utils.ChatUtils;
 
 public class Spectate extends SubCommand {
 	

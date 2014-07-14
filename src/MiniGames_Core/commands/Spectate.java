@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.wundero.MiniGames_Core.arena.ArenaManager;
 import com.wundero.MiniGames_Core.utils.ChatUtils;
+import com.wundero.MiniGames_Core.MessageLevel;
 
 public class Spectate extends SubCommand {
 	
@@ -16,7 +17,7 @@ public class Spectate extends SubCommand {
 	public void onCommand(Player p, String[] args) {
 		if(args[0]!=null)
 		{
-			ArenaManager.getArenaManager().addSpectator(p);//TODO add checks and stuff
+			ArenaManager.getArenaManager().addSpectator(p, args[0]);
 		}
 		else
 		{

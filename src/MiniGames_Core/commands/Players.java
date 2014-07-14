@@ -2,6 +2,8 @@ package com.wundero.MiniGames_Core.commands;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.wundero.MiniGames_Core.MessageLevel;
@@ -26,19 +28,58 @@ public class Players extends SubCommand {
 				pl.add(s);
 			}
 			//TODO add check for readyness
-			String names = pl.toString();
+			String names = ChatColor.WHITE+"Players: ";
+			
+			for(String s : pl)
+			{
+				if(ArenaManager.getArenaManager().getArena(Bukkit.getPlayer(s)).isReady(Bukkit.getPlayer(s)))
+				{
+					names += ChatColor.GREEN+s;
+				}
+				else if(ArenaManager.getArenaManager().isSpectator(Bukkit.getPlayer(s), ArenaManager.getArenaManager().getArena(Bukkit.getPlayer(s)).getID()))
+				{
+					names += ChatColor.AQUA+s;
+				}
+				else
+				{
+					names += ChatColor.RED+s;
+				}
+				
+			}
+			
+			ChatUtils.sendMessage(p, ChatColor.WHITE+"Players in arena "+ArenaManager.getArenaManager().getArena(p).getID()+". "+ChatColor.GREEN+"Green means ready"+ChatColor.WHITE+", "+ChatColor.AQUA+"Aqua means spectating"+ChatColor.WHITE+", and "+ChatColor.RED+"red means not ready.", MessageLevel.INFO);
 			ChatUtils.sendMessage(p, names, MessageLevel.INFO);
 			return;
 		}
 		else if(args[0]!=null)
 		{
 			ArrayList<String> pl = ArenaManager.getArenaManager().getArena(args[0]).getPlayers();
-			for(String s : ArenaManager.getArenaManager().getArena(p).getSpectators())
+			if(pl==null) return;
+			for(String s : ArenaManager.getArenaManager().getArena(args[0]).getSpectators())
 			{
 				pl.add(s);
 			}
-			//TODO add check for readyness
-			String names = pl.toString();
+			
+			String names = ChatColor.WHITE+"Players: ";
+			
+			for(String s : pl)
+			{
+				if(ArenaManager.getArenaManager().getArena(Bukkit.getPlayer(s)).isReady(Bukkit.getPlayer(s)))
+				{
+					names += ChatColor.GREEN+s;
+				}
+				else if(ArenaManager.getArenaManager().isSpectator(Bukkit.getPlayer(s), ArenaManager.getArenaManager().getArena(Bukkit.getPlayer(s)).getID()))
+				{
+					names += ChatColor.AQUA+s;
+				}
+				else
+				{
+					names += ChatColor.RED+s;
+				}
+				
+			}
+			
+			ChatUtils.sendMessage(p, ChatColor.WHITE+"Players in arena "+args[0]+". "+ChatColor.GREEN+"Green means ready"+ChatColor.WHITE+", "+ChatColor.AQUA+"Aqua means spectating"+ChatColor.WHITE+", and "+ChatColor.RED+"red means not ready.", MessageLevel.INFO);
 			ChatUtils.sendMessage(p, names, MessageLevel.INFO);
 			return;
 		}

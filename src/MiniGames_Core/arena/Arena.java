@@ -2,15 +2,16 @@ package com.wundero.MiniGames_Core.Arena;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.wundero.MiniGames_Core.ArenaType;
 import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.GameState;
+import com.wundero.MiniGames_Core.Type;
 import com.wundero.MiniGames_Core.Handlers.Team;
 import com.wundero.MiniGames_Core.Misc_Multiple.Randomizer;
 import com.wundero.MiniGames_Core.Threads.EndCountdown;
@@ -29,16 +30,18 @@ public class Arena {
 //	private static int x;
 	
 	private ArrayList<String> players = new ArrayList<String>();
+	private HashMap<String, Boolean> pReady = new HashMap<String, Boolean>();
 	private ArrayList<String> specs = new ArrayList<String>();
 	private int maxPlayers;
 	private boolean inProgress;
 	private GameState gs;
-	private ArenaType type;
+	private Type type;
 	private boolean canStart;
 	private Team[] teams;
 	private Core c;
 	private int tE;
 	private int minPlayers;
+	private int minReady;
 	private ArrayList<Location> locations; //Numbers to locations, in order:
 	/* -NOTE- any location that is not needed should be set to null -NOTE- FFA spawns will be random
 	 * Index = location - extra information
@@ -64,12 +67,13 @@ public class Arena {
 	
 	
 	
-	public Arena(ArrayList<Location> locations, ArrayList<Location> misclocs, String ID, ArenaType type, int maxp, int minp, Core core) //TODO add spawn areas for team stuffs, use 0.5 for x and z to center player
+	public Arena(ArrayList<Location> locations, ArrayList<Location> misclocs, String ID, Type type, int maxp, int minp, int minr, Core core) //TODO add spawn areas for team stuffs, use 0.5 for x and z to center player
 	{
-		
+		//Sets variables
 		id = ID;
 		maxPlayers = maxp;
 		minPlayers = minp;
+		minReady = minr;
 		this.type = type;
 		gs = GameState.EDIT;
 		canStart = false;
@@ -78,43 +82,65 @@ public class Arena {
 		miscLocs = misclocs;
 	}
 	
-	public ArrayList<Location> getLocations()
+	public ArrayList<Location> getLocations()//Gets all locations
 	{
 		return locations;
 	}
-	public ArrayList<Location> getMiscLocations()
+	public ArrayList<Location> getMiscLocations()//Gets all misc locations
 	{
 		return miscLocs;
 	}
 	
 	//TODO add team spawn manager
 	
-	public String getID()
+	public String getID()//Gets arena id
 	{
 		return id;
 	}
 	
-	public ArenaType getType()
+	public boolean isReady(Player p)
+	{
+		if(pReady.get(p.getName()))
+			return true;
+		else return false;
+	}
+	
+	public void setReady(Player p, boolean b)
+	{
+		pReady.put(p.getName(), b);
+	}
+	
+	public int getMinReady()
+	{
+		return minReady;
+	}
+	
+	public HashMap<String, Boolean> getReady()
+	{
+		return pReady;
+	}
+	
+	public Type getType()//gets arena type (minigame)
 	{
 		return type;
 	}
 	
-	public ArrayList<Team> getTeams()
+	public ArrayList<Team> getTeams()//gets the arena's teams
 	{
 		return (ArrayList<Team>) Arrays.asList(teams);
 	}
 	
-	public ArrayList<String> getPlayers()
+	public ArrayList<String> getPlayers()//gets the players
 	{
 		return players;
 	}
 	
-	public ArrayList<String> getSpectators()
+	public ArrayList<String> getSpectators()//gets the spectators
 	{
 		return specs;
 	}
 	
-	public boolean isInProgress()
+	public boolean isInProgress()//gets if the game is in prograss
 	{
 		return inProgress;
 	}
@@ -123,14 +149,14 @@ public class Arena {
 	{
 		if(canStart)
 		{
-			stopCountdown();
-			gs = GameState.IN_GAME;
+			stopCountdown();//Stops countdown
+			gs = GameState.IN_GAME;//Sets game state
 			if(players.isEmpty())
 			{
 				return false;
 			}
 			
-			//TODO add conf check to see how many teams to create
+			//TODO add conf check to see how many teams to create - Maybe add to gametype?
 			int x = 2;//In a freeforallgame, there would be 0 teams
 			//TODO do free for all stuff
 			for(int i = 0; i<x; i++)
@@ -139,7 +165,7 @@ public class Arena {
 			}
 			
 			int i = 0;
-			for(String p : players)
+			for(String p : players)//Adds players to teams
 			{
 				if(i>=Team.getTeams().size())
 				{
@@ -162,26 +188,27 @@ public class Arena {
 			
 			
 			//TODO add start to listening for player hits and such
-			GameTimer.timeElapsed = 0;
-			gameTimerId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new GameTimer(this), 20l, 20l);
-			canStart = false;
-			inProgress = true;
+			GameTimer.timeElapsed = 0;//sets time elapsed to 0 TODO make better
+			gameTimerId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new GameTimer(this), 20l, 20l);//Starts game timer
+			canStart = false; //sets joinability to false
+			inProgress = true;//sets in progress
+			pReady.clear();
 			return true;
 		}
 		return false;
 	}
 	
-	public void startCountdown()
+	public void startCountdown()//Starts countdown
 	{
 		if(players.size()>=minPlayers)
 		{
-			StartCountdown.timeUntilStart = 120;
+			StartCountdown.timeUntilStart = 120;//Initializes thread
 			startCountdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new StartCountdown(this), 20l, 20l);
 		}
 		else return;
 	}
 	
-	public void stopCountdown()
+	public void stopCountdown()//stops countdown
 	{
 		Bukkit.getScheduler().cancelTask(startCountdownId);
 	}
@@ -257,41 +284,49 @@ public class Arena {
 		//TODO make sure this is triggered after x time in POST_GAME gamestate
 		Bukkit.getScheduler().cancelTask(endCountdownId);
 		gs = GameState.RESETTING;
+		ArrayList<String> playas = players;//Creates list of players to roll back
+		for(String p : specs)
+		{
+			playas.add(p);
+		}
+		
 		for(Player p : Bukkit.getOnlinePlayers()) //kicks in game players from game
 		{
 			if(players.contains(p.getName()))
 			{
 				ArenaManager.getArenaManager().removePlayer(p);
 			}
+			if(specs.contains(p.getName()))
+			{
+				ArenaManager.getArenaManager().removePlayer(p);
+			}
 		}
-		ArrayList<String> playas = players;
-		for(String p : specs)
-		{
-			playas.add(p);
-		}
+		
+		
 		specs.clear();
-		players.clear();
+		players.clear();//Clears lists
 		if(c.getConfig().getBoolean("global.use-rollbacks"))
-			c.resetArena(tE, this, playas);
+			c.resetArena(tE, this, playas);//Rolls back arena
 		
 		//TODO do arena resetting - block rollback is done
 		
 		inProgress = false;
-		canStart = true;
+		canStart = true;//Resets booleans
+		gs = GameState.IN_LOBBY;
 	}
 	
 	public boolean canStart()
 	{
-		return canStart;
+		return canStart;//returns whether arena can start
 	}
 	
-	public void restartCountdown()
+	public void restartCountdown()//Restarts countdown
 	{
 		stopCountdown();
 		startCountdown();
 	}
 	
-	public boolean isInArena(Location loc) //3,4
+	public boolean isInArena(Location loc) //Returns whether or not a location is in the arena - location corners are 3 and 4
 	{
 		double maxX,maxY,maxZ,minX,minY,minZ;
 		maxX = Math.max(locations.get(3).getX(),locations.get(4).getX());

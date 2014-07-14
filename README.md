@@ -1,4 +1,4 @@
-MiniGames
+MiniGames-Core
 =========
 
 Overview

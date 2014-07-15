@@ -17,6 +17,7 @@ import com.wundero.MiniGames_Core.api.MiniGameAPI;
 import com.wundero.MiniGames_Core.arena.Arena;
 import com.wundero.MiniGames_Core.arena.ArenaManager;
 import com.wundero.MiniGames_Core.commands.CommandsManager;
+import com.wundero.MiniGames_Core.configuration.SettingsManager;
 
 /*
  * MiniGames-Core - A bukkit plugin
@@ -39,6 +40,9 @@ public class Core extends JavaPlugin {
 	public void onDisable()
 	{
 		this.saveConfig();//Saves config. TODO move to configuration
+		ArenaManager.getArenaManager().disable();
+		SettingsManager.getSettingsManager().disable();
+		
 		PluginDescriptionFile pdfFile = this.getDescription();//Logs that the plugin is being disabled.
 		this.logger.info(pdfFile.getName()+" has been disabled!");
 	}
@@ -81,6 +85,8 @@ public class Core extends JavaPlugin {
 		{
 			//TODO add logic for overrides - config to override defaults to TRUE, not false.
 		}
+		
+		SettingsManager.getSettingsManager().setup(this);
 	}
 	
 	

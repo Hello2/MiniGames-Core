@@ -1,19 +1,28 @@
 package com.wundero.MiniGames_Core.events;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 
 import com.wundero.MiniGames_Core.arena.Arena;
 
-public class ArenaEditEvent extends Event {
+public class PlayerHitEvent extends Event implements Listener {
+
 	private static final HandlerList handlers = new HandlerList();
 	private Arena arena;
+	private Player p;
 	private boolean isCancelled;
 	
-	public ArenaEditEvent(Arena a)
+	public PlayerHitEvent(Arena a, Player p)
 	{
-		arena = a;
-		isCancelled = false;
+		this.arena = a;
+		this.p = p;
+	}
+	
+	public Player getPlayer()
+	{
+		return p;
 	}
 	
 	public Arena getArena()
@@ -26,8 +35,7 @@ public class ArenaEditEvent extends Event {
 		return isCancelled;
 	}
 	
-	public void setCancelled(boolean b)
-	{
+	public void setCancelled(boolean b){
 		isCancelled = b;
 	}
 	

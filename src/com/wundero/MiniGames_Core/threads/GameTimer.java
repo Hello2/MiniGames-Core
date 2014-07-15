@@ -1,9 +1,8 @@
-package com.wundero.MiniGames_Core.Threads;
+package com.wundero.MiniGames_Core.threads;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.wundero.MiniGames_Core.Arena.Arena;
-//import com.wundero.MiniGames_Core.Utils.ChatUtils;
+import com.wundero.MiniGames_Core.arena.Arena;
 
 public class GameTimer extends BukkitRunnable {
 	public static int timeElapsed;
@@ -11,7 +10,7 @@ public class GameTimer extends BukkitRunnable {
 	
 	public GameTimer(Arena a)
 	{
-		this.setArena(a);
+		this.setArena(a);//Constructor
 	}
 	
 	public static int getTimeElapsed()

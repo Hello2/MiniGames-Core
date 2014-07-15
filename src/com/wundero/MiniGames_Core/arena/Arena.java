@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Arena;
+package com.wundero.MiniGames_Core.arena;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,13 +10,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.wundero.MiniGames_Core.Core;
-import com.wundero.MiniGames_Core.GameState;
-import com.wundero.MiniGames_Core.Type;
-import com.wundero.MiniGames_Core.Handlers.Team;
-import com.wundero.MiniGames_Core.Misc_Multiple.Randomizer;
-import com.wundero.MiniGames_Core.Threads.EndCountdown;
-import com.wundero.MiniGames_Core.Threads.GameTimer;
-import com.wundero.MiniGames_Core.Threads.StartCountdown;
+import com.wundero.MiniGames_Core.handlers.GameState;
+import com.wundero.MiniGames_Core.handlers.Team;
+import com.wundero.MiniGames_Core.handlers.Type;
+import com.wundero.MiniGames_Core.misc_multiple.Randomizer;
+import com.wundero.MiniGames_Core.threads.EndCountdown;
+import com.wundero.MiniGames_Core.threads.GameTimer;
+import com.wundero.MiniGames_Core.threads.StartCountdown;
 
 public class Arena {
 	

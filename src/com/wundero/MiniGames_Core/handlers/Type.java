@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core;
+package com.wundero.MiniGames_Core.handlers;
 
 //TODO Make better
 

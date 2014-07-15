@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Utils;
+package com.wundero.MiniGames_Core.utils;
 
 import static org.bukkit.ChatColor.*;
 
@@ -8,7 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wundero.MiniGames_Core.MessageLevel;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
 
 public class ChatUtils {
 	public static void broadcast(String msg, MessageLevel level)

@@ -16,10 +16,12 @@ Add more things here later that are more specific as to what is left in the plug
 Things remaining (that I can think of):
 
 Block protection - Making sure only in game players can edit the arena while it is in game, and arena cannot be edited in any state other than edit (or in game by players in the game)
+Reload & restart protection - save inventories, kick out players, save locations, etc.
 API methods - creating minigames and a bunch of other things
-Minigame creation - add methods to make new minigame types
+Minigame creation - add methods to make new minigame types - use enum?
 Configuration - add controllers and such to manage: config.yml, (in arenas folder) <arenaname>.yml, (in minigames folder) <minigamename>.yml
-Kit/Class selection - in lobby selection of classes (if minigame has this enabled)
+Kit/Class selection - in lobby selection of classes (if minigame has this enabled) - sign listener thing mcjiggy
 Configuration options - add options that make plugin more controllable
-Statistics tracker - tracks wins, losses, kills (if applicable), currency (if applicab;le, global or per minigame), and other things - per minigame (maybe ad per arena function)
+Statistics tracker - tracks wins, losses, kills (if applicable), currency (if applicab;le, global or per minigame), and other things - per minigame (maybe add per arena function)
 Format code to make it nicer, including adding comments
+plugin.yml - Add commands & permissions as they are made, add other info as necessary

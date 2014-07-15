@@ -1,10 +1,10 @@
-package com.wundero.MiniGames_Core.Listeners.Inventory;
+package com.wundero.MiniGames_Core.listeners.inventory;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import com.wundero.MiniGames_Core.Core;
-import com.wundero.MiniGames_Core.Listeners.MGListener;
+import com.wundero.MiniGames_Core.listeners.MGListener;
 
 public class InventoryClick extends MGListener {
 
@@ -15,7 +15,7 @@ public class InventoryClick extends MGListener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e)
 	{
-		//TODO make stuff happen, do after other things are done
+		
 	}
 	
 }

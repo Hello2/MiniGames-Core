@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Listeners;
+package com.wundero.MiniGames_Core.listeners;
 
 import org.bukkit.event.Listener;
 

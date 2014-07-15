@@ -1,10 +1,10 @@
-package com.wundero.MiniGames_Core.Events;
+package com.wundero.MiniGames_Core.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import com.wundero.MiniGames_Core.Arena.Arena;
+import com.wundero.MiniGames_Core.arena.Arena;
 
 public class PlayerSpectateArenaEvent extends Event {
 

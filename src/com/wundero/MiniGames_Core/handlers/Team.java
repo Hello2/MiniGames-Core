@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Handlers;
+package com.wundero.MiniGames_Core.handlers;
 
 import java.util.ArrayList;
 import java.util.HashMap;

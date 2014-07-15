@@ -50,9 +50,19 @@ public class ArenaManager {
 		return am;
 	}
 	
-	public void hook(Core core)//Hooks to core, unused method at the moment
+	public void setup()
 	{
-		c = core;
+		
+	}
+	
+	public void disable()
+	{
+		
+	}
+	
+	public void saveArenasToFile()
+	{
+		
 	}
 	
 	public Core getCore()//gets core

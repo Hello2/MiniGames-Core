@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Listeners.Player;
+package com.wundero.MiniGames_Core.listeners.player;
 
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -8,8 +8,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
 
 import com.wundero.MiniGames_Core.Core;
-import com.wundero.MiniGames_Core.Arena.ArenaManager;
-import com.wundero.MiniGames_Core.Listeners.MGListener;
+import com.wundero.MiniGames_Core.arena.ArenaManager;
+import com.wundero.MiniGames_Core.listeners.MGListener;
 
 public class SpectatorListener extends MGListener {
 	
@@ -19,10 +19,6 @@ public class SpectatorListener extends MGListener {
 		super(pl);
 	}
 
-
-  //TODO add more spectator event cancels.
-  
-  
 	@EventHandler
 	public void onPlayerHurtPlayer(EntityDamageByEntityEvent event) {
 	    Entity entityDamager = event.getDamager();

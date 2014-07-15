@@ -13,9 +13,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.wundero.MiniGames_Core.Arena.Arena;
-import com.wundero.MiniGames_Core.Arena.ArenaManager;
 import com.wundero.MiniGames_Core.api.MiniGameAPI;
+import com.wundero.MiniGames_Core.arena.Arena;
+import com.wundero.MiniGames_Core.arena.ArenaManager;
 import com.wundero.MiniGames_Core.commands.CommandsManager;
 
 /*

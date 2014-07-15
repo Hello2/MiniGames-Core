@@ -1,6 +1,7 @@
 package com.wundero.MiniGames_Core.configuration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,15 +32,19 @@ public class SettingsManager {
 	 */
 	
 	
-	
+	private File adir;
+	private File mdir;
 	
 	private SettingsManager() {}
+	
+	private ArrayList<String> files = new ArrayList<String>();
 	
 	private static SettingsManager sm;
 	
 	private File file;
 	
-	private ArrayList<Config> configs = new ArrayList<Config>();
+	private Core core;
+	
 	private ArrayList<FileConfiguration> confs = new ArrayList<FileConfiguration>(); //TODO only use one
 	
 	public static SettingsManager getSettingsManager()
@@ -51,17 +56,43 @@ public class SettingsManager {
 		return sm;
 	}
 	
-	
+	public void disable()
+	{
+		for(FileConfiguration conf : confs)
+		{
+			file = new File(conf.getCurrentPath(), conf.getName());
+			try {
+				conf.save(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		//TODO add more?
+	}
 	
 	public void setup(Core c)
 	{
+		this.core = c;
+		
 		//TODO add configs
 		
-		if(!c.getDataFolder().exists()) c.getDataFolder().mkdir();
+		if(!c.getDataFolder().exists()) c.getDataFolder().mkdir();//Makes directory
 		
-		for(Config conf : configs)
+		adir = new File(c.getDataFolder(), "arenas");
+		mdir = new File(c.getDataFolder(), "minigames");
+		
+		if(!adir.exists()) adir.mkdir();
+		if(!mdir.exists()) mdir.mkdir();//Makes additional arena&minigame directories
+		
+		for(String s : files)
 		{
-			file = new File(c.getDataFolder(), conf.getFileName());
+			
+			if(s.substring(s.indexOf('-')).equalsIgnoreCase("-arena.yml")) file = new File(adir, s);
+			else if(s.substring(s.indexOf('-')).equalsIgnoreCase("-minigame.yml")) file = new File(mdir, s);
+			else file = new File(c.getDataFolder(), s);
+			
+			
+			
 			if(!file.exists())
 			{
 				try
@@ -77,15 +108,100 @@ public class SettingsManager {
 			
 			confs.add(YamlConfiguration.loadConfiguration(file));
 		}
+		
 	}
 	
-	public Object getValue(String configName, String path)
+	public boolean createConfig(String configName)
+	{
+		if(configName.substring(configName.indexOf('-')).equalsIgnoreCase("-arena.yml"))
+		{
+			adir = new File(core.getDataFolder(), "arenas");
+			file = new File(adir, configName);
+			if(!file.exists())
+			{
+				try
+				{
+					file.createNewFile();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return false;
+				}
+			}
+			confs.add(YamlConfiguration.loadConfiguration(file));
+			return true;
+		}
+		else if(configName.substring(configName.indexOf('-')).equalsIgnoreCase("-minigame.yml"))
+		{
+			mdir = new File(core.getDataFolder(), "minigames");
+			file = new File(mdir, configName);
+			if(!file.exists())
+			{
+				try
+				{
+					file.createNewFile();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return false;
+				}
+			}
+			confs.add(YamlConfiguration.loadConfiguration(file));
+			return true;
+		}
+		else
+		{
+			file = new File(core.getDataFolder(), configName);
+			if(!file.exists())
+			{
+				try
+				{
+					file.createNewFile();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return false;
+				}
+			}
+			confs.add(YamlConfiguration.loadConfiguration(file));
+			return true;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getValue(String configName, String path)
 	{
 		for(FileConfiguration conf : confs)
 		{
 			if(configName==conf.getName())
 			{
-				return conf.get(path); //TODO add safety check
+				return (T) conf.get(path);
+			}
+		}
+		return null;
+	}
+	
+	private File getFile(String name)
+	{
+		for(FileConfiguration conf : confs)
+		{
+			if(conf.getName().equalsIgnoreCase(name))
+			{
+				if(name.substring(name.indexOf('-')).equalsIgnoreCase("-minigame.yml"))
+				{
+					return new File(mdir, name);
+				}
+				else if(name.substring(name.indexOf('-')).equalsIgnoreCase("-arena.yml"))
+				{
+					return new File(adir, name);
+				}
+				else
+				{
+					return new File(core.getDataFolder(), name);
+				}
 			}
 		}
 		return null;
@@ -97,9 +213,12 @@ public class SettingsManager {
 		{
 			if(configName==conf.getName())
 			{
+				conf.set(path, value);
+				if(getFile(configName)==null) return;
+				
 				try
 				{
-					conf.set(path, value);
+					conf.save(getFile(configName));
 				}
 				catch(Exception e)
 				{

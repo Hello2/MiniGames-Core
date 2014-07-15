@@ -2,10 +2,10 @@ package com.wundero.MiniGames_Core.commands;
 
 import org.bukkit.entity.Player;
 
-import com.wundero.MiniGames_Core.MessageLevel;
-import com.wundero.MiniGames_Core.Arena.Arena;
-import com.wundero.MiniGames_Core.Arena.ArenaManager;
-import com.wundero.MiniGames_Core.Utils.ChatUtils;
+import com.wundero.MiniGames_Core.arena.Arena;
+import com.wundero.MiniGames_Core.arena.ArenaManager;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class Join extends SubCommand {
 

@@ -10,7 +10,18 @@ public class Ready extends SubCommand {
 	
 	@Override
 	public void onCommand(Player p, String[] args) {
-		// TODO Auto-generated method stub
+		if(ArenaManager.getArenaManager().isSpectator(p)){
+			ArenaManager.getArenaManager().getArena(p).setReady(p, true);
+			
+		}else if(ArenaManager.getArenaManager().isPlayer(p)){
+			
+			ArenaManager.getArenaManager().getArena(p).setReady(p, false);
+		}
+		
+		else{
+			ChatUtils.sendMessage(p, "You must be in an arena to be ready!", MessageLevel.WARNING);
+			return;
+		}
 		
 	}
 

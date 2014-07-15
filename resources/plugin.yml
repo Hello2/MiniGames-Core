@@ -1,10 +1,11 @@
 name: MiniGames-Core
 main: me.wundero.MiniGames_Core.Core
 version: 1.0.0
-#Release.Beta.Dev - version number
+#Builds: release.beta.dev 
 
+author: Wundero
 authors: [hellostanleylee, Wundero]
-website: 
+website: https://github.com/Wundero/MiniGames-Core/wiki
 
 prefex: [MiniGames-Core]
 softdepend: [Vault, CoreProtect, WorldEdit]

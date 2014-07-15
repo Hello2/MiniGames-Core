@@ -39,7 +39,7 @@ public class CommandsManager implements CommandExecutor {
 		
 		Player p = (Player) sender;
 		
-		if(cmd.getName().equalsIgnoreCase("minigames")||cmd.getName().equalsIgnoreCase("mg")||cmd.getName().equalsIgnoreCase("minigame"))
+		if(label.equalsIgnoreCase("minigames")||label.equalsIgnoreCase("mg")||label.equalsIgnoreCase("minigame"))//TODO make sure this works
 		{
 			if(args.length==0)
 			{
@@ -47,17 +47,18 @@ public class CommandsManager implements CommandExecutor {
 				{
 					if(p.hasPermission(c.permission()))
 					{
-						ChatUtils.sendMessage(p, "/"+cmd.getName()+" <"+aliases(c)+"> - "+c.info(), MessageLevel.INFO); //TODO only show cmds user has perm for
+						ChatUtils.sendMessage(p, "/"+label+" <"+aliases(c)+"> - "+c.info(), MessageLevel.INFO); //TODO only show cmds user has perm for
 					}
-					return true;
+					
 				}
+				return true;
 			}
 			
 			SubCommand target = get(args[0]);
 			
 			
 			if(target==null) {
-				ChatUtils.sendMessage(p, "/"+cmd.getName()+" "+args[0]+" is not a valid command!", MessageLevel.WARNING);
+				ChatUtils.sendMessage(p, "/"+label+" "+args[0]+" is not a valid command!", MessageLevel.WARNING);
 				return true;
 			}
 			if(p.hasPermission(target.permission())) {

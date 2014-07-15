@@ -1,11 +1,11 @@
-package com.wundero.MiniGames_Core.Listeners.Player;
+package com.wundero.MiniGames_Core.listeners.player;
 
 import org.bukkit.event.EventHandler;
 
 import com.wundero.MiniGames_Core.Core;
-import com.wundero.MiniGames_Core.Events.PlayerJoinArenaEvent;
-import com.wundero.MiniGames_Core.Listeners.MGListener;
-import com.wundero.MiniGames_Core.Utils.InventoryUtils;
+import com.wundero.MiniGames_Core.events.PlayerJoinArenaEvent;
+import com.wundero.MiniGames_Core.listeners.MGListener;
+import com.wundero.MiniGames_Core.utils.InventoryUtils;
 
 public class PlayerJoinListener extends MGListener {
 	public PlayerJoinListener(Core pl)

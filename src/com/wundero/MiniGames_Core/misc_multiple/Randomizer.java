@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Misc_Multiple;
+package com.wundero.MiniGames_Core.misc_multiple;
 
 import java.util.Random;
 

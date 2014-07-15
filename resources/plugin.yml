@@ -1,12 +1,99 @@
-#DO NOT CHANGE THESE
 name: MiniGames-Core
 main: me.wundero.MiniGames_Core.Core
-version: 0.0.0
-#DO NOT CHANGE THESE
+version: 1.0.0
+#Release.Beta.Dev - version number
 
 authors: [hellostanleylee, Wundero]
 website: 
 
 prefex: [MiniGames-Core]
 softdepend: [Vault, CoreProtect, WorldEdit]
-#TODO add commands, permissions and authors list
+
+commands:
+  minigame:
+    description: The default command for MiniGames-Core. Contains all other commands.
+    aliases: [mg, minigames]
+    permission: minigames-core.use
+
+permissions:
+  minigames-core.*:
+    default: op
+    children:
+      minigames-core.use.*
+      minigames-core.setup.*
+      minigames-core.admin.*
+
+  minigames-core.use:
+    default: true
+    children:
+      minigames-core.use.join
+      minigames-core.use.leave
+      minigames-core.use.spectate
+      minigames-core.use.info
+      minigames-core.use.players
+      minigames-core.use.ready
+
+  minigames-core.use.*:
+    default: true
+    children:
+      minigames-core.use
+
+  minigames-core.use.join:
+    default: true
+  minigames-core.use.leave:
+    default: true
+  minigames-core.use.spectate:
+    default: true
+  minigames-core.use.info:
+    default: true
+  minigames-core.use.players:
+    default: true
+  minigames-core.use.ready:
+    default: true
+
+  minigames-core.admin:
+    default: op
+    children:
+      minigames-core.use.*
+      minigames-core.setup.*
+      minigames-core.admin.reload
+      minigames-core.admin.start
+      minigames-core.admin.stop
+
+  minigames-core.admin.*:
+    default: op
+    children:
+      minigames-core.admin
+
+  minigames-core.admin.reload:
+    default: op
+  minigames-core.admin.start:
+    default: op
+  minigames-core.admin.stop:
+    default: op
+
+  minigames-core.setup:
+    default: op
+    children:
+      minigames-core.use.*
+      minigames-core.setup.create
+      minigames-core.setup.delete
+      minigames-core.setup.edit
+      minigames-core.setup.highlight
+      minigames-core.setup.select
+
+  minigames-core.setup.*:
+    default: op
+    children:
+      minigames-core.setup.*
+
+  minigames-core.setup.create:
+    default: op
+  minigames-core.setup.delete:
+    default: op
+  minigames-core.setup.edit:
+    default: op
+  minigames-core.setup.highlight:
+    default: op
+  minigames-core.setup.select:
+    default: op

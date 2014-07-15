@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Arena;
+package com.wundero.MiniGames_Core.arena;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,15 +9,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.wundero.MiniGames_Core.Type;
 import com.wundero.MiniGames_Core.Core;
-import com.wundero.MiniGames_Core.GameState;
-import com.wundero.MiniGames_Core.MessageLevel;
-import com.wundero.MiniGames_Core.Events.ArenaCreateEvent;
-import com.wundero.MiniGames_Core.Events.PlayerJoinArenaEvent;
-import com.wundero.MiniGames_Core.Events.PlayerLeaveArenaEvent;
-import com.wundero.MiniGames_Core.Events.PlayerSpectateArenaEvent;
-import com.wundero.MiniGames_Core.Utils.ChatUtils;
+import com.wundero.MiniGames_Core.events.ArenaCreateEvent;
+import com.wundero.MiniGames_Core.events.PlayerJoinArenaEvent;
+import com.wundero.MiniGames_Core.events.PlayerLeaveArenaEvent;
+import com.wundero.MiniGames_Core.events.PlayerSpectateArenaEvent;
+import com.wundero.MiniGames_Core.handlers.GameState;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.handlers.Type;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class ArenaManager {
 	

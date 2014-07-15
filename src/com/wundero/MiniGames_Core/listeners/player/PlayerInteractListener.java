@@ -1,11 +1,11 @@
-package com.wundero.MiniGames_Core.Listeners.Player;
+package com.wundero.MiniGames_Core.listeners.player;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.wundero.MiniGames_Core.Core;
-import com.wundero.MiniGames_Core.Listeners.MGListener;
+import com.wundero.MiniGames_Core.listeners.MGListener;
 
 public class PlayerInteractListener extends MGListener {
 

@@ -6,16 +6,16 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wundero.MiniGames_Core.Core;
-import com.wundero.MiniGames_Core.Arena.Arena;
-import com.wundero.MiniGames_Core.Arena.ArenaManager;
-import com.wundero.MiniGames_Core.Handlers.Team;
+import com.wundero.MiniGames_Core.arena.Arena;
+import com.wundero.MiniGames_Core.arena.ArenaManager;
 import com.wundero.MiniGames_Core.commands.CommandsManager;
 import com.wundero.MiniGames_Core.commands.SubCommand;
+import com.wundero.MiniGames_Core.handlers.Team;
 
 public class MiniGameAPI { //TODO more documentation
 	
 	private static MiniGameAPI mga;
-	private static Core core;
+	private static Core core;//Static instances of objects
 	
 	private MiniGameAPI() {} //TODO remove instance requirements of Arena or other plugin classes
 	
@@ -25,7 +25,7 @@ public class MiniGameAPI { //TODO more documentation
 	 * @param c
 	 * @return
 	 */
-	public static MiniGameAPI get(Core c)
+	public static MiniGameAPI get(Core c)//Gets instance of mga and stores core
 	{
 		if(mga==null)
 		{
@@ -40,7 +40,7 @@ public class MiniGameAPI { //TODO more documentation
 	 * @return
 	 */
 	
-	public String getVersion() 
+	public String getVersion() //Gets version
 	{
 		return "0.0.0"; //TODO make better
 	}
@@ -50,22 +50,17 @@ public class MiniGameAPI { //TODO more documentation
 	 * Gets whether or not the API is enabled in the config
 	 * @return
 	 */
-	public boolean isEnabled()
+	public boolean isEnabled()//Gets whether or not it is enabled
 	{
 		return core.getConfig().getBoolean("global.enable-api");
 	}
 	
 	/**
-	 * Creates an arena with the params
-	 * @param id
-	 * @param locations
-	 * @param miscLocations
-	 * @param arenaType
-	 * @param maxPlayers
-	 * @param minPlayers
+	 * Creates an arena. Will put the player into stup mode.
+	 * @param creator
 	 * @return
 	 */
-	public Arena createArena(Player creator)
+	public Arena createArena(Player creator)//Creates an arena VIA a player
 	{
 		return ArenaManager.getArenaManager().createArena(creator); //TODO convert to conversational creation
 	}
@@ -75,15 +70,18 @@ public class MiniGameAPI { //TODO more documentation
 	 * @param player
 	 * @param arena
 	 */
-	public void joinArena(Player player, Arena arena)
+	@Deprecated
+	public void joinArena(Player player, Arena arena)//Adds a player to an arena, deprecated because objects are fun
 	{
 		ArenaManager.getArenaManager().addPlayer(player, arena.getID());
 	}
 	
 	/**
-	 * 
+	 * Adds the @param player to the arena with @param arenaID
+	 * @param arenaID
+	 * @param player
 	 */
-	public void joinArena(Player player, String arenaID)
+	public void joinArena(Player player, String arenaID)//adds player to an arena
 	{
 		ArenaManager.getArenaManager().addPlayer(player,arenaID);
 	}
@@ -92,22 +90,51 @@ public class MiniGameAPI { //TODO more documentation
 	 * Removes @param player from their current arena.
 	 * @param player
 	 */
-	public void leaveArena(Player player)
+	public void leaveArena(Player player)//leaves an arena
 	{
 		ArenaManager.getArenaManager().removePlayer(player);
 	}
 	
-	public void spectateArena(Player p, String id)
+	/**
+	 * @param player spectates arena of id @param arenaID
+	 * @param player
+	 * @param arenaID
+	 */
+	public void spectateArena(Player player, String arenaID)//Adds a player to an arena as a spectator
 	{
-		ArenaManager.getArenaManager().addSpectator(p, id);
+		ArenaManager.getArenaManager().addSpectator(player, arenaID);
 	}
 	
+	/**
+	 * Returns all the arenas
+	 * @return
+	 */
+	@Deprecated
 	public ArrayList<Arena> getArenas()
 	{
 		return ArenaManager.getArenaManager().getArenas();
 	}
 	
-	public ArrayList<Team> getAllTeams()
+	/**
+	 * Returns all arena ids
+	 * @return
+	 */
+	public ArrayList<String> getArenaIDs()
+	{
+		ArrayList<Arena> a = ArenaManager.getArenaManager().getArenas();
+		ArrayList<String> ret = new ArrayList<String>();
+		for(Arena ar : a){
+			ret.add(ar.getID());
+		}
+		return ret;
+	}
+	
+	/**
+	 * Returns all the teams
+	 * @return
+	 */
+	@Deprecated
+	public ArrayList<Team> getAllTeams()//TODO make replacement
 	{
 		return Team.getAllTeams();
 	}
@@ -121,6 +148,7 @@ public class MiniGameAPI { //TODO more documentation
 	 * Deletes arena @param arena
 	 * @param a
 	 */
+	@Deprecated
 	public void deleteArena(Arena arena)
 	{
 		ArenaManager.getArenaManager().deleteArena(arena);
@@ -139,6 +167,7 @@ public class MiniGameAPI { //TODO more documentation
 	 * Starts arena @param arena
 	 * @param arena
 	 */
+	@Deprecated
 	public void startArena(Arena arena)
 	{
 		arena.startCountdown();
@@ -158,6 +187,7 @@ public class MiniGameAPI { //TODO more documentation
 	 * Stops arena @param arena
 	 * @param arena
 	 */
+	@Deprecated
 	public void stopArena(Arena arena)
 	{
 		arena.endArena();
@@ -178,11 +208,17 @@ public class MiniGameAPI { //TODO more documentation
 	 * As well as that, make sure to add the methods SubCommand has in it.
 	 * @param cmd
 	 */
-	public void addSubCommand(SubCommand cmd)
+	public void addSubCommand(SubCommand cmd)//TODO make better without requiring objects
 	{
 		CommandsManager.getCommandsManager().addCommand(cmd);
 	}
 	
+	/**
+	 * Checks to see if @param loc is within the arena @param arenaID's boundaries
+	 * @param loc
+	 * @param arenaID
+	 * @return
+	 */
 	public boolean isInArena(Location loc, String arenaID)
 	{
 		return ArenaManager.getArenaManager().getArena(arenaID).isInArena(loc);

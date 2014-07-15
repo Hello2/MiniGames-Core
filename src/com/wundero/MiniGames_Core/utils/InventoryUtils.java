@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Utils;
+package com.wundero.MiniGames_Core.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

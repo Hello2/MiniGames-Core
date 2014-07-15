@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Events;
+package com.wundero.MiniGames_Core.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -14,7 +14,7 @@ public class ArenaBlockChangeEvent extends Event implements Listener { //TODO ca
 	public ArenaBlockChangeEvent(String ex)//TODO get block stuffs
 	{
 		message = ex;
-		Core.registerListener(this);
+		Core.registerStaticListener(this);
 	}
 	
 	public String getMessage()

@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Listeners.Block;
+package com.wundero.MiniGames_Core.listeners.block;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +26,13 @@ import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 
-public class BlockChangeListener implements Listener { //TODO register
+import com.wundero.MiniGames_Core.Core;
+import com.wundero.MiniGames_Core.listeners.MGListener;
+
+public class BlockChangeListener extends MGListener { //TODO register
+	public BlockChangeListener(Core pl) {
+		super(pl);
+	}
 	//TODO add more stuff
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e)

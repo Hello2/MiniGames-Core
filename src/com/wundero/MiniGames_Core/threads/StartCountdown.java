@@ -1,10 +1,10 @@
-package com.wundero.MiniGames_Core.Threads;
+package com.wundero.MiniGames_Core.threads;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.wundero.MiniGames_Core.MessageLevel;
-import com.wundero.MiniGames_Core.Arena.Arena;
-import com.wundero.MiniGames_Core.Utils.ChatUtils;
+import com.wundero.MiniGames_Core.arena.Arena;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class StartCountdown extends BukkitRunnable {
 	public static int timeUntilStart;

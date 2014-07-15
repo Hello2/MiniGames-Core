@@ -1,4 +1,4 @@
-package com.wundero.MiniGames_Core.Handlers;
+package com.wundero.MiniGames_Core.handlers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 
-import com.wundero.MiniGames_Core.MessageLevel;
-import com.wundero.MiniGames_Core.Utils.ChatUtils;
-import com.wundero.MiniGames_Core.Utils.InventoryUtils;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
+import com.wundero.MiniGames_Core.utils.InventoryUtils;
 
 @SuppressWarnings("unused")
 public class Kit {

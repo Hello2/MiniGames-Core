@@ -7,7 +7,7 @@ author: Wundero
 authors: [hellostanleylee, Wundero]
 website: https://github.com/Wundero/MiniGames-Core/wiki
 
-prefex: [MiniGames-Core]
+prefex: MiniGames-Core
 softdepend: [Vault, CoreProtect, WorldEdit]
 
 commands:

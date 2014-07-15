@@ -11,11 +11,13 @@ public class Ready extends SubCommand {
 	@Override
 	public void onCommand(Player p, String[] args) {
 		if(ArenaManager.getArenaManager().isSpectator(p)){
-			ArenaManager.getArenaManager().getArena(p).setReady(p, true);
+			ChatUtils.sendMessage(p, "You are spectating the game, you cannot ready up!", MessageLevel.WARNING)
+			return;
 			
 		}else if(ArenaManager.getArenaManager().isPlayer(p)){
 			
 			ArenaManager.getArenaManager().getArena(p).setReady(p, false);
+			return;
 		}
 		
 		else{

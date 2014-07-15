@@ -8,8 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wundero.MiniGames_Core.MessageLevel;
-import com.wundero.MiniGames_Core.Utils.ChatUtils;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class CommandsManager implements CommandExecutor {
 

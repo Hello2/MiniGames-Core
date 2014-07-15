@@ -43,11 +43,12 @@ public class CommandsManager implements CommandExecutor {
 		{
 			if(args.length==0)
 			{
+				ChatUtils.sendMessage(p, "Commands:", MessageLevel.INFO);
 				for(SubCommand c : commands)
 				{
 					if(p.hasPermission(c.permission()))
 					{
-						ChatUtils.sendMessage(p, "/"+label+" <"+aliases(c)+"> - "+c.info(), MessageLevel.INFO); //TODO only show cmds user has perm for
+						ChatUtils.sendMessage(p, "/"+label+" <"+aliases(c)+"> - "+c.info(), MessageLevel.INFO);
 					}
 					
 				}
@@ -84,7 +85,20 @@ public class CommandsManager implements CommandExecutor {
 	
 	public void setup()
 	{
-		//TODO add commands to command list
+		commands.add(new Create());
+		commands.add(new Delete());
+		commands.add(new Edit());
+		commands.add(new Highlight());
+		commands.add(new Info());
+		commands.add(new Join());
+		commands.add(new Leave());
+		commands.add(new Players());
+		commands.add(new Ready());
+		commands.add(new Reload());
+		commands.add(new Select());
+		commands.add(new Spectate());
+		commands.add(new Start());
+		commands.add(new Stop());
 	}
 	
 	private SubCommand get(String name)

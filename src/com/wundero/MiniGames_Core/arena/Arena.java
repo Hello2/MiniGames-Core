@@ -100,9 +100,7 @@ public class Arena {
 	
 	public boolean isReady(Player p)
 	{
-		if(pReady.get(p.getName()))
-			return true;
-		else return false;
+		return pReady.get(p.getName());
 	}
 	
 	public void setReady(Player p, boolean b)

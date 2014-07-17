@@ -27,6 +27,18 @@ public class ChatUtils {
 		return prefix;
 	}
 	
+	private static String prefix(String name)
+	{
+		String prefix = BLACK + "[" + GREEN + name + BLACK + "]" + WHITE + " ";
+		return prefix;
+	}
+	
+	private static String prefix(Type type)
+	{
+		String prefix = BLACK + "[" + GREEN + type.getGame() + BLACK + "]" + WHITE + " ";
+		return prefix;
+	}
+	
 	public static void sendMessage(Player p, String msg, MessageLevel level)
 	{
 		p.sendMessage(prefix()+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
@@ -47,4 +59,12 @@ public class ChatUtils {
 			}
 		}
 	}
+	
+	public static void sendMessageFromAPI(Plugin plugin, Player player, String message, MessageLevel level)
+	{
+		String pre = prefix(plugin.getName());
+		player.sendMessage(pre+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
+	}
+	
+	//TODO add methods for Type and such
 }

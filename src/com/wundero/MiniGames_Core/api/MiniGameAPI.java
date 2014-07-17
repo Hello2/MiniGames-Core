@@ -16,6 +16,13 @@ public class MiniGameAPI { //TODO more documentation
 	
 	private static MiniGameAPI mga;
 	private static Core core;//Static instances of objects
+	private ArrayList<Plugin> plugins = new ArrayList<Plugin>();
+	
+	public void registerPlugin(Plugin p)
+	{
+		if(p!=null)
+			plugins.add(p);
+	}
 	
 	private MiniGameAPI() {} //TODO remove instance requirements of Arena or other plugin classes
 	
@@ -206,9 +213,10 @@ public class MiniGameAPI { //TODO more documentation
 	 * Add a command to the main plugin (For example, /mg funstuff)
 	 * MAKE SURE TO EXTEND THE SubCommand ABSTRACT CLASS, OR ELSE THIS WILL NOT WORK
 	 * As well as that, make sure to add the methods SubCommand has in it.
+	 * Do this in your onEnable method to make sure it is always registered. 
 	 * @param cmd
 	 */
-	public void addSubCommand(SubCommand cmd)//TODO make better without requiring objects
+	public void addSubCommand(SubCommand cmd)//TODO save to file to only remember once, optional
 	{
 		CommandsManager.getCommandsManager().addCommand(cmd);
 	}
@@ -224,6 +232,24 @@ public class MiniGameAPI { //TODO more documentation
 		return ArenaManager.getArenaManager().getArena(arenaID).isInArena(loc);
 	}
 	
+	/**
+	 * 
+	 */
+	public boolean isReady(Player p)
+	{
+		return ArenaManager.getArenaManager().getArena(p).isReady(p);
+	}
 	
+	//TODO add configuration methods for other plugins to create minigames
+	
+	// public void addCustomEvent(Event e)
+	// {
+	// 	//TODO make this usefull
+	// }
+	
+	public void sendMessage(Plugin p, Player player, String message, MessageLevel level)
+	{
+		//TODO use plugin names for this to make it cooler
+	}
 	
 }

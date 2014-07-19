@@ -30,7 +30,7 @@ public class CommandsManager implements CommandExecutor {
 	
 	public void addCommand(SubCommand cmd)
 	{
-		if(!(commands.contains(cmd))
+		if(!(commands.contains(cmd)))
 			commands.add(cmd);
 	}
 	

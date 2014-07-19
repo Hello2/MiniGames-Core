@@ -1,14 +1,18 @@
 package com.wundero.MiniGames_Core.utils;
 
-import static org.bukkit.ChatColor.*;
+import static org.bukkit.ChatColor.BLACK;
+import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.WHITE;
 
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.handlers.Type;
 
 public class ChatUtils {
 	public static void broadcast(String msg, MessageLevel level)
@@ -16,6 +20,22 @@ public class ChatUtils {
 		for(Player p : Bukkit.getOnlinePlayers())
 		{
 			p.sendMessage(prefix()+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
+		}
+	}
+	
+	public static void broadcast(Plugin pl, String msg, MessageLevel level)
+	{
+		for(Player p : Bukkit.getOnlinePlayers())
+		{
+			p.sendMessage(prefix(p.getName())+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
+		}
+	}
+	
+	public static void broadcast(Type t, String msg, MessageLevel level)
+	{
+		for(Player p : Bukkit.getOnlinePlayers())
+		{
+			p.sendMessage(prefix(t)+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
 		}
 	}
 	
@@ -63,7 +83,34 @@ public class ChatUtils {
 	public static void sendMessageFromAPI(Plugin plugin, Player player, String message, MessageLevel level)
 	{
 		String pre = prefix(plugin.getName());
-		player.sendMessage(pre+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+msg);
+		player.sendMessage(pre+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+message);
+	}
+	
+	public static void sendMessageFromAPI(Plugin plugin, ArrayList<String> players, String message, MessageLevel level)
+	{
+		String pre = prefix(plugin.getName());
+		for(Player p : Bukkit.getServer().getOnlinePlayers())
+		{
+			if(players.contains(p.getName()))
+			{
+				p.sendMessage(pre+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+message);
+			}
+		}
+	}
+	
+	public static void sendMessageFromGame(Type t, Player p, String m, MessageLevel l)
+	{
+		p.sendMessage(prefix(t)+l.getPrefix()==null?"":l.getPrefix()+l.getColor()+m);
+	}
+	
+	public static void sendMessageFromGame(Type t, ArrayList<String> players, String m, MessageLevel l){
+		for(Player p : Bukkit.getServer().getOnlinePlayers())
+		{
+			if(players.contains(p.getName()))
+			{
+				p.sendMessage(prefix(t)+l.getPrefix()==null? "" : l.getPrefix()+l.getColor()+m);
+			}
+		}
 	}
 	
 	//TODO add methods for Type and such

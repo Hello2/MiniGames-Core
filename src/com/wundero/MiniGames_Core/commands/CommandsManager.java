@@ -64,6 +64,9 @@ public class CommandsManager implements CommandExecutor {
 				return true;
 			}
 			if(p.hasPermission(target.permission())) {
+				
+				//Removes argument 1 (the subcommand)
+				
 				ArrayList<String> a = new ArrayList<String>();
 				a.addAll(Arrays.asList(args));
 				a.remove(0);

@@ -209,6 +209,7 @@ public class ArenaManager {
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(p, a);
 		
 		Bukkit.getServer().getPluginManager().callEvent(event);
+		if(!a.getAllPlayers().contains(p.getName())) a.getAllPlayers().add(p.getName());
 		
 		if(!event.isCancelled())
 		{
@@ -218,7 +219,14 @@ public class ArenaManager {
 			if(!a.getSpectators().contains(p.getName()))
 			{
 				a.getReady().remove(p.getName());
+				a.getPlayers().remove(p.getName());
 			}
+			else
+			{
+				a.getSpectators().remove(p.getName());
+			}
+			
+			
 			
 			if(a.getMinPlayers()>a.getPlayers().size()&&a.getState().equals(GameState.IN_LOBBY)&&!(a.getSpectators().contains(p.getName())))
 			{
@@ -242,6 +250,24 @@ public class ArenaManager {
 	public boolean isSpectator(Player p, String id)
 	{
 		if(getArena(id).getSpectators().contains(p.getName()))
+		{
+			return true;
+		}
+		else return false;
+	}
+	
+	public boolean isPlayer(Player p)
+	{
+		for(Arena a : arenas)
+		{
+			if(a.getPlayers().contains(p.getName())) return true;
+		}
+		return false;
+	}
+	
+	public boolean isPlayer(Player p, String id)
+	{
+		if(getArena(id).getPlayers().contains(p.getName()))
 		{
 			return true;
 		}

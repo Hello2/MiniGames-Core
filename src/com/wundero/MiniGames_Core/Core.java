@@ -49,7 +49,11 @@ public class Core extends JavaPlugin {
 	
 	public void reload()
 	{
-		//TODO kick all players out and reload config, do other stuff
+		for(Arena a : ArenaManager.getArenaManager().getArenas())
+		{
+			a.endArena(true);
+		}
+		
 	}
 	
 	@Override

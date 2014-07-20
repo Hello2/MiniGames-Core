@@ -2,6 +2,8 @@ package com.wundero.MiniGames_Core.commands;
 
 import org.bukkit.entity.Player;
 
+import com.wundero.MiniGames_Core.Core;
+
 public class Reload extends SubCommand {
 	
 	private String name = "reload";
@@ -11,7 +13,8 @@ public class Reload extends SubCommand {
 
 	@Override
 	public void onCommand(Player p, String[] args) {
-		// TODO Auto-generated method stub
+		
+		Core.getCore().reload();
 		
 	}
 

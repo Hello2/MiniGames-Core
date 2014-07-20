@@ -2,6 +2,10 @@ package com.wundero.MiniGames_Core.commands;
 
 import org.bukkit.entity.Player;
 
+import com.wundero.MiniGames_Core.arena.ArenaManager;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
+
 public class Ready extends SubCommand {
 	private String name = "ready";
 	private String info = "Ready up for a game";
@@ -9,22 +13,21 @@ public class Ready extends SubCommand {
 	private String[] aliases = {"r"};
 	
 	@Override
-	public void onCommand(Player p, String[] args) {
+	public void onCommand(Player p, String[] args) {		
 		if(ArenaManager.getArenaManager().isSpectator(p)){
-			ChatUtils.sendMessage(p, "You are spectating the game, you cannot ready up!", MessageLevel.WARNING)
+			ChatUtils.sendMessage(p, "You are spectating the game, you cannot ready up!", MessageLevel.WARNING);
 			return;
-			
+
 		}else if(ArenaManager.getArenaManager().isPlayer(p)){
-			
+
 			ArenaManager.getArenaManager().getArena(p).setReady(p, false);
 			return;
 		}
-		
+
 		else{
 			ChatUtils.sendMessage(p, "You must be in an arena to be ready!", MessageLevel.WARNING);
 			return;
 		}
-		
 	}
 
 	@Override

@@ -32,6 +32,7 @@ public class Arena {
 	private ArrayList<String> players = new ArrayList<String>();
 	private HashMap<String, Boolean> pReady = new HashMap<String, Boolean>();
 	private ArrayList<String> specs = new ArrayList<String>();
+	private ArrayList<String> playas = new ArrayList<String>();
 	private int maxPlayers;
 	private boolean inProgress;
 	private GameState gs;
@@ -136,6 +137,11 @@ public class Arena {
 	public ArrayList<String> getSpectators()//gets the spectators
 	{
 		return specs;
+	}
+	
+	public ArrayList<String> getAllPlayers()
+	{
+		return playas;
 	}
 	
 	public boolean isInProgress()//gets if the game is in prograss
@@ -277,6 +283,76 @@ public class Arena {
 		endCountdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new EndCountdown(this, 60), 20l, 20l);
 		//TODO add more stuff to make ending game better
 	}
+	
+	public void endArena(boolean reload)
+	{
+		gs = GameState.POST_GAME;
+		tE = GameTimer.getTimeElapsed()+110; //TODO add check for pregame lobby timer, through configs
+		Bukkit.getScheduler().cancelTask(gameTimerId);
+		if(locations.get(8)!=null)//Checks for death location, and tps all game players there. If not, tps all players to spec loc
+		{
+			for(String s : players)
+			{
+				for(Player p : Bukkit.getServer().getOnlinePlayers())
+				{
+					if(p.getName()==s)
+					{
+						p.teleport(locations.get(8));
+					}
+				}
+			}
+		}
+		else
+		{
+			for(String s : players)
+			{
+				for(Player p : Bukkit.getServer().getOnlinePlayers())
+				{
+					if(p.getName()==s)
+					{
+						p.teleport(locations.get(9));
+					}
+				}
+			}
+		}
+		resetArena(true);
+	}
+	
+	public void resetArena(boolean reload)
+	{
+		gs = GameState.RESETTING;
+		playas = players;//Creates list of players to roll back
+		for(String p : specs)
+		{
+			if(!playas.contains(p)) playas.add(p);
+			
+		}
+		
+		for(Player p : Bukkit.getOnlinePlayers()) //kicks in game players from game
+		{
+			if(players.contains(p.getName()))
+			{
+				ArenaManager.getArenaManager().removePlayer(p);
+			}
+			if(specs.contains(p.getName()))
+			{
+				ArenaManager.getArenaManager().removePlayer(p);
+			}
+		}
+		
+		
+		specs.clear();
+		players.clear();//Clears lists
+		if(c.getConfig().getBoolean("global.use-rollbacks"))
+			c.resetArena(tE, this, playas);//Rolls back arena
+		
+		//TODO do arena resetting - block rollback is done
+		
+		inProgress = false;
+		canStart = true;//Resets booleans
+		gs = GameState.IN_LOBBY;
+	}
+	
 	public void resetArena()
 	{
 		//TODO make sure this is triggered after x time in POST_GAME gamestate

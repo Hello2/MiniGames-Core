@@ -1,1 +1,71 @@
 Methods:
+Arena:
+ - getLocations()
+ - getMiscLocsations()
+ - getID()
+ - isReady(Player p)
+ - setReady(Player p, boolean b)
+ - getMinReady()
+ - getReady()
+ - getType()
+ - getTeams()
+ - getPlayers()
+ - getSpectators()
+ - getAllPlayers()
+ - isInProgress()
+ - startArena() - Try not to use this, skips the start countdown
+ - startCountdown() - will start game at the end of the countdown, use this to start the game
+ - stopCountdown()
+ - getMaxPlayers()
+ - getMinPlayers()
+ - getState()
+ - edit()
+ - done()
+ - disable()
+ - endArena() - Methods like this should be automatic, don't call
+ - endArena(boolean force) - forces the end of the game, no timer or anything - boolean value does not matter
+ - resetArena()
+ - resetArena(boolean force) - forces a reset, boolean value doesn't matter
+ - canStart()
+ - restartCountdown()
+ - isInArena(Location loc)
+ArenaManager:
+ - getArenaManager() - static method, to call in a class, use ArenaManager.getArenaManager().method() - Since other methods are instance reliant, this is useful because it maintains one instance
+ - setup() - will create all arenas from the config file and make sure they are set up properly
+ - disable()
+ - saveArenasToFile()
+ - getCore()
+ - getArena(String id)
+ - getArena(Player p)
+ - addPlayer(Player p, String id)
+ - setReady(Player p, boolean b, String id)
+ - teleport(Player p, Location l)
+ - addSpectator(Player p, String id)
+ - getMessageForState(GameState s)
+ - removePlayer(Player p)
+ - isSpectator(Player p, String id)
+ - isPlayer(Player p)
+ - isPlayer(Player p, String id)
+ - isSpectator(Player p)
+ - getArenas()
+ - createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, Type r, int m, int f, int mr) - Don't use this ;D
+ - createArena(Player p) - Use this, will do conversation
+ - isInGame(Player p)
+ - serializeLoc(Location l)
+ - deserializeLoc(String s)
+ - deleteArena(Arena arena)
+ - editArena(Arena arena)
+CommandsManager:
+ - getCommandsManager() - returns instance like the getArenaManager method
+ - addCommand(SubCommand cmd)
+ - setup()
+ - get(String name)
+ - aliasess(SubCommand c)
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 

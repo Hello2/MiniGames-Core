@@ -8,6 +8,7 @@ import net.coreprotect.CoreProtectAPI;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -24,7 +25,13 @@ import com.wundero.MiniGames_Core.configuration.SettingsManager;
  * TODO add licensing
  */
 
+
+/**
+ * @authors Wundero, Hellostanleylee
+ */
 public class Core extends JavaPlugin {
+	
+	public ConversationFactory factory;
 	
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public final static Logger loggerTwo = Logger.getLogger("Minecraft"); //Two loggers, static one that can be retrieved by other classes
@@ -42,12 +49,19 @@ public class Core extends JavaPlugin {
 		this.saveConfig();//Saves config. TODO move to configuration
 		ArenaManager.getArenaManager().disable();
 		SettingsManager.getSettingsManager().disable();
+		cm.disable();
+		
+		factory = null;
+		mga = null;
+		conf = null;
+		cm = null;//TODO more garbage cleanup
 		
 		PluginDescriptionFile pdfFile = this.getDescription();//Logs that the plugin is being disabled.
 		this.logger.info(pdfFile.getName()+" has been disabled!");
+		pdfFile = null;
 	}
 	
-	public void reload()
+	public void reload()//TODO more stuff, NOTE this is not required at the moment due to diable() methods in the managers
 	{
 		for(Arena a : ArenaManager.getArenaManager().getArenas())
 		{
@@ -80,6 +94,8 @@ public class Core extends JavaPlugin {
 		getCommand("minigame").setExecutor(cm); //TODO make sure this works with aliases like /mg and /minigames
 		//^This sets the command executor as the commands manager
 		
+		factory = new ConversationFactory(this);
+		
 		//This part will check for other plugins that handle minigames and ask for an override choice - this or those plugins. This plugins other parts will function normally.
 		if(getServer().getPluginManager().getPlugin("MobArena")!=null)
 		{
@@ -93,7 +109,10 @@ public class Core extends JavaPlugin {
 		SettingsManager.getSettingsManager().setup(this);
 	}
 	
-	
+	public ConversationFactory getFactory()
+	{
+		return factory;
+	}
 	
 	public static void registerStaticListener(Listener l)//Registers a listener with static reference
 	{

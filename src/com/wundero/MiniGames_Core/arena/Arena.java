@@ -8,11 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.handlers.GameState;
-import com.wundero.MiniGames_Core.handlers.Team;
-import com.wundero.MiniGames_Core.handlers.Type;
+import com.wundero.MiniGames_Core.handlers.TeamG;
+import com.wundero.MiniGames_Core.handlers.GameType;
 import com.wundero.MiniGames_Core.misc_multiple.Randomizer;
 import com.wundero.MiniGames_Core.threads.EndCountdown;
 import com.wundero.MiniGames_Core.threads.GameTimer;
@@ -36,9 +38,9 @@ public class Arena {
 	private int maxPlayers;
 	private boolean inProgress;
 	private GameState gs;
-	private Type type;
+	private GameType type;
 	private boolean canStart;
-	private Team[] teams;
+	private TeamG[] teams;
 	private Core c;
 	private int tE;
 	private int minPlayers;
@@ -66,9 +68,10 @@ public class Arena {
 	
 	//TODO Make better, add more info
 	
+	private Scoreboard sb;
+	private Objective o;
 	
-	
-	public Arena(ArrayList<Location> locations, ArrayList<Location> misclocs, String ID, Type type, int maxp, int minp, int minr, Core core) //TODO add spawn areas for team stuffs, use 0.5 for x and z to center player
+	public Arena(ArrayList<Location> locations, ArrayList<Location> misclocs, String ID, GameType type, int maxp, int minp, int minr, Core core) //TODO add spawn areas for team stuffs, use 0.5 for x and z to center player
 	{
 		//Sets variables
 		id = ID;
@@ -81,6 +84,47 @@ public class Arena {
 		this.locations = locations;
 		c = core;
 		miscLocs = misclocs;
+		sb = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
+		o = sb.registerNewObjective("Team Scores", "dummy");
+		
+	}
+	
+	public void cleanup()
+	{
+		
+		if(Bukkit.getScheduler().isCurrentlyRunning(startCountdownId))
+		{
+			stopCountdown();
+		}
+		endArena(true);
+		
+		players = null;
+		pReady = null;
+		specs = null;
+		playas = null;
+		gs = null;
+		type = null;
+		teams = null;
+		c = null;
+		locations = null;
+		miscLocs = null;
+		sb = null;
+		o = null;
+	}
+	
+	public Objective getObjective()
+	{
+		return o;
+	}
+	
+	public Scoreboard getScoreboard()
+	{
+		return sb;
+	}
+	
+	public Arena(String name)
+	{
+		//TODO get arena stuff from config, set up arena;
 	}
 	
 	public ArrayList<Location> getLocations()//Gets all locations
@@ -119,14 +163,14 @@ public class Arena {
 		return pReady;
 	}
 	
-	public Type getType()//gets arena type (minigame)
+	public GameType getType()//gets arena type (minigame)
 	{
 		return type;
 	}
 	
-	public ArrayList<Team> getTeams()//gets the arena's teams
+	public ArrayList<TeamG> getTeams()//gets the arena's teams
 	{
-		return (ArrayList<Team>) Arrays.asList(teams);
+		return (ArrayList<TeamG>) Arrays.asList(teams);
 	}
 	
 	public ArrayList<String> getPlayers()//gets the players
@@ -165,17 +209,17 @@ public class Arena {
 			//TODO do free for all stuff
 			for(int i = 0; i<x; i++)
 			{
-				teams[i] = new Team(new String[] { Randomizer.randTeamName()}); //TODO add thingy for multiple teams and make em all different
+				teams[i] = new TeamG(new String[] { Randomizer.randTeamName()}, sb); //TODO add thingy for multiple teams and make em all different
 			}
 			
 			int i = 0;
 			for(String p : players)//Adds players to teams
 			{
-				if(i>=Team.getTeams().size())
+				if(i>=TeamG.getTeams().size())
 				{
 					i = 0;
 				}
-				Team.getTeams().get(i).addPlayer(Bukkit.getPlayer(p));
+				TeamG.getTeams().get(i).addPlayer(Bukkit.getPlayer(p));
 				i++;
 			}
 			

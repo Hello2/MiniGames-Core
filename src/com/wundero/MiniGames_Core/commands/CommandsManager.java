@@ -87,6 +87,17 @@ public class CommandsManager implements CommandExecutor {
 		return true;
 	}
 	
+	public void disable()
+	{
+		for(SubCommand cmd : commands)
+		{
+			cmd.name();
+			cmd = null;
+		}
+		
+		commands = null;
+	}
+	
 	public void setup()
 	{
 		commands.add(new Create());

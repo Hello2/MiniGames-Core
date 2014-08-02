@@ -12,7 +12,7 @@ import com.wundero.MiniGames_Core.arena.ArenaManager;
 import com.wundero.MiniGames_Core.commands.CommandsManager;
 import com.wundero.MiniGames_Core.commands.SubCommand;
 import com.wundero.MiniGames_Core.handlers.MessageLevel;
-import com.wundero.MiniGames_Core.handlers.Team;
+import com.wundero.MiniGames_Core.handlers.TeamG;
 
 public class MiniGameAPI { //TODO more documentation
 	
@@ -143,12 +143,12 @@ public class MiniGameAPI { //TODO more documentation
 	 * @return
 	 */
 	@Deprecated
-	public ArrayList<Team> getAllTeams()//TODO make replacement
+	public ArrayList<TeamG> getAllTeams()//TODO make replacement
 	{
-		return Team.getAllTeams();
+		return TeamG.getAllTeams();
 	}
 	
-	public ArrayList<Team> getTeams(String id)
+	public ArrayList<TeamG> getTeams(String id)
 	{
 		return ArenaManager.getArenaManager().getArena(id).getTeams();
 	}

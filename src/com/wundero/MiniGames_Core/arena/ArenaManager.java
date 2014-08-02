@@ -10,13 +10,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.wundero.MiniGames_Core.Core;
+import com.wundero.MiniGames_Core.configuration.SettingsManager;
+import com.wundero.MiniGames_Core.conversation.ArenaCreationConversation;
 import com.wundero.MiniGames_Core.events.ArenaCreateEvent;
 import com.wundero.MiniGames_Core.events.PlayerJoinArenaEvent;
 import com.wundero.MiniGames_Core.events.PlayerLeaveArenaEvent;
 import com.wundero.MiniGames_Core.events.PlayerSpectateArenaEvent;
 import com.wundero.MiniGames_Core.handlers.GameState;
+import com.wundero.MiniGames_Core.handlers.GameType;
 import com.wundero.MiniGames_Core.handlers.MessageLevel;
-import com.wundero.MiniGames_Core.handlers.Type;
 import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class ArenaManager {
@@ -57,12 +59,23 @@ public class ArenaManager {
 	
 	public void disable()
 	{
-		
+		saveArenasToFile();
+		for(Arena a : getArenas())
+		{
+			a.cleanup();
+		}
+		arenas = null;
+		inv = null;
+		armor = null;
+		locs = null;
 	}
 	
 	public void saveArenasToFile()
 	{
-		
+		for(Arena a : getArenas())
+		{
+			SettingsManager.getSettingsManager().saveArenaInfo(a);
+		}
 	}
 	
 	public Core getCore()//gets core
@@ -288,7 +301,7 @@ public class ArenaManager {
 		return arenas;
 	}
 	
-	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, Type r, int m, int f, int mr)
+	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, GameType r, int m, int f, int mr)
 	{
 		
 		Arena a = new Arena(locs, locs2, id, r, m, f, mr, c);
@@ -303,8 +316,7 @@ public class ArenaManager {
 	
 	public Arena createArena(Player p)
 	{
-		//TODO add conversation
-		return null;
+		return ArenaCreationConversation.getInstance().createArena(p);
 	}
 	
 	public boolean isInGame(Player p)

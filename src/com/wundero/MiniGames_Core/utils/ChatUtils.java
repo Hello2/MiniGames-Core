@@ -11,8 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.wundero.MiniGames_Core.handlers.GameType;
 import com.wundero.MiniGames_Core.handlers.MessageLevel;
-import com.wundero.MiniGames_Core.handlers.Type;
 
 public class ChatUtils {
 	public static void broadcast(String msg, MessageLevel level)
@@ -31,7 +31,7 @@ public class ChatUtils {
 		}
 	}
 	
-	public static void broadcast(Type t, String msg, MessageLevel level)
+	public static void broadcast(GameType t, String msg, MessageLevel level)
 	{
 		for(Player p : Bukkit.getOnlinePlayers())
 		{
@@ -53,7 +53,7 @@ public class ChatUtils {
 		return prefix;
 	}
 	
-	private static String prefix(Type type)
+	private static String prefix(GameType type)
 	{
 		String prefix = BLACK + "[" + GREEN + type.getGame() + BLACK + "]" + WHITE + " ";
 		return prefix;
@@ -98,12 +98,12 @@ public class ChatUtils {
 		}
 	}
 	
-	public static void sendMessageFromGame(Type t, Player p, String m, MessageLevel l)
+	public static void sendMessageFromGame(GameType t, Player p, String m, MessageLevel l)
 	{
 		p.sendMessage(prefix(t)+l.getPrefix()==null?"":l.getPrefix()+l.getColor()+m);
 	}
 	
-	public static void sendMessageFromGame(Type t, ArrayList<String> players, String m, MessageLevel l){
+	public static void sendMessageFromGame(GameType t, ArrayList<String> players, String m, MessageLevel l){
 		for(Player p : Bukkit.getServer().getOnlinePlayers())
 		{
 			if(players.contains(p.getName()))
@@ -111,6 +111,10 @@ public class ChatUtils {
 				p.sendMessage(prefix(t)+l.getPrefix()==null? "" : l.getPrefix()+l.getColor()+m);
 			}
 		}
+	}
+
+	public static String getPrefix() {
+		return prefix();
 	}
 	
 	//TODO add methods for Type and such

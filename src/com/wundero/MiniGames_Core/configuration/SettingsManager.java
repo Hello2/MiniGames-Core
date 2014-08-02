@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.wundero.MiniGames_Core.Core;
+import com.wundero.MiniGames_Core.arena.Arena;
 
 public class SettingsManager {
 	
@@ -230,4 +231,29 @@ public class SettingsManager {
 		}
 	}
 	
+	public void saveArenaInfo(Arena a)
+	{
+		if(a==null) return;
+		
+		adir = new File(core.getDataFolder(), "arenas");
+		for(File f : adir.listFiles())
+		{
+			if(f.getName().equalsIgnoreCase(a.getID()+"-arena.yml"))
+			{
+				//TODO write arena info to file
+				
+				//TODO save file
+				return;
+			}
+		}
+		
+		createConfig(a.getID()+"-arena.yml");
+		//TODO write to file
+		//TODO save file
+	}
+	
+	public void saveMinigameInfo()
+	{
+		//TODO do this ;D
+	}
 }

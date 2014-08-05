@@ -11,7 +11,13 @@ public class Edit extends SubCommand {
 
 	@Override
 	public void onCommand(Player p, String[] args) {
-		// TODO Auto-generated method stub
+		if(args != null){
+			//Edit the arena
+		}elseif(Select.getSelectedArena() != null){
+			//Also edit the arena
+		}else{
+			ChatUtils.sendMessage(p, "Please specify or select an arena!", MessageLevel.WARNING);
+		}
 		
 	}
 

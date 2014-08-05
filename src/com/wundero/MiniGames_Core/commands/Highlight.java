@@ -11,7 +11,18 @@ public class Highlight extends SubCommand {
 	@Override
 	public void onCommand(Player p, String[] args) {
 		// TODO Auto-generated method stub
-		
+		if(args != null){
+			if(ArenaManager.getArena(args[0] != null)){
+				String arenaLocations[6] = {};
+				arenaLocations[0] = Arena.getLocations().get(3).getX();
+			
+			}else{
+				ChatUtils.sendMessage(p, "Arena does not exist!", MessageLevel.WARNING);
+			}
+			
+		}else{
+			ChatUtils.sendMessage(p, "You must specify an arena!", MessageLevel.WARNING);
+		}
 	}
 
 	@Override

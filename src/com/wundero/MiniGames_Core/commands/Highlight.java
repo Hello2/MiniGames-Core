@@ -12,9 +12,8 @@ public class Highlight extends SubCommand {
 	public void onCommand(Player p, String[] args) {
 		// TODO Auto-generated method stub
 		if(args != null){
-			if(ArenaManager.getArena(args[0] != null)){
-				String arenaLocations[6] = {};
-				arenaLocations[0] = Arena.getLocations().get(3).getX();
+			if(ArenaManager.getArena(args[0]) != null){
+				//Start the highlight class and stuff
 			
 			}else{
 				ChatUtils.sendMessage(p, "Arena does not exist!", MessageLevel.WARNING);

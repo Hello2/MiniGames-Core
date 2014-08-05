@@ -129,8 +129,11 @@ public class ArenaManager {
 		
 		if(!event.isCancelled())
 		{
+			
+			if(a.getSpectators().contains(p.getName())) a.getSpectators().remove(p.getName());
+			
 			a.getPlayers().add(p.getName());
-			locs.put(p.getName(), p.getLocation());
+			if(!locs.containsKey(p.getName())) locs.put(p.getName(), p.getLocation());
 			
 			teleport(p, a.getLocations().get(0));
 			
@@ -152,7 +155,7 @@ public class ArenaManager {
 					a.startCountdown();
 				}
 			}
-		}	
+		}
 	}
 	
 	public void setReady(Player p, boolean b, String id)
@@ -192,6 +195,14 @@ public class ArenaManager {
 		
 		if(!event.isCancelled())
 		{
+			if(a.getPlayers().contains(p.getName()))
+			{
+				a.getPlayers().remove(p.getName());
+				a.getSpectators().add(p.getName());
+				teleport(p, a.getLocations().get(0));
+				return;
+			}
+			
 			locs.put(p.getName(), p.getLocation());
 			a.getSpectators().add(p.getName());
 			teleport(p, a.getLocations().get(0));

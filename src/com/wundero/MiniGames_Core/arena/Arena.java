@@ -63,6 +63,8 @@ public class Arena {
 	private ArrayList<Location> miscLocs; //Numbers to locations, in order
 	/* -NOTE- any location that is not needed should be set to null
 	 * Index = location - extra information
+	 * 0-7: arena corners 1-8
+	 * 8-15: lobby corners 1-8 - these coords are all 8 corner coords and will be created when the arena is made by using the existing two locs
 	 * 
 	 */
 	
@@ -83,9 +85,17 @@ public class Arena {
 		canStart = false;
 		this.locations = locations;
 		c = core;
-		miscLocs = misclocs;
 		sb = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
 		o = sb.registerNewObjective("Team Scores", "dummy");
+		
+		for(Location l : getAllCornerLocs(locations.get(3),locations.get(4)))
+		{
+			this.miscLocs.add(l);
+		}
+		for(Location l : getAllCornerLocs(locations.get(1),locations.get(2)))
+		{
+			this.miscLocs.add(l);
+		}
 		
 	}
 	
@@ -191,6 +201,22 @@ public class Arena {
 	public boolean isInProgress()//gets if the game is in prograss
 	{
 		return inProgress;
+	}
+	
+	public ArrayList<Location> getAllCornerLocs(Location loc1, Location loc2)
+	{
+		World w = loc1.getWorld();
+		double x1 = loc1.getX(), x2 = loc2.getX(), y1 = loc1.getY(), y2 = loc2.getY(), z1 = loc1.getZ(), z2 = loc2.getZ();
+		ArrayList<Location> result = new ArrayList<Location>();
+		result.get(0) = new Location(w,x1,y1,z1);
+		result.get(1) = new Location(w,x1,y1,z2);
+		result.get(2) = new Location(w,x1,y2,z1);
+		result.get(3) = new Location(w,x1,y2,z2);
+		result.get(4) = new Location(w,x2,y1,z1);
+		result.get(5) = new Location(w,x2,y1,z2);
+		result.get(6) = new Location(w,x2,y2,z1);
+		result.get(7) = new Location(w,x2,y2,z2);
+		return result;
 	}
 	
 	public boolean startArena() //Create exception to throw for unable to start

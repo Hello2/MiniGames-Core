@@ -47,5 +47,7 @@ public class Select extends SubCommand {
 		return permission;
 	}
 	
-
+	public String getSelectedArena(){
+		return arenaName;
+	}
 }

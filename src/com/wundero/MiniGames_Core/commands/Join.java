@@ -26,11 +26,17 @@ public class Join extends SubCommand {
 			if(a.getID().equalsIgnoreCase(args[0])) { ar = a; break; }
 		}
 		
-		if(ar==null) {
-			ChatUtils.sendMessage(p, "That is not a valid arena!", MessageLevel.ERROR);
-			return;
+		if(ar==null)
+		{
+			if(Select.getSelected(p)!=null) a = ArenaManager.getArenaManager().getArena(Select.getSelected(p));
+			else
+			{
+				ChatUtils.sendMessage(p, "There is no arena with id \""+args[0]+"\"", MessageLevel.WARNING);
+				return;
+			}
 		}
 		
+		ChatUtils.sendMessage(p, "You joined "+args[0]+"!", MessageLevel.INFO);
 		ArenaManager.getArenaManager().addPlayer(p, ar.getID());
 		
 	}

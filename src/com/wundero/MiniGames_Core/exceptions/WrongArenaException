@@ -1,0 +1,10 @@
+package com.wundero.MiniGames_Core;
+
+public class WrongArenaException extends Exception{
+	public WrongArenaException(){
+		super();
+	}
+	public WrongArenaException(String mess){
+		super(mess);
+	}
+}

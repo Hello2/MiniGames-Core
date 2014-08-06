@@ -13,7 +13,7 @@ public class Edit extends SubCommand {
 	public void onCommand(Player p, String[] args) {
 		if(args != null){
 			//Edit the arena
-		}else if(Select.getSelectedArena() != null){
+		}else if(Select.getSelectedArena(p) != null){
 			//Also edit the arena
 		}else{
 			ChatUtils.sendMessage(p, "Please specify or select an arena!", MessageLevel.WARNING);

@@ -19,8 +19,11 @@ public class Delete extends SubCommand {
 		
 		if(args.length==0)
 		{
+			if(Select.getSelected(p)==null)
+			{
 			ChatUtils.sendMessage(p, "You must specify an arena!", MessageLevel.WARNING);
 			return;
+			}
 		}
 		
 		Arena a = null;
@@ -31,8 +34,12 @@ public class Delete extends SubCommand {
 		
 		if(a==null)
 		{
-			ChatUtils.sendMessage(p, "There is no arena with id \""+args[0]+"\"", MessageLevel.WARNING);
-			return;
+			if(Select.getSelected(p)!=null) a = ArenaManager.getArenaManager().getArena(Select.getSelected(p));
+			else
+			{
+				ChatUtils.sendMessage(p, "There is no arena with id \""+args[0]+"\"", MessageLevel.WARNING);
+				return;
+			}
 		}
 		
 		if(a.isInProgress())
@@ -41,7 +48,16 @@ public class Delete extends SubCommand {
 			return;
 		}
 		
+		
+		ChatUtils.sendMessage(p, "Are you sure you want to delete arena "+a.getID()+"?", MessageLevel.WARNING);
+		//TODO confirmation, use conversation
+		//if(factory.getSessionData().get("Confirmed")){
 		ArenaManager.getArenaManager().deleteArena(a);
+		ChatUtils.sendMessage(p, "Successfully deleted "+a.getID()+"!", MessageLevel.SUCCESS);
+		//} else
+		//{
+		//	ChatUtils.sendMessage(p, "Arena deletion cancelled!", MessageLevel.WARNING);
+		//}
 	}
 
 	@Override

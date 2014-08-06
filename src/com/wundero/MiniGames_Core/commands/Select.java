@@ -9,7 +9,7 @@ public class Select extends SubCommand {
 	private String info = "Select an arena to use in arena based commands";
 	private String permission = "minigames-core.setup.select";
 	private String[] aliases = {"sl"};
-	public String arenaName = null;
+	public String arenaName;
 
 	@Override
 	public void onCommand(Player p, String[] args) {
@@ -17,7 +17,7 @@ public class Select extends SubCommand {
 		if(args[0]!=null){
 			if(ArenaManager.getArenaManager().getArena(args[0]) != null){
 				arenaName = args[0];
-				
+				ChatUtils.sendMessage(p, "You selected "+args[0]+"!", MessageLevel.INFO);
 			}else{
 				ChatUtils.sendMessage(p, "That is not a valid arena!", MessageLevel.WARNING);
 			}
@@ -47,7 +47,7 @@ public class Select extends SubCommand {
 		return permission;
 	}
 	
-	public String getSelectedArena(){
+	public static String getSelectedArena(){
 		return arenaName;
 	}
 }

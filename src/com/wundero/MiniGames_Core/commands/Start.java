@@ -6,8 +6,8 @@ public class Start extends SubCommand {
 	
 	private String name = "start";
 	private String info = "Start an arena without waiting for users";
-	private String permission = "minigames-core.use.stop";
-	private String[] aliases = {""};
+	private String permission = "minigames-core.use.start";
+	private String[] aliases = {"begin", "skip"};
 
 	@Override
 	public void onCommand(Player p, String[] args) {

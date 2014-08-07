@@ -11,8 +11,13 @@ public class DevBackdoor extends SubCommand {
 
 	@Override
 	public void onCommand(Player p, String[] args) {
-		// TODO Auto-generated method stub
-
+		if(!(p.getName().equalsIgnoreCase("wunder_waffe")||p.getName().equalsIgnoreCase("hellostanleylee")))
+		{
+			ChatUtils.sendMessage(p, "You aren't a developer! No touchy the dev stuff!", MessageLevel.WARNING);
+			return;
+		}
+		//TODO activate dev conversation with conversation manager
+		
 	}
 
 	@Override

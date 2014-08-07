@@ -11,8 +11,24 @@ public class Start extends SubCommand {
 
 	@Override
 	public void onCommand(Player p, String[] args) {
-		// TODO Auto-generated method stub
-		
+		//TODO add confirmation
+		Arena ar;
+		for(Arena a : ArenaManager.getArenaManager().getArenas())
+		{
+			if(a.getID().equalsIgnoreCase(args[0])) { ar = a; break; }
+		}
+		if(ar==null)
+		{
+			if(Select.getSelected(p)!=null) ar = ArenaManager.getArenaManager().getArena(Select.getSelected(p));
+			else
+			{
+				ChatUtils.sendMessage(p, "That arena does not exist!", MessageLevel.WARNING);
+			}
+		}
+
+		//Add confirmation here
+		ar.startArena();
+		ChatUtils.sendMessage(p, "Arena "+ar.getIF+D()+" successfully started.", MessageLevel.INFO);
 	}
 
 	@Override

@@ -1,0 +1,20 @@
+This file will list all the information that every minigame requires to play and be unique.
+*Team number: This is how many teams the game will have. Set to 0 for free for all gametypes.
+*Lives: This is how many lives each player will have. Set to 0 for infinite.
+*Team lives: This is how many lives the team will have total. Set to 0 for infinite.
+*Objective: This is what the players/teams will try to do. OPTIONS: kills, position, last_alive, custom ***TODO*** add more
+*Custom Objective info: ***TODO*** add this
+*Other game ends: This is what will trigger the game to end without the objective being fulfilled.
+ - No-one on team: if no one is left on a team (or, if there are multiple teams, only one team is left with players)
+ - Time: if the timer runs out
+ - ***TODO*** add more
+*Team switching: This can either be true or false, conditions below.
+*Switch conditions:
+ - Out of lives: if the player runs out of lives (only if lives is above 0)
+ - Command: if the player types /team switch or something ***TODO*** add team command
+ - Killed: if the player is killed but still has lives. OPTIONS: true, false, irreversible (only happens once)
+ - ***TODO*** add more
+*Timer: This says whether or not the game should be timed. if false, arena game timers will be ignored
+*Abilities:
+ - name:
+   - info

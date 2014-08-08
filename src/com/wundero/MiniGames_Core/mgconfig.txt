@@ -18,3 +18,5 @@ This file will list all the information that every minigame requires to play and
 *Abilities:
  - name:
    - info
+
+********Add more if you like********

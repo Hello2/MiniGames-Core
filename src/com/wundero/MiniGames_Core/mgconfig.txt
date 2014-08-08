@@ -45,8 +45,6 @@ This file will list all the information that every minigame requires to play and
 
 *Gamemode:
 
-*White/black list/location of blocks/GUIs that can be destroyed/opened(such compact, much wow):
-
 *Full/minimal size of team (possibly):
 
 *Different team colours:

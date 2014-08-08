@@ -1,6 +1,14 @@
 This file will list all the information that every minigame requires to play and be unique.
 
-
+This file will list all the information that every minigame requires to play and be unique.
+*PvP: whether or not people can hurt each other, info VV
+ - enabled: true or false
+ - damage modifier: Number to multiply damage by. Will be overridden by VV
+ - kit-specific damage modifiers: whether or not kits will have their own damage multipliers. For instance, blaze does *0.8 damage, but sets players on fire. Useful for balancing.
+ - health: How much health players should have.
+ - kit-specific health: whether or not kits should have different health values.
+ - auto-respawn: whether or not to handle respawning or just show players the respawn screen. ***TODO*** handle respawning, set playerhealth to max & tp them, douse them, etc.
+ - ***TODO*** more
 
 *Team number: This is how many teams the game will have. Set to 0 for free for all gametypes.
 
@@ -19,7 +27,6 @@ This file will list all the information that every minigame requires to play and
 
 *Team switching: This can either be true or false, conditions below.
 *Switch conditions:
- - Out of lives: if the player runs out of lives (only if lives is above 0)
  - Command: if the player types /team switch or something ***TODO*** add team command
  - Killed: if the player is killed but still has lives. OPTIONS: true, false, irreversible (only happens once)
  - ***TODO*** add more
@@ -28,9 +35,20 @@ This file will list all the information that every minigame requires to play and
 
 *Abilities:
  - name:
-   - info
+   - info ***TODO*** add and integrate this. Example: triple shot in paintball
 
-********Add more if you like********
+*Mobs:
+ - spawning: this is whether or not mobs can  spawn in an arena.
+ - player damage: this is whether or not mobs should damage players. Example, true for mobarena, false for target practice
+ - block damage: whether or not creepers, etc. should be able to damage blocks. ***TODO*** Figure out rollback for creeper damage
+ - custom mobs: this is whether or not to use custom mobs, all info will be there VV
+   - enabled: true or false to do the rest of this
+   - mob:
+     - info This info will contain mob info, such as type, name, health, etc. ***TODO*** integrate
+     
+*Master lobby: This is a lobby for an entire minigame, regardless of arena chosen.
+ - enabled: true or false
+ - location: The two corner locations for the master lobby. Pls no edit, may break things. Can be edited in game.
 
 *Mob spawning: Enables hostile/non-hostile mob spawn
   0 for hostile mobs to not spawn, 1 for them to spawn,
@@ -52,7 +70,7 @@ This file will list all the information that every minigame requires to play and
   refer to this: http://minecraft.gamepedia.com/Data_values#Status_effects
 
 *Gamemode:
-  0 for survival, 1 for creative, 2 for adventure, (Possibly 3 for in the point of view of mobs in 1.8)
+  0 for survival, 1 for creative, 2 for adventure, (Possibly 3 for in the point of view of mobs in 1.8 ***TODO*** block them from leaving the arena)
 
 *Full/minimal size of team (possibly):
   Minimal size will be the first intenger, full size will be the second, set 0 for no min/max

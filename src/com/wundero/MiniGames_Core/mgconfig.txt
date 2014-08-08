@@ -60,8 +60,6 @@ This file will list all the information that every minigame requires to play and
 
 *Different team colours:
   Refer to this for the colour values (The integers): http://minecraft.gamepedia.com/Dyeing#Data_values
-  
-*Spawning inventory/kit (perhaps link to a secondary file?):
 
 *Items that can be added after a kill/death/overtime:
 

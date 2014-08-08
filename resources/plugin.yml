@@ -1,10 +1,10 @@
 name: MiniGames-Core
 main: me.wundero.MiniGames_Core.Core
-version: 1.0.0
+version: 0.0.0
 #Builds: release.beta.dev 
 
-author: Wundero
-authors: [hellostanleylee, Wundero]
+author: wunder_waffe
+authors: [hellostanleylee, wunder_waffe]
 website: https://github.com/Wundero/MiniGames-Core/wiki
 
 prefex: MiniGames-Core

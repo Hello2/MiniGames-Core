@@ -27,7 +27,7 @@ import com.wundero.MiniGames_Core.configuration.SettingsManager;
 
 
 /**
- * @authors Wundero, Hellostanleylee
+ * @authors wunder_waffe, hellostanleylee
  */
 public class Core extends JavaPlugin {
 	

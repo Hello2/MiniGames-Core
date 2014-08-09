@@ -1,6 +1,146 @@
+#TODO add better descriptions and kits
 
+#The name of the mini game
 name: 'Paintball'
 
-info: 'Fun!'
+#Basic description of the mini game
+info: 'A fun team battle where everyone participates in a massive snowball fight!'
 
-#TODO add more here when I get back. Stan, no touch pls. this gon be example & default game file. Will add code to gen this later
+#The game type this game is based on
+base-game: ''
+
+#PvP settings
+pvp:
+  #Whether or not PvP should be allowed in the game
+  enabled: false
+  #Whether or not projectiles should do damage. Ignores enabled.
+  projectiles: true
+  #Whether or not to use kit specific attributes
+  kit-modifiers: true
+  #Damage multiplier, overridden by kit attributes
+  damage-multiplier: 1.0
+  #Health, overridden by kit attributes
+  health: 20
+  #Invincibility, overridden by kit attributes
+  invincible: true
+  #Whether or not to show hits on invincible players, overridden by kit attributes
+  hits-on-invincible: true
+  #Health regeneration, overridden by kit attributes
+  regen: true
+  #The number of lives a player has, set to 0 for infinite
+  lives: 0
+
+#Team info
+teams:
+  #The number of teams the game has
+  number: 2
+  #What the teams should be called. If there are more than ^, the names will be randomly selected. If there are less, the names will be randomly generated.
+  names:
+  - blue
+  - red
+  #The number of lives each team has, set to 0 for infinite. Can be overridden by arenas and game modifying items
+  lives: 50
+
+gameplay:
+  #Game's objective, options: no_more_lives, kills, position, flag_capture, last_alive, custom
+  objective: no_more_lives
+  #TODO add custom objective stuff
+  #What causes the game to end
+  end-triggers:
+    #When the objective is accomplished
+    objective: true
+    #When there is only one team left
+    teams-empty: true
+    #No more players left
+    game-empty: true
+    #When the timer runs out. Set the time for the timer in the arena file.
+    timer: true
+    #TODO add more
+  #Whether or not to use a game timer. Set the value in arenas.
+  timer: true
+  #Whether or not to allow abilities:
+  use-abilities: true
+  #Abilities and their info:
+  abilities:
+    'triple-shot':
+      info: 'Fires three paintballs for every paintball thrown!'
+      #TODO allow this to be customized and stuff, use custom code language?
+    '+5':
+      info: 'Adds 5 lives to the team!'
+  #Mob information:
+  mobs:
+    enabled: false
+    spawning:
+      peaceful: false
+      hostile: false
+      #Whether or not abilities can spawn mobs
+      abilities: true
+      #Whether or not to spawn monsters in waves
+      waves:
+        enabled: true
+        #The delay, in seconds, of waves
+        delay: 30
+        #Waves that happen repeatedly
+        recurrent:
+        single:
+      #Whether or not to use random spawnpoints [spawnpoints set in arena]
+      random: false
+      #Whether or not other plugins should spawn mobs
+      plugins: false
+    player-damage: false
+    block-damage: false
+    custom-mobs:
+  #Gamemode that the players are in, defaults to 0 and 0 is recommended. 0=survival, 1=creative, 2=adventure, 3=spectator(1.8+ only)
+  gamemode: 0
+#Whether or not to use one lobby for all of this minigame
+master-lobby:
+  enabled: true
+  lobby: 'myah'
+
+kits:
+  blue:
+    #What team to give it to, values: the names set above and all
+    team: blue
+    armor:
+      head: wool:11
+      #TODO color meta, use leather armor meta. example: FFFFFF
+      chest: leather_chest:334CB2
+      legs: leather_leggings:334CB2
+      feet: leather_boots:334CB2
+    items:
+    #TODO add support for enchantments, names and other nbt meta
+    #Each line is one inventory space
+    #itemname:amount or itemname:data:amount
+    - snowball:32
+    - snowball:32
+    effects:
+    #id|name:potency:time
+    - 1:2:100000
+    health: 20
+    invincible: true
+    hits-on-invincible: true
+    damage-multiplier: 1.0
+    regen: true
+  red:
+    #What team to give it to, values: the names set above and all
+    team: red
+    armor:
+      head: wool:14:1
+      #TODO color meta, use leather armor meta. example: FFFFFF
+      chest: leather_chest:FF0000
+      legs: leather_leggings:FF0000
+      feet: leather_boots:FF0000
+    items:
+    #TODO add support for enchantments, names and other nbt meta
+    #Each line is one inventory space
+    #itemname:amount or itemname:data:amount
+    - snowball:32
+    - snowball:32
+    effects:
+    #id|name:potency:time
+    - 1:2:100000
+    health: 20
+    invincible: true
+    hits-on-invincible: true
+    damage-multiplier: 1.0
+    regen: true

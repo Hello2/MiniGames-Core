@@ -1,6 +1,11 @@
 This file will list all the information that every minigame requires to play and be unique.
 
-This file will list all the information that every minigame requires to play and be unique.
+*Name: What the minigame will be called. 
+
+*Info: Some information about the game. Example: Spleef is a gametype where you attempt to break the blocks out from underneath players. The last man standing is victorious.
+
+*Base game: What mini game to base general options on. If this is set, the default values will change to the games values. OPTIONS: whatever mini game files are in the folder. example: paintball-minigame.yml
+
 *PvP: whether or not people can hurt each other, info VV
  - enabled: true or false
  - damage modifier: Number to multiply damage by. Will be overridden by VV
@@ -8,6 +13,11 @@ This file will list all the information that every minigame requires to play and
  - health: How much health players should have.
  - kit-specific health: whether or not kits should have different health values.
  - auto-respawn: whether or not to handle respawning or just show players the respawn screen. ***TODO*** handle respawning, set playerhealth to max & tp them, douse them, etc.
+ - invincible: whether or not players are invincible to all damage.
+   - hits: whether or not people should take hits or just do nothing. Like hitting creative or hitting survival
+ - kit-specific invincibility: whether or not kits can toggle invincibility
+ - regenerate health: whether or not to regenerate health
+ - kit-specific regen: you know the drill.
  - ***TODO*** more
 
 *Team number: This is how many teams the game will have. Set to 0 for free for all gametypes.
@@ -39,6 +49,8 @@ This file will list all the information that every minigame requires to play and
 
 *Mobs:
  - spawning: this is whether or not mobs can  spawn in an arena.
+   - peaceful mobs:
+   - hostile mobs:
  - player damage: this is whether or not mobs should damage players. Example, true for mobarena, false for target practice
  - block damage: whether or not creepers, etc. should be able to damage blocks. ***TODO*** Figure out rollback for creeper damage
  - custom mobs: this is whether or not to use custom mobs, all info will be there VV
@@ -50,35 +62,5 @@ This file will list all the information that every minigame requires to play and
  - enabled: true or false
  - location: The two corner locations for the master lobby. Pls no edit, may break things. Can be edited in game.
 
-*Mob spawning: Enables hostile/non-hostile mob spawn
-  0 for hostile mobs to not spawn, 1 for them to spawn,
-  2 for friendly mobs to not spawn, 3 for them to spawn
-  Example: 12 - hostile mobs spawn, but no friendly mobs will spawn
-
-*Mob damaging player: Allows if the mobs can damage player
-  0 - false
-  1 - true
-
-*Environment damage: Allows players/entities to damage the environment
-  0 to restrict player damage, 1 to allow
-  2 to restrict mob damage, 3 to allow
-
-*Choose night/day:
-  0 for night, 1 for day
-
-*Potion effects: 
-  refer to this: http://minecraft.gamepedia.com/Data_values#Status_effects
-
 *Gamemode:
   0 for survival, 1 for creative, 2 for adventure, (Possibly 3 for in the point of view of mobs in 1.8 ***TODO*** block them from leaving the arena)
-
-*Full/minimal size of team (possibly):
-  Minimal size will be the first intenger, full size will be the second, set 0 for no min/max
-  Example: 0/0, no minimal size, nor any full size; 5/40, 5 player minimal to start the mg, 40 max in the mg
-
-*Different team colours:
-  Refer to this for the colour values (The integers): http://minecraft.gamepedia.com/Dyeing#Data_values
-
-*Items that can be added after a kill/death/overtime:
-
-

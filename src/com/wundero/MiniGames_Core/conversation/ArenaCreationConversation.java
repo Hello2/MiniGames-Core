@@ -62,10 +62,7 @@ public class ArenaCreationConversation {
 		ConversationContext co = c.getContext();
 		String arenaName = (String) co.getSessionData("ArenaName");
 		GameType gType = (GameType) co.getSessionData("GameType");
-		@SuppressWarnings("unchecked")
-		ArrayList<Location> locs = (ArrayList<Location>) co.getSessionData("Locations");
-		@SuppressWarnings("unchecked")
-		ArrayList<Location> locs2 = (ArrayList<Location>) co.getSessionData("MiscLocations");
+		//TODO get stuff from setup
 		int maxPlayers = (int) co.getSessionData("MaxPlayers"), minPlayers = (int) co.getSessionData("MinPlayers"), minReady = (int) co.getSessionData("MinReady");
 		
 		return ArenaManager.getArenaManager().createArena(locs, locs2, arenaName, gType, maxPlayers, minPlayers, minReady);

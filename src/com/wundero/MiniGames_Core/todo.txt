@@ -19,9 +19,30 @@ Block protection - Making sure only in game players can edit the arena while it 
 Reload & restart protection - save inventories, kick out players, save locations, etc.
 API methods - creating minigames and a bunch of other things
 Minigame creation - add methods to make new minigame types - use enum?
-Configuration - add controllers and such to manage: config.yml, (in arenas folder) <arenaname>.yml, (in minigames folder) <minigamename>.yml
 Kit/Class selection - in lobby selection of classes (if minigame has this enabled) - sign listener thing mcjiggy
 Configuration options - add options that make plugin more controllable
 Statistics tracker - tracks wins, losses, kills (if applicable), currency (if applicab;le, global or per minigame), and other things - per minigame (maybe add per arena function)
 Format code to make it nicer, including adding comments
 plugin.yml - Add commands & permissions as they are made, add other info as necessary
+Walls - add support for setting wall coords (ignoring y bc it will take up the whole y coord - 0 thru 256) and walls to be indestructible
+
+Stuff left to get the plugin working:
+
+Finish minigame class - add methods and stuff
+Add minigame creation conversation
+Finish up arena configuration
+Finish up minigame configuration
+Make arena compatible with configuration
+Make minigame compatible with configuration
+Make MiniGameManager class to control all minigames
+Give arena a minigame
+Do block protection
+Make sure plugin yaml works - including version
+Make API compatible with version
+Do lobbys with signs & sign listeners
+Fix Teams - rename class to MGTeam, make sure to do colored nametages - optional
+Fix kits - make sure they are created (VIA both mg yml and arena yml) and can be given to players - make sure to save inventories
+Give kits and teams to players in arenas
+Make sure scoreboards work with objectives like lives & stuff
+Make sure the game works with alternate endings, like out of lives
+---I can't think of anything else, if you can add it---

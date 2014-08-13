@@ -4,28 +4,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-public class TeamG {
-	private static ArrayList<TeamG> allTeams = new ArrayList<TeamG>();
-	private static HashMap<String, TeamG> playerTeams = new HashMap<String, TeamG>();
+public class MGTeam {
+	private static ArrayList<MGTeam> allTeams = new ArrayList<MGTeam>();
+	private static HashMap<String, MGTeam> playerTeams = new HashMap<String, MGTeam>();
 	
 	private String teamName;
 	
 	private Team t;
-
-	private TeamG(String tn, Scoreboard o)
+	
+	private MGTeam(String tn, Scoreboard s, Objective o)
 	{
 		this.teamName = tn.trim();
 		allTeams.add(this);
-		setScoreboardTeam(o.registerNewTeam(tn));
+		setScoreboardTeam(s.registerNewTeam(tn));
+		o.getScore((this.teamName));
 	}
-	public TeamG(String[] teamNames, Scoreboard s) //TODO IMPROVE, THIS IS NOT READY YET.
+	public MGTeam(String[] teamNames, Scoreboard s, Objective o) //TODO IMPROVE, THIS IS NOT READY YET.
 	{
 		for(String st : teamNames)
 
-			new TeamG(st, s);
+			new MGTeam(st, s, o);
 	}
 	
 	
@@ -54,7 +56,7 @@ public class TeamG {
 		return playerTeams.containsKey(p.getName());
 	}
 	
-	public static TeamG getTeam(Player p)
+	public static MGTeam getTeam(Player p)
 	{
 		if(!hasTeam(p))
 		{
@@ -63,18 +65,18 @@ public class TeamG {
 		return playerTeams.get(p.getName());
 	}
 	
-	public static ArrayList<TeamG> getTeams()
+	public static ArrayList<MGTeam> getTeams()
 	{
 		return allTeams;
 	}
-	public static ArrayList<TeamG> getAllTeams()
+	public static ArrayList<MGTeam> getAllTeams()
 	{
 		return getTeams();
 	}
 	
-	public static TeamG getTeam(String name)
+	public static MGTeam getTeam(String name)
 	{
-		for(TeamG t: allTeams)
+		for(MGTeam t: allTeams)
 		{
 			if(t.getName().equalsIgnoreCase(name))
 			{

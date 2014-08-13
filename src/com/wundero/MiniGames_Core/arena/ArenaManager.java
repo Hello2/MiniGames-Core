@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -52,9 +53,20 @@ public class ArenaManager {
 		return am;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setup()
 	{
-		
+		for(String s : (ArrayList<String>) SettingsManager.getSettingsManager().getValue("arenas.yml", "arenas"))
+		{
+			new Arena(YamlConfiguration.loadConfiguration(SettingsManager.getSettingsManager().getFile(s)));
+		}
+	}
+	
+	public Arena updateArena(Arena oldArena, Arena newArena)
+	{
+		int index = arenas.indexOf(oldArena);
+		arenas.set(index, newArena);
+		return newArena;
 	}
 	
 	public void disable()
@@ -176,6 +188,21 @@ public class ArenaManager {
 		p.setFireTicks(0);
 	}
 	
+	private void teleport2(Player p, Location l)
+	{
+		
+		p.getInventory().setContents(inv.get(p.getName()));
+		p.getInventory().setArmorContents(armor.get(p.getName()));
+		
+		p.teleport(l);
+		
+		p.setFireTicks(0);
+		
+		locs.remove(p.getName());
+		inv.remove(p.getName());
+		armor.remove(p.getName());
+	}
+	
 	public void addSpectator(Player p, String id)
 	{
 		Arena a = getArena(id);
@@ -237,7 +264,7 @@ public class ArenaManager {
 		
 		if(!event.isCancelled())
 		{
-			teleport(p, locs.get(p.getName()));
+			teleport2(p, locs.get(p.getName()));
 			locs.remove(p.getName());
 			
 			if(!a.getSpectators().contains(p.getName()))

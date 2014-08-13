@@ -5,24 +5,37 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.wundero.MiniGames_Core.arena.Arena;
 
 public class GameTimer extends BukkitRunnable {
-	public static int timeElapsed;
+	private int timeRemaining;
+	private int startTime;
 	private Arena arena;
 	
-	public GameTimer(Arena a)
+	public GameTimer(Arena a, int time)
 	{
 		this.setArena(a);//Constructor
+		this.timeRemaining=time;
+		this.startTime = time;
 	}
 	
-	public static int getTimeElapsed()
+	public int getTimeRemaining()
 	{
-		return timeElapsed;
+		return timeRemaining;
+	}
+	
+	public int getTimeElapsed()
+	{
+		return startTime-timeRemaining;
 	}
 	
 	public void run()
 	{
 		//TODO add thingy for display of time remaining
 		//TODO add check for arena config to see how much time should pass
-		timeElapsed++;
+		timeRemaining--;
+		if(timeRemaining==0)
+		{
+			arena.endArena();
+		}
+		
 	}
 
 	public Arena getArena() {

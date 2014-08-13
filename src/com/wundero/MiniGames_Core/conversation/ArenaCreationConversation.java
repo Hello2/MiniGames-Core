@@ -21,6 +21,8 @@ public class ArenaCreationConversation {
 	
 	private Core core;
 	
+	private SetupPrompt setup;
+	
 	public ConversationFactory factory;
 	
 	private static ArenaCreationConversation inst;
@@ -55,6 +57,11 @@ public class ArenaCreationConversation {
 		return core;
 	}
 	
+	public void registerSetupPrompt(SetupPrompt setup)
+	{
+		this.setup = setup;
+	}
+	
 	public Arena createArena(Player p)
 	{
 		promptnum = 0;
@@ -65,7 +72,9 @@ public class ArenaCreationConversation {
 		//TODO get stuff from setup
 		int maxPlayers = (int) co.getSessionData("MaxPlayers"), minPlayers = (int) co.getSessionData("MinPlayers"), minReady = (int) co.getSessionData("MinReady");
 		
-		return ArenaManager.getArenaManager().createArena(locs, locs2, arenaName, gType, maxPlayers, minPlayers, minReady);
+		ArrayList<Location> locs = setup.getLocs();
+		
+		return ArenaManager.getArenaManager().createArena(locs, null, arenaName, gType, maxPlayers, minPlayers, minReady);
 	}
 	
 }

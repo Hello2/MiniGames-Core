@@ -86,15 +86,12 @@ public class ChatUtils {
 		player.sendMessage(pre+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+message);
 	}
 	
-	public static void sendMessageFromAPI(Plugin plugin, ArrayList<String> players, String message, MessageLevel level)
+	public static void sendMessageFromAPI(Plugin plugin, String message, MessageLevel level, Player... players)
 	{
 		String pre = prefix(plugin.getName());
-		for(Player p : Bukkit.getServer().getOnlinePlayers())
+		for(Player p : players)
 		{
-			if(players.contains(p.getName()))
-			{
-				p.sendMessage(pre+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+message);
-			}
+			p.sendMessage(pre+level.getPrefix()==null? "" : level.getPrefix()+level.getColor()+message);
 		}
 	}
 	

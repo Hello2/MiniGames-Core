@@ -11,8 +11,9 @@ import com.wundero.MiniGames_Core.arena.Arena;
 import com.wundero.MiniGames_Core.arena.ArenaManager;
 import com.wundero.MiniGames_Core.commands.CommandsManager;
 import com.wundero.MiniGames_Core.commands.SubCommand;
+import com.wundero.MiniGames_Core.handlers.MGTeam;
 import com.wundero.MiniGames_Core.handlers.MessageLevel;
-import com.wundero.MiniGames_Core.handlers.TeamG;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class MiniGameAPI { //TODO more documentation
 	
@@ -51,7 +52,7 @@ public class MiniGameAPI { //TODO more documentation
 	
 	public String getVersion() //Gets version
 	{
-		return "0.0.0"; //TODO make better
+		return core.getDescription().getVersion();
 	}
 	
 	
@@ -71,7 +72,7 @@ public class MiniGameAPI { //TODO more documentation
 	 */
 	public Arena createArena(Player creator)//Creates an arena VIA a player
 	{
-		return ArenaManager.getArenaManager().createArena(creator); //TODO convert to conversational creation
+		return ArenaManager.getArenaManager().createArena(creator);
 	}
 	
 	/**
@@ -143,12 +144,12 @@ public class MiniGameAPI { //TODO more documentation
 	 * @return
 	 */
 	@Deprecated
-	public ArrayList<TeamG> getAllTeams()//TODO make replacement
+	public ArrayList<MGTeam> getAllTeams()//TODO make replacement
 	{
-		return TeamG.getAllTeams();
+		return MGTeam.getAllTeams();
 	}
 	
-	public ArrayList<TeamG> getTeams(String id)
+	public ArrayList<MGTeam> getTeams(String id)
 	{
 		return ArenaManager.getArenaManager().getArena(id).getTeams();
 	}
@@ -244,14 +245,16 @@ public class MiniGameAPI { //TODO more documentation
 	
 	//TODO add configuration methods for other plugins to create minigames
 	
-	// public void addCustomEvent(Event e)
-	// {
-	// 	//TODO make this usefull
-	// }
-	
-	public void sendMessage(Plugin p, Player player, String message, MessageLevel level)
+	/**
+	 * Sends a message to a player with a plugin name. You can have as many players as you want.
+	 * @param p
+	 * @param message
+	 * @param level
+	 * @param player
+	 */
+	public void sendMessage(Plugin p, String message, MessageLevel level, Player... player)
 	{
-		//TODO use plugin names for this to make it cooler
+		ChatUtils.sendMessageFromAPI(p, message, level, player);
 	}
 	
 }

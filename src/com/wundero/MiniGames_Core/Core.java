@@ -19,6 +19,8 @@ import com.wundero.MiniGames_Core.arena.Arena;
 import com.wundero.MiniGames_Core.arena.ArenaManager;
 import com.wundero.MiniGames_Core.commands.CommandsManager;
 import com.wundero.MiniGames_Core.configuration.SettingsManager;
+import com.wundero.MiniGames_Core.conversation.ConversationManager;
+import com.wundero.MiniGames_Core.exceptions.FileDoesNotExistException;
 
 /*
  * MiniGames-Core - A bukkit plugin
@@ -30,6 +32,8 @@ import com.wundero.MiniGames_Core.configuration.SettingsManager;
  * @authors wunder_waffe, hellostanleylee
  */
 public class Core extends JavaPlugin {
+	
+	//TODO first load stuff
 	
 	public ConversationFactory factory;
 	
@@ -46,7 +50,7 @@ public class Core extends JavaPlugin {
 	@Override
 	public void onDisable()
 	{
-		this.saveConfig();//Saves config. TODO move to configuration
+		this.saveConfig();
 		ArenaManager.getArenaManager().disable();
 		SettingsManager.getSettingsManager().disable();
 		cm.disable();
@@ -61,13 +65,17 @@ public class Core extends JavaPlugin {
 		pdfFile = null;
 	}
 	
-	public void reload()//TODO more stuff, NOTE this is not required at the moment due to diable() methods in the managers
+	public void reload()//TODO more stuff
 	{
 		for(Arena a : ArenaManager.getArenaManager().getArenas())
 		{
 			a.endArena(true);
 		}
-		
+		try {
+			SettingsManager.getSettingsManager().reload();
+		} catch (FileDoesNotExistException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -95,6 +103,7 @@ public class Core extends JavaPlugin {
 		//^This sets the command executor as the commands manager
 		
 		factory = new ConversationFactory(this);
+		ConversationManager.getInstance().hook(this);
 		
 		//This part will check for other plugins that handle minigames and ask for an override choice - this or those plugins. This plugins other parts will function normally.
 		if(getServer().getPluginManager().getPlugin("MobArena")!=null)
@@ -176,16 +185,10 @@ public class Core extends JavaPlugin {
 		return loggerTwo;
 	}
 	
-//	public void setupConfig()
-//	{
-//		//TODO register
-//	}
-	
 	public void registerKits(){//will register kits
 		//TODO get kits from files
 		//TODO store kit info
 	}
-	
 	
 	public FileConfiguration getPluginConfig()//Gets config
 	{

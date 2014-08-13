@@ -3,12 +3,17 @@ package com.wundero.MiniGames_Core.configuration;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.wundero.MiniGames_Core.Core;
 import com.wundero.MiniGames_Core.arena.Arena;
+import com.wundero.MiniGames_Core.exceptions.FileDoesNotExistException;
+import com.wundero.MiniGames_Core.minigame.MiniGame;
 
 public class SettingsManager {
 	
@@ -103,13 +108,57 @@ public class SettingsManager {
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					return;
+					continue;
 				}
 			}
-			
 			confs.add(YamlConfiguration.loadConfiguration(file));
 		}
+		file = new File(adir, "arenas.yml");
+		if(!file.exists())
+		{
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		confs.add(YamlConfiguration.loadConfiguration(file));
+		file = new File(mdir, "minigames.yml");
+		if(!file.exists())
+		{
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		confs.add(YamlConfiguration.loadConfiguration(file));
 		
+		file = new File(core.getDataFolder(),"statistics.yml");//This file might get gigantic, TODO use MySQL fo dis shizzle (or a .db file)
+		if(!file.exists())
+		{
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		confs.add(YamlConfiguration.loadConfiguration(file));
+		
+		confs.add(core.getConfig());
+	}
+	
+	public boolean createConfig(File dir, String configName)
+	{
+		file = new File(dir, configName);
+		if(file.exists()) return false;
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		confs.add(YamlConfiguration.loadConfiguration(file));
+		return true;
 	}
 	
 	public boolean createConfig(String configName)
@@ -185,7 +234,7 @@ public class SettingsManager {
 		return null;
 	}
 	
-	private File getFile(String name)
+	public File getFile(String name)
 	{
 		for(FileConfiguration conf : confs)
 		{
@@ -240,9 +289,22 @@ public class SettingsManager {
 		{
 			if(f.getName().equalsIgnoreCase(a.getID()+"-arena.yml"))
 			{
-				//TODO write arena info to file
+				FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
 				
-				//TODO save file
+				if(conf.getString("name")==null)
+				{
+					Map<String, Object> defs = new HashMap<String, Object>();
+					defs.put("name",a.getID());
+					defs.put("maxplayers",a.getMaxPlayers());//TODO add more
+					conf.addDefaults(defs);
+				}
+				//TODO add info to arena file
+				
+				try {
+					conf.save(f);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				return;
 			}
 		}
@@ -251,9 +313,90 @@ public class SettingsManager {
 		//TODO write to file
 		//TODO save file
 	}
+	/*{
+		if(a==null) return;
+		
+		adir = new File(core.getDataFolder(), "arenas");
+		for(File f : adir.listFiles())
+		{
+			if(f.getName().equalsIgnoreCase(a.getID()+"-arena.yml"))
+			{
+				FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
+				
+				if(conf.getString("name")==null)
+				{
+					Map<String, Object> defs = new HashMap<String, Object>();
+					defs.put("name",a.getID());
+					defs.put("maxplayers",a.getMaxPlayers());//TODO add more
+					conf.addDefaults(defs);
+				}
+				
+				try {
+					conf.save(f);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		}
+		
+		createConfig(a.getID()+"-arena.yml");
+		//TODO write to file
+		//TODO save file*/
 	
-	public void saveMinigameInfo()
+	public void saveMinigameInfo(MiniGame m)
 	{
-		//TODO do this ;D
+		if(m==null) return;
+		mdir = new File(core.getDataFolder(), "minigames");
+		for(File f : mdir.listFiles())
+		{
+			if(f.getName().equalsIgnoreCase("-minigame.yml"))
+			{
+				
+			}
+		}
+	}
+
+	public void reload() throws FileDoesNotExistException {
+		for(FileConfiguration conf : confs)
+		{
+			File finFile = null;
+			adir = new File(core.getDataFolder(), "arenas");
+			mdir = new File(core.getDataFolder(), "minigames");
+			for(File f : adir.listFiles())
+			{
+				if(f.getName().equalsIgnoreCase(conf.getName()))
+				{
+					finFile = f;
+				}
+			}
+			for(File f : mdir.listFiles())
+			{
+				if(f.getName().equalsIgnoreCase(conf.getName()))
+				{
+					finFile = f;
+				}
+			}
+			for(File f : core.getDataFolder().listFiles())
+			{
+				if(f.getName().equalsIgnoreCase(conf.getName()))
+				{
+					finFile = f;
+				}
+			}
+			
+			try {
+				conf.load(finFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InvalidConfigurationException e) {
+				e.printStackTrace();
+			}
+			try {
+				conf.save(finFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

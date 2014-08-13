@@ -6,15 +6,21 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.wundero.MiniGames_Core.Core;
+import com.wundero.MiniGames_Core.configuration.SettingsManager;
 import com.wundero.MiniGames_Core.handlers.GameState;
-import com.wundero.MiniGames_Core.handlers.TeamG;
 import com.wundero.MiniGames_Core.handlers.GameType;
+import com.wundero.MiniGames_Core.handlers.MGTeam;
+import com.wundero.MiniGames_Core.minigame.MiniGame;
 import com.wundero.MiniGames_Core.misc_multiple.Randomizer;
 import com.wundero.MiniGames_Core.threads.EndCountdown;
 import com.wundero.MiniGames_Core.threads.GameTimer;
@@ -24,9 +30,9 @@ public class Arena {
 	
 	public String id;
 	
-	public static int startCountdownId = 0;
-	public static int gameTimerId = 0;
-	public static int endCountdownId = 0;
+	public int startCountdownId = 0;
+	public int gameTimerId = 0;
+	public int endCountdownId = 0;
 	
 	
 //	private static int x;
@@ -40,11 +46,13 @@ public class Arena {
 	private GameState gs;
 	private GameType type;
 	private boolean canStart;
-	private TeamG[] teams;
+	private MGTeam[] teams;
 	private Core c;
 	private int tE;
 	private int minPlayers;
 	private int minReady;
+	private MiniGame mg;
+	private boolean canPlayersEdit;
 	private ArrayList<Location> locations; //Numbers to locations, in order:
 	/* -NOTE- any location that is not needed should be set to null -NOTE- FFA spawns will be random
 	 * Index = location - extra information
@@ -53,13 +61,15 @@ public class Arena {
 	 * 2 = lobby corner 2
 	 * 3 = arena corner 1
 	 * 4 = arena corner 2
-	 * 5 = team 1 spawn - random relative to location, toggleable - max distance settable in conf
-	 * 6 = team 2 spawn - random relative to location, toggleable - max distance settable in conf
-	 * 7 = team 3 spawn - random relative to location, toggleable - max distance settable in conf
-	 * 8 = death location - only use if enabled in config, else use spec spawn
-	 * 9 = spectator spawn
-	 * 10 = 
-	 */ 
+	 * 5 = death location - only use if enabled in config, else use spec spawn
+	 * 6 = spectator spawn
+	 * 7 = team 1 spawn - random relative to location, toggleable - max distance settable in conf
+	 * 8 = team 2 spawn - random relative to location, toggleable - max distance settable in conf
+	 * 9 = team 3 spawn - random relative to location, toggleable - max distance settable in conf
+	 * 10 = team 4 spawn, all nums + up to 23 are teams
+	 * 7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 
+	 * 23 = 
+	 */  
 	private ArrayList<Location> miscLocs; //Numbers to locations, in order
 	/* -NOTE- any location that is not needed should be set to null
 	 * Index = location - extra information
@@ -86,7 +96,8 @@ public class Arena {
 		this.locations = locations;
 		c = core;
 		sb = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
-		o = sb.registerNewObjective("Team Scores", "dummy");
+		o = sb.registerNewObjective("Team Scores", "dummy");//TODO make sure it takes obj name from config. Always use dummy objs though.
+		//TODO add stuff for mg and can edit
 		
 		for(Location l : getAllCornerLocs(locations.get(3),locations.get(4)))
 		{
@@ -97,6 +108,19 @@ public class Arena {
 			this.miscLocs.add(l);
 		}
 		
+	}
+	
+	public void setLocations(ArrayList<Location> locs)
+	{
+		this.locations = locs;
+	}
+	
+	public Arena(FileConfiguration conf)
+	{
+		id = conf.getString("name");
+		maxPlayers = conf.getInt("max_players");
+		minPlayers = conf.getInt("min_players");
+		minReady = conf.getInt("min_ready");
 	}
 	
 	public void cleanup()
@@ -134,7 +158,7 @@ public class Arena {
 	
 	public Arena(String name)
 	{
-		//TODO get arena stuff from config, set up arena;
+		new Arena(YamlConfiguration.loadConfiguration(SettingsManager.getSettingsManager().getFile(name)));
 	}
 	
 	public ArrayList<Location> getLocations()//Gets all locations
@@ -178,9 +202,9 @@ public class Arena {
 		return type;
 	}
 	
-	public ArrayList<TeamG> getTeams()//gets the arena's teams
+	public ArrayList<MGTeam> getTeams()//gets the arena's teams
 	{
-		return (ArrayList<TeamG>) Arrays.asList(teams);
+		return (ArrayList<MGTeam>) Arrays.asList(teams);
 	}
 	
 	public ArrayList<String> getPlayers()//gets the players
@@ -205,21 +229,42 @@ public class Arena {
 	
 	public ArrayList<Location> getAllCornerLocs(Location loc1, Location loc2)
 	{
+		if(!loc1.getWorld().getName().equals(loc2.getWorld().getName())) return null;
 		World w = loc1.getWorld();
 		double x1 = loc1.getX(), x2 = loc2.getX(), y1 = loc1.getY(), y2 = loc2.getY(), z1 = loc1.getZ(), z2 = loc2.getZ();
 		ArrayList<Location> result = new ArrayList<Location>();
-		result.get(0) = new Location(w,x1,y1,z1);
-		result.get(1) = new Location(w,x1,y1,z2);
-		result.get(2) = new Location(w,x1,y2,z1);
-		result.get(3) = new Location(w,x1,y2,z2);
-		result.get(4) = new Location(w,x2,y1,z1);
-		result.get(5) = new Location(w,x2,y1,z2);
-		result.get(6) = new Location(w,x2,y2,z1);
-		result.get(7) = new Location(w,x2,y2,z2);
+		result.add(new Location(w,x1,y1,z1));
+		result.add(new Location(w,x1,y1,z2));
+		result.add(new Location(w,x1,y2,z1));
+		result.add(new Location(w,x1,y2,z2));
+		result.add(new Location(w,x2,y1,z1));
+		result.add(new Location(w,x2,y1,z2));
+		result.add(new Location(w,x2,y2,z1));
+		result.add(new Location(w,x2,y2,z2));
 		return result;
 	}
 	
-	public boolean startArena() //Create exception to throw for unable to start
+	public boolean isObjectiveMet()
+	{
+		Score[] teamScores = new Score[teams.length];
+		for(Score s : teamScores)
+		{
+			if((Integer) s.getScore() == SettingsManager.getSettingsManager().getValue(id+"-arena.yml", ""))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public Objective getScoreboardObjective()
+	{
+		return o;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public boolean startArena() //TODO Create exception to throw for unable to start
 	{
 		if(canStart)
 		{
@@ -235,22 +280,23 @@ public class Arena {
 			//TODO do free for all stuff
 			for(int i = 0; i<x; i++)
 			{
-				teams[i] = new TeamG(new String[] { Randomizer.randTeamName()}, sb); //TODO add thingy for multiple teams and make em all different
+				teams[i] = new MGTeam(new String[] { Randomizer.randTeamName()}, sb, o); //TODO add thingy for multiple teams and make em all different
 			}
 			
 			int i = 0;
 			for(String p : players)//Adds players to teams
 			{
-				if(i>=TeamG.getTeams().size())
+				if(i>=MGTeam.getTeams().size())
 				{
 					i = 0;
 				}
-				TeamG.getTeams().get(i).addPlayer(Bukkit.getPlayer(p));
+				MGTeam.getTeams().get(i).addPlayer(Bukkit.getPlayer(p));
 				i++;
 			}
 			
-			//TODO tp players to team spawn areas - 5,6,7 in locations
+			//TODO tp players to team spawn areas
 			
+			//TODO start objectives
 			
 			/*
 			for(int i = 0; i<players.size();i++)
@@ -262,8 +308,7 @@ public class Arena {
 			
 			
 			//TODO add start to listening for player hits and such
-			GameTimer.timeElapsed = 0;//sets time elapsed to 0 TODO make better
-			gameTimerId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new GameTimer(this), 20l, 20l);//Starts game timer
+			gameTimerId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new GameTimer(this, 120), 20l, 20l);//Starts game timer
 			canStart = false; //sets joinability to false
 			inProgress = true;//sets in progress
 			pReady.clear();
@@ -272,10 +317,11 @@ public class Arena {
 		return false;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void startCountdown()//Starts countdown
 	{
 		if(players.size()>=minPlayers)
-		{
+		{//TODO get time from arena config
 			StartCountdown.timeUntilStart = 120;//Initializes thread
 			startCountdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) ArenaManager.getArenaManager().getCore(), new StartCountdown(this), 20l, 20l);
 		}
@@ -305,7 +351,6 @@ public class Arena {
 	public void edit()
 	{
 		gs = GameState.EDIT;
-		//TODO add block change stuff w/ logging
 	}
 	
 	public void done() //called when done editing or resetting
@@ -316,13 +361,16 @@ public class Arena {
 	
 	public void disable()
 	{
-		//TODO add failsafe logic if in game
+		endArena(true);
+		gs = GameState.DISABLED;
+		canStart = false;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void endArena()
 	{
 		gs = GameState.POST_GAME;
-		tE = GameTimer.getTimeElapsed()+110; //TODO add check for pregame lobby timer, through configs
+		tE = ((GameTimer) Bukkit.getScheduler().getActiveWorkers().get(gameTimerId)).getTimeElapsed()+110; //TODO add check for pregame lobby timer, through configs
 		Bukkit.getScheduler().cancelTask(gameTimerId);
 		if(locations.get(8)!=null)//Checks for death location, and tps all game players there. If not, tps all players to spec loc
 		{
@@ -357,7 +405,7 @@ public class Arena {
 	public void endArena(boolean reload)
 	{
 		gs = GameState.POST_GAME;
-		tE = GameTimer.getTimeElapsed()+110; //TODO add check for pregame lobby timer, through configs
+		tE = ((GameTimer) Bukkit.getScheduler().getActiveWorkers().get(gameTimerId)).getTimeElapsed()+110; //TODO add check for pregame lobby timer, through configs
 		Bukkit.getScheduler().cancelTask(gameTimerId);
 		if(locations.get(8)!=null)//Checks for death location, and tps all game players there. If not, tps all players to spec loc
 		{
@@ -470,6 +518,12 @@ public class Arena {
 		startCountdown();
 	}
 	
+	public boolean isWallBlock(Location loc)
+	{
+		//TODO this
+		return false;
+	}
+	
 	public boolean isInArena(Location loc) //Returns whether or not a location is in the arena - location corners are 3 and 4
 	{
 		double maxX,maxY,maxZ,minX,minY,minZ;
@@ -493,6 +547,23 @@ public class Arena {
 			else return false;
 		}
 		else return false;
+	}
+
+	public boolean canPlayersEdit() {
+		return canPlayersEdit;
+	}
+
+	public void setCanPlayersEdit(boolean canPlayersEdit) {
+		this.canPlayersEdit = canPlayersEdit;
+	}
+
+	public MiniGame getMiniGame() {
+		return mg;
+	}
+	
+	//TODO comment this out
+	public void setMiniGame(MiniGame mg) {
+		this.mg = mg;
 	}
 	
 	//TODO add config stuff

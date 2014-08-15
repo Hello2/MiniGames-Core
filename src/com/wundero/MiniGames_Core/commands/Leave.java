@@ -17,7 +17,7 @@ public class Leave extends SubCommand {
 	public void onCommand(Player p, String[] args) {
 		if(!(ArenaManager.getArenaManager().isInGame(p)))
 		{
-			ChatUtils.sendMessage(p, "You are not in a game!", MessageLevel.WARNING);
+			ChatUtils.sendMessage("You are not in a game!", MessageLevel.WARNING, p);
 			return;
 		}
 		

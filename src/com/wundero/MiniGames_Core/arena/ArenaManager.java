@@ -18,8 +18,8 @@ import com.wundero.MiniGames_Core.events.PlayerJoinArenaEvent;
 import com.wundero.MiniGames_Core.events.PlayerLeaveArenaEvent;
 import com.wundero.MiniGames_Core.events.PlayerSpectateArenaEvent;
 import com.wundero.MiniGames_Core.handlers.GameState;
-import com.wundero.MiniGames_Core.handlers.GameType;
 import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.minigame.MiniGame;
 import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class ArenaManager {
@@ -58,7 +58,7 @@ public class ArenaManager {
 	{
 		for(String s : (ArrayList<String>) SettingsManager.getSettingsManager().getValue("arenas.yml", "arenas"))
 		{
-			new Arena(YamlConfiguration.loadConfiguration(SettingsManager.getSettingsManager().getFile(s)));
+			new ArenaImpl(YamlConfiguration.loadConfiguration(SettingsManager.getSettingsManager().getFile(s)));
 		}
 	}
 	
@@ -111,7 +111,7 @@ public class ArenaManager {
 	{
 		for(Arena a : arenas)
 		{
-			if(a.getPlayers().contains(p.getName())||a.getSpectators().contains(p.getName()))
+			if(a.getPlayersInArena().contains(p.getName())||a.getPlayersSpectating().contains(p.getName())||a.getPlayersInLobby().contains(p.getName()))
 			{
 				return a;
 			}
@@ -124,16 +124,16 @@ public class ArenaManager {
 		Arena a = getArena(id);
 		if(a==null)
 		{
-			ChatUtils.sendMessage(p, id+" is not a valid arena!", MessageLevel.ERROR);
+			ChatUtils.sendMessage(id+" is not a valid arena!", MessageLevel.ERROR, p);
 			return;
 		}
 		
 		if(!a.getState().canJoin())
 		{
-			ChatUtils.sendMessage(p, "You cannot join this arena, it is "+getMessageForState(a.getState())+".", MessageLevel.WARNING); return;
+			ChatUtils.sendMessage("You cannot join this arena, it is "+getMessageForState(a.getState())+".", MessageLevel.WARNING, p); return;
 		}//Makes sure arena exists and is joinable
 		
-		if(a.getPlayers().size()==a.getMaxPlayers()) { ChatUtils.sendMessage(p, "You cannot join this arena, it is full.", MessageLevel.WARNING); return; }
+		if(a.getPlayersInArena().size()==a.getMaxPlayers()) { ChatUtils.sendMessage("You cannot join this arena, it is full.", MessageLevel.WARNING, p); return; }
 		
 		PlayerJoinArenaEvent event = new PlayerJoinArenaEvent(p, a);
 		
@@ -142,29 +142,20 @@ public class ArenaManager {
 		if(!event.isCancelled())
 		{
 			
-			if(a.getSpectators().contains(p.getName())) a.getSpectators().remove(p.getName());
+			if(a.getPlayersSpectating().contains(p.getName())) a.getPlayersSpectating().remove(p.getName());
 			
-			a.getPlayers().add(p.getName());
+			a.getPlayersInArena().add(p.getName());
 			if(!locs.containsKey(p.getName())) locs.put(p.getName(), p.getLocation());
 			
 			teleport(p, a.getLocations().get(0));
 			
-			a.getReady().put(p.getName(), false);
-			
-			if(a.getMinPlayers()<=a.getPlayers().size()&&!b&&a.getState().equals(GameState.IN_LOBBY))
+			if(a.getMinPlayers()<=a.getPlayersInArena().size()&&!b&&a.getState().equals(GameState.IN_LOBBY))
 			{
-				int i = 0;
-				for(Boolean bool : a.getReady().values())
-				{
-					if(bool)
-					{
-						i++;
-					}
-				}
-				if(i>a.getMinReady())
+				int i = a.getReadyPlayers().size();
+				if(i>=a.getMinReady())
 				{
 					b = true;
-					a.startCountdown();
+					a.startTimer(a.getTimer("StartCountdown"));
 				}
 			}
 		}
@@ -208,12 +199,12 @@ public class ArenaManager {
 		Arena a = getArena(id);
 		if(a==null)
 		{
-			ChatUtils.sendMessage(p, id+" is not a valid arena!", MessageLevel.ERROR);
+			ChatUtils.sendMessage(id+" is not a valid arena!", MessageLevel.ERROR, p);
 			return;
 		}
 		
 		if(a.getState()==GameState.EDIT||a.getState()==GameState.RESETTING||a.getState()==GameState.POST_GAME||a.getState()==GameState.DISABLED) {
-			ChatUtils.sendMessage(p, "You cannot spectate "+id+" right now, it is "+a.getState().getMessage(), MessageLevel.WARNING);
+			ChatUtils.sendMessage("You cannot spectate "+id+" right now, it is "+a.getState().getMessage(), MessageLevel.WARNING, p);
 			return;
 		}
 		
@@ -222,16 +213,16 @@ public class ArenaManager {
 		
 		if(!event.isCancelled())
 		{
-			if(a.getPlayers().contains(p.getName()))
+			if(a.getPlayersInArena().contains(p.getName()))
 			{
-				a.getPlayers().remove(p.getName());
-				a.getSpectators().add(p.getName());
+				a.getPlayersInArena().remove(p.getName());
+				a.getPlayersSpectating().add(p.getName());
 				teleport(p, a.getLocations().get(0));
 				return;
 			}
 			
 			locs.put(p.getName(), p.getLocation());
-			a.getSpectators().add(p.getName());
+			a.getPlayersSpectating().add(p.getName());
 			teleport(p, a.getLocations().get(0));
 		}
 		
@@ -247,52 +238,45 @@ public class ArenaManager {
 		Arena a = null;
 		for(Arena ar : arenas)
 		{
-			if(ar.getPlayers().contains(p.getName()))
+			if(ar.getPlayersInArena().contains(p.getName()))
 			{
 				a = ar;
 			}
 		}
-		if(a==null||!a.getPlayers().contains(p.getName()))
+		if(a==null||!a.getPlayersInArena().contains(p.getName()))
 		{
-			ChatUtils.sendMessage(p, "Invalid Operation.", MessageLevel.ERROR);
+			ChatUtils.sendMessage("Invalid Operation.", MessageLevel.ERROR, p);
 			return;
 		}
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(p, a);
 		
 		Bukkit.getServer().getPluginManager().callEvent(event);
-		if(!a.getAllPlayers().contains(p.getName())) a.getAllPlayers().add(p.getName());
+		if(!a.getPlayersToRollback().contains(p.getName())&&a.getPlayersInArena().contains(p.getName())) a.getPlayersToRollback().add(p.getName());
 		
 		if(!event.isCancelled())
 		{
 			teleport2(p, locs.get(p.getName()));
 			locs.remove(p.getName());
 			
-			if(!a.getSpectators().contains(p.getName()))
+			if(!a.getPlayersSpectating().contains(p.getName()))
 			{
-				a.getReady().remove(p.getName());
-				a.getPlayers().remove(p.getName());
+				a.getReadyPlayers().remove(p.getName());
+				a.getPlayersInArena().remove(p.getName());
 			}
 			else
 			{
-				a.getSpectators().remove(p.getName());
+				a.getPlayersSpectating().remove(p.getName());
 			}
 			
 			
 			
-			if(a.getMinPlayers()>a.getPlayers().size()&&a.getState().equals(GameState.IN_LOBBY)&&!(a.getSpectators().contains(p.getName())))
+			if(a.getMinPlayers()>a.getPlayersInArena().size()&&a.getState().equals(GameState.IN_LOBBY)&&!(a.getPlayersSpectating().contains(p.getName())))
 			{
-				int i = 0;
-				for(Boolean bool : a.getReady().values())
-				{
-					if(bool)
-					{
-						i++;
-					}
-				}
-				if(i<a.getMinReady()||a.getMinPlayers()>a.getPlayers().size())
+				int i = a.getReadyPlayers().size();
+				if(i<a.getMinReady()||a.getMinPlayers()>a.getPlayersInArena().size())
 				{
 					b = false;
-					a.stopCountdown();
+					a.stopTimer(a.getTimer("StartCountdown"));
 				}
 			}
 		}
@@ -300,7 +284,7 @@ public class ArenaManager {
 	
 	public boolean isSpectator(Player p, String id)
 	{
-		if(getArena(id).getSpectators().contains(p.getName()))
+		if(getArena(id).getPlayersSpectating().contains(p.getName()))
 		{
 			return true;
 		}
@@ -311,14 +295,14 @@ public class ArenaManager {
 	{
 		for(Arena a : arenas)
 		{
-			if(a.getPlayers().contains(p.getName())) return true;
+			if(a.getPlayersInArena().contains(p.getName())) return true;
 		}
 		return false;
 	}
 	
 	public boolean isPlayer(Player p, String id)
 	{
-		if(getArena(id).getPlayers().contains(p.getName()))
+		if(getArena(id).getPlayersInArena().contains(p.getName()))
 		{
 			return true;
 		}
@@ -329,7 +313,7 @@ public class ArenaManager {
 	{
 		for(Arena a : arenas)
 		{
-			if(a.getSpectators().contains(p.getName())) return true;
+			if(a.getPlayersSpectating().contains(p.getName())) return true;
 		}
 		return false;
 	}
@@ -339,10 +323,10 @@ public class ArenaManager {
 		return arenas;
 	}
 	
-	public Arena createArena(ArrayList<Location> locs, ArrayList<Location> locs2, String id, GameType r, int m, int f, int mr)
+	public Arena createArena(ArrayList<Location> locs, String id, int m, int f, int mr, MiniGame mg)
 	{
 		
-		Arena a = new Arena(locs, locs2, id, r, m, f, mr, c);
+		Arena a = new ArenaImpl(locs, id, m, f, mr, c, mg);
 		ArenaCreateEvent event = new ArenaCreateEvent(a);
 		if(!event.isCancelled())
 		{
@@ -361,7 +345,7 @@ public class ArenaManager {
 	{
 		for(Arena a : arenas)
 		{
-			if(a.getPlayers().contains(p.getName()))
+			if(a.getPlayersInArena().contains(p.getName()))
 			{
 				return true;
 			}
@@ -384,7 +368,7 @@ public class ArenaManager {
     	{
     		if(a==arena)
     		{
-    			for(String p : a.getPlayers())
+    			for(String p : a.getPlayersInArena())
     			{
     				removePlayer(Bukkit.getPlayer(p)); //TODO convert all stuff to UUID if necessary
     			}
@@ -400,7 +384,7 @@ public class ArenaManager {
     {
     	for(Arena a: arenas)
     	{
-    		if(a==arena) { a.edit(); return true; }
+    		if(a==arena) { a.setState(GameState.EDIT); return true; }
     	}
     	return false;
     }

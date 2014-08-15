@@ -1,0 +1,41 @@
+#TODO add more
+
+#The name of the arena
+name: 'Paintball1'
+minigame_folder: 'paintball-minigame.yml'
+
+gameplay:
+  playercounts:
+    maximum: 32
+    minimum: 12
+    #In general, this should be the same as minimum
+    minimum_ready: 12
+  blocks:
+    #Whether or not players can edit blocks in the arena
+    player_edit: false
+    mob_edit: false
+  timers:
+    lobby_time: 120
+    game_time: 600
+    endgame_time: 120
+  teams:
+    team_count: 2
+    lives: 150
+    blue:
+      name: 'Blue'
+      kit: Blue
+    red:
+      name: 'Red'
+      kit: Red
+  kits:
+    #Other values will be generated if no mg kit is set.
+    Blue:
+      minigame-kit: blue
+    Red:
+      minigame-kit: red
+  allowed_commands: /list, /help
+#DO NOT EDIT. WILL BREAK.
+locations:
+  world: world
+  main:
+  misc:

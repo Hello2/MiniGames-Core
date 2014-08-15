@@ -1,9 +1,24 @@
 package com.wundero.MiniGames_Core.minigame;
 
+import java.util.HashMap;
+
+import com.wundero.MiniGames_Core.handlers.Kit;
+import com.wundero.MiniGames_Core.handlers.MGObjective;
+
 public interface MiniGame
 {
 	String name();
+	void setName(String name);
 	String info();
+	void setInfo(String info);
+	MGObjective objective();
+	void setObjective(MGObjective obj);
+	HashMap<String, Object> getPvPSettings();
+	void setPvPSettings(HashMap<String, Object> settings);
+	HashMap<String, Object> getGameplaySettings();
+	void setGameplaySettings(HashMap<String, Object> settings);
+	HashMap<String, Kit> getKits();
+	void setKits(HashMap<String, Kit> kits);
 	//TODO add more stuff. This is a must before the plugin can work
 }
 

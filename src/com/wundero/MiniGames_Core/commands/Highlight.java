@@ -2,6 +2,10 @@ package com.wundero.MiniGames_Core.commands;
 
 import org.bukkit.entity.Player;
 
+import com.wundero.MiniGames_Core.arena.ArenaManager;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
+
 public class Highlight extends SubCommand {
 	private String name = "highlight";
 	private String info = "Displays the corners of the arena as glowstone blocks";
@@ -12,15 +16,15 @@ public class Highlight extends SubCommand {
 	public void onCommand(Player p, String[] args) {
 		// TODO Auto-generated method stub
 		if(args != null){
-			if(ArenaManager.getArena(args[0]) != null){
+			if(ArenaManager.getArenaManager().getArena(args[0]) != null){
 				//Start the highlight class and stuff
 			
 			}else{
-				ChatUtils.sendMessage(p, "Arena does not exist!", MessageLevel.WARNING);
+				ChatUtils.sendMessage("Arena does not exist!", MessageLevel.WARNING, p);
 			}
 			
 		}else{
-			ChatUtils.sendMessage(p, "You must specify an arena!", MessageLevel.WARNING);
+			ChatUtils.sendMessage("You must specify an arena!", MessageLevel.WARNING, p);
 		}
 	}
 

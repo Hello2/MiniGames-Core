@@ -135,16 +135,16 @@ public class SetupPrompt extends FixedSetPrompt implements Listener {
 	protected Prompt acceptValidatedInput(ConversationContext arg0, String arg1) {
 		if(arg1.equalsIgnoreCase("?"))
 		{
-			arg0.getForWhom().sendRawMessage(ChatUtils.getPrefix()+ChatColor.AQUA+"You can type any of these:");
-			arg0.getForWhom().sendRawMessage(ChatUtils.getPrefix()+ChatColor.AQUA+"? - Shows this help page.");
-			arg0.getForWhom().sendRawMessage(ChatUtils.getPrefix()+ChatColor.AQUA+"done|finished - Exits the session.");
-			arg0.getForWhom().sendRawMessage(ChatUtils.getPrefix()+ChatColor.AQUA+"show - Displays the finished points in certain colours.");
-			arg0.getForWhom().sendRawMessage(ChatUtils.getPrefix()+ChatColor.AQUA+"left|missing|remaining - Displays the remaining points.");
-			arg0.getForWhom().sendRawMessage(ChatUtils.getPrefix()+ChatColor.AQUA+"info - Allows you to edit the arena information.");
+			arg0.getForWhom().sendRawMessage(ChatUtils.prefix()+ChatColor.AQUA+"You can type any of these:");
+			arg0.getForWhom().sendRawMessage(ChatUtils.prefix()+ChatColor.AQUA+"? - Shows this help page.");
+			arg0.getForWhom().sendRawMessage(ChatUtils.prefix()+ChatColor.AQUA+"done|finished - Exits the session.");
+			arg0.getForWhom().sendRawMessage(ChatUtils.prefix()+ChatColor.AQUA+"show - Displays the finished points in certain colours.");
+			arg0.getForWhom().sendRawMessage(ChatUtils.prefix()+ChatColor.AQUA+"left|missing|remaining - Displays the remaining points.");
+			arg0.getForWhom().sendRawMessage(ChatUtils.prefix()+ChatColor.AQUA+"info - Allows you to edit the arena information.");
 		}
 		if(arg1.equalsIgnoreCase("done")||arg1.equalsIgnoreCase("finished"))
 		{
-			arg0.getForWhom().sendRawMessage(ChatUtils.getPrefix()+ChatColor.AQUA+"Arena setup finished! The arena "+arg0.getSessionData("ArenaName")+" is now ready for use!");
+			arg0.getForWhom().sendRawMessage(ChatUtils.prefix()+ChatColor.AQUA+"Arena setup finished! The arena "+arg0.getSessionData("ArenaName")+" is now ready for use!");
 			Player p = (Player) arg0.getForWhom();
 			p.getInventory().clear();
 			p.getInventory().setContents(inv.get(p.getName()));

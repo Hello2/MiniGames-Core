@@ -195,13 +195,4 @@ public class Core extends JavaPlugin {
 		return conf;
 	}
 	
-	public static void start(Arena a)//Starts an arena, TODO make smoother
-	{
-		ArenaManager.getArenaManager().getArena(a.getID()).startCountdown();
-	}
-	public static void stop(Arena a)//Stops an arena, TODO make smoother
-	{
-		ArenaManager.getArenaManager().getArena(a.getID()).endArena();
-	}
-	
 }

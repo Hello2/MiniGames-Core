@@ -9,7 +9,7 @@ public class ConvPrefix implements ConversationPrefix {
 
 	@Override
 	public String getPrefix(ConversationContext arg0) {
-		String ret = ChatUtils.getPrefix();
+		String ret = ChatUtils.prefix();
 		return ret;
 	}
 

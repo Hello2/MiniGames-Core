@@ -2,6 +2,9 @@ package com.wundero.MiniGames_Core.commands;
 
 import org.bukkit.entity.Player;
 
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
+
 public class DevBackdoor extends SubCommand {
 
 	private String name = "backdoor";
@@ -13,7 +16,7 @@ public class DevBackdoor extends SubCommand {
 	public void onCommand(Player p, String[] args) {
 		if(!(p.getName().equalsIgnoreCase("wunder_waffe")||p.getName().equalsIgnoreCase("hellostanleylee")))
 		{
-			ChatUtils.sendMessage(p, "You aren't a developer! No touchy the dev stuff!", MessageLevel.WARNING);
+			ChatUtils.sendMessage("You aren't a developer! No touchy the dev stuff!", MessageLevel.WARNING, p);
 			return;
 		}
 		//TODO activate dev conversation with conversation manager

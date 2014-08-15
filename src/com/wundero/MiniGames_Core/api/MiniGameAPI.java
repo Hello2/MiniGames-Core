@@ -180,7 +180,7 @@ public class MiniGameAPI { //TODO more documentation
 	@Deprecated
 	public void startArena(Arena arena)
 	{
-		arena.startCountdown();
+		arena.startTimer(arena.getTimer("StartCountdown"));
 	}
 	
 	
@@ -190,7 +190,7 @@ public class MiniGameAPI { //TODO more documentation
 	 */
 	public void startArena(String arenaID)
 	{
-		ArenaManager.getArenaManager().getArena(arenaID).startCountdown();
+		ArenaManager.getArenaManager().getArena(arenaID).startTimer(ArenaManager.getArenaManager().getArena(arenaID).getTimer("StartCountdown"));
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public class MiniGameAPI { //TODO more documentation
 	@Deprecated
 	public void stopArena(Arena arena)
 	{
-		arena.endArena();
+		arena.endArena(false);
 	}
 	
 	/**
@@ -209,7 +209,7 @@ public class MiniGameAPI { //TODO more documentation
 	 */
 	public void stopArena(String arenaID)
 	{
-		ArenaManager.getArenaManager().getArena(arenaID).endArena();
+		ArenaManager.getArenaManager().getArena(arenaID).endArena(false);
 	}
 	
 	/**

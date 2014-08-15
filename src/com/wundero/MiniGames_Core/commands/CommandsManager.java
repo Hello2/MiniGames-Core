@@ -36,7 +36,7 @@ public class CommandsManager implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if(!(sender instanceof Player)) { ChatUtils.sendMessage(sender, "Only a player can use MiniGames-Core!", MessageLevel.SEVERE); return true;}
+		if(!(sender instanceof Player)) { ChatUtils.sendMessageToCmdSender(sender, "Only a player can use MiniGames-Core!", MessageLevel.SEVERE); return true;}
 		
 		Player p = (Player) sender;
 		
@@ -44,12 +44,12 @@ public class CommandsManager implements CommandExecutor {
 		{
 			if(args.length==0)
 			{
-				ChatUtils.sendMessage(p, "Commands:", MessageLevel.INFO);
+				ChatUtils.sendMessage("Commands:", MessageLevel.INFO, p);
 				for(SubCommand c : commands)
 				{
 					if(p.hasPermission(c.permission()))
 					{
-						ChatUtils.sendMessage(p, "/"+label+" <"+aliases(c)+"> - "+c.info(), MessageLevel.INFO);
+						ChatUtils.sendMessage("/"+label+" <"+aliases(c)+"> - "+c.info(), MessageLevel.INFO, p);
 					}
 					
 				}
@@ -60,7 +60,7 @@ public class CommandsManager implements CommandExecutor {
 			
 			
 			if(target==null) {
-				ChatUtils.sendMessage(p, "/"+label+" "+args[0]+" is not a valid command!", MessageLevel.WARNING);
+				ChatUtils.sendMessage("/"+label+" "+args[0]+" is not a valid command!", MessageLevel.WARNING, p);
 				return true;
 			}
 			if(p.hasPermission(target.permission())) {
@@ -78,7 +78,7 @@ public class CommandsManager implements CommandExecutor {
 				}
 				catch(Exception e)
 				{
-					ChatUtils.sendMessage(p, e.getMessage(), MessageLevel.ERROR);
+					ChatUtils.sendMessage(e.getMessage(), MessageLevel.ERROR, p);
 					e.printStackTrace();
 					return true;
 				}

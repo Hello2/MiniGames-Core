@@ -8,16 +8,13 @@ import com.wundero.MiniGames_Core.handlers.MessageLevel;
 import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class ConvAbandoned implements ConversationAbandonedListener {
-
-	
-	
 	
 	@Override
 	public void conversationAbandoned(ConversationAbandonedEvent e) {
 		
 		if(!(e.getCanceller() instanceof Player)) return;
 		
-		ChatUtils.sendMessage((Player) e.getCanceller(), "Arena creation cancelled.", MessageLevel.WARNING);
+		ChatUtils.sendMessage("Arena creation cancelled.", MessageLevel.WARNING, (Player) e.getCanceller());
 	}
 
 }

@@ -7,6 +7,9 @@ import org.bukkit.conversations.NumericPrompt;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 
+import com.wundero.MiniGames_Core.minigame.MiniGame;
+import com.wundero.MiniGames_Core.minigame.MiniGameManager;
+
 public class InfoPrompt extends FixedSetPrompt {
 
 	private SetupPrompt setup;
@@ -95,10 +98,6 @@ public class InfoPrompt extends FixedSetPrompt {
 	//TODO this class
 	class GamePrompt extends FixedSetPrompt
 	{
-		public GamePrompt()
-		{
-			super();//TODO add game types
-		}
 		
 		@Override
 		public String getPromptText(ConversationContext arg0) {
@@ -118,6 +117,16 @@ public class InfoPrompt extends FixedSetPrompt {
 				String arg1) {
 			arg0.setSessionData("GameType", arg1);
 			return setup;
+		}
+		
+		@Override
+		protected boolean isInputValid(ConversationContext c, String s)
+		{
+			for(MiniGame mg : MiniGameManager.getInstance().getAllMiniGames())
+			{
+				if(mg.name().equalsIgnoreCase(s)) return true;
+			}
+			return false;
 		}
 		
 	}

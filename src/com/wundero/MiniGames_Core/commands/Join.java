@@ -17,7 +17,7 @@ public class Join extends SubCommand {
 	@Override
 	public void onCommand(Player p, String[] args) {
 		if(ArenaManager.getArenaManager().isInGame(p)) {
-			ChatUtils.sendMessage(p, "You are already in a game!", MessageLevel.WARNING);
+			ChatUtils.sendMessage("You are already in a game!", MessageLevel.WARNING, p);
 			return;
 		}
 		Arena ar = null;
@@ -28,15 +28,15 @@ public class Join extends SubCommand {
 		
 		if(ar==null)
 		{
-			if(Select.getSelected(p)!=null) a = ArenaManager.getArenaManager().getArena(Select.getSelected(p));
+			if(Select.getSelectedArena(p)!=null) ar = ArenaManager.getArenaManager().getArena(Select.getSelectedArena(p));
 			else
 			{
-				ChatUtils.sendMessage(p, "There is no arena with id \""+args[0]+"\"", MessageLevel.WARNING);
+				ChatUtils.sendMessage("There is no arena with id \""+args[0]+"\"", MessageLevel.WARNING, p);
 				return;
 			}
 		}
 		
-		ChatUtils.sendMessage(p, "You joined "+args[0]+"!", MessageLevel.INFO);
+		ChatUtils.sendMessage("You joined "+args[0]+"!", MessageLevel.INFO, p);
 		ArenaManager.getArenaManager().addPlayer(p, ar.getID());
 		
 	}

@@ -6,9 +6,6 @@ name: 'Paintball'
 #Basic description of the mini game
 info: 'A fun team battle where everyone participates in a massive snowball fight!'
 
-#The game type this game is based on
-base-game: ''
-
 #PvP settings
 pvp:
   #Whether or not PvP should be allowed in the game
@@ -30,20 +27,13 @@ pvp:
   #The number of lives a player has, set to 0 for infinite
   lives: 0
 
-#Team info
-teams:
-  #The number of teams the game has
-  number: 2
-  #What the teams should be called. If there are more than ^, the names will be randomly selected. If there are less, the names will be randomly generated.
-  names:
-  - blue
-  - red
-  #The number of lives each team has, set to 0 for infinite. Can be overridden by arenas and game modifying items
-  lives: 50
-
 gameplay:
-  #Game's objective, options: no_more_lives, kills, position, flag_capture, last_alive, custom
-  objective: no_more_lives
+  #Game's objective, options: no_more_lives_team, kills, position, flag_capture, last_alive, custom
+  objective:
+    name: 'Paintball'
+    type: no_more_lives_team
+    #The number of kills, captures, etc. needed to win. nmlt: how many lives a team needs to have left to lose; kills: kills needed to win; pos: times reached; cap: times to cap; last ignores this
+    number: 0
   #TODO add custom objective stuff
   #What causes the game to end
   end-triggers:
@@ -99,8 +89,6 @@ master-lobby:
 
 kits:
   blue:
-    #What team to give it to, values: the names set above and all
-    team: blue
     armor:
       head: wool:11
       #TODO color meta, use leather armor meta. example: FFFFFF
@@ -122,8 +110,6 @@ kits:
     damage-multiplier: 1.0
     regen: true
   red:
-    #What team to give it to, values: the names set above and all
-    team: red
     armor:
       head: wool:14:1
       #TODO color meta, use leather armor meta. example: FFFFFF

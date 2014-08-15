@@ -1,7 +1,12 @@
 package com.wundero.MiniGames_Core.commands;
 
+import java.util.HashMap;
 
 import org.bukkit.entity.Player;
+
+import com.wundero.MiniGames_Core.arena.ArenaManager;
+import com.wundero.MiniGames_Core.handlers.MessageLevel;
+import com.wundero.MiniGames_Core.utils.ChatUtils;
 
 public class Select extends SubCommand {
 	
@@ -17,17 +22,17 @@ public class Select extends SubCommand {
 		if(args[0]!=null){
 			if(ArenaManager.getArenaManager().getArena(args[0]) != null){
 				selected.put(p.getName(), args[0]);
-				ChatUtils.sendMessage(p, "You selected "+args[0]+"!", MessageLevel.INFO);
+				ChatUtils.sendMessage("You selected "+args[0]+"!", MessageLevel.INFO, p);
 			}else{
-				ChatUtils.sendMessage(p, "That is not a valid arena!", MessageLevel.WARNING);
+				ChatUtils.sendMessage("That is not a valid arena!", MessageLevel.WARNING, p);
 			}
 		}
 		else{
 			if(selected.containsKey(p.getName()))
 			{
 				selected.remove(p.getName());
-				ChatUtils.sendMessage(p, "You deselected "+selected.get(p.getName())+"!", MessageLevel.INFO);
-			}else ChatUtils.sendMessage(p, "You must specify an arena!", MessageLevel.WARNING);
+				ChatUtils.sendMessage("You deselected "+selected.get(p.getName())+"!", MessageLevel.INFO, p);
+			}else ChatUtils.sendMessage("You must specify an arena!", MessageLevel.WARNING, p);
 		}
 	}
 

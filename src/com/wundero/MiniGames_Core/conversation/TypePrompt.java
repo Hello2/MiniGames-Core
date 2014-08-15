@@ -5,7 +5,8 @@ import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
 
 import com.wundero.MiniGames_Core.handlers.MessageLevel;
-import com.wundero.MiniGames_Core.handlers.GameType;
+import com.wundero.MiniGames_Core.minigame.MiniGame;
+import com.wundero.MiniGames_Core.minigame.MiniGameManager;
 
 public class TypePrompt extends FixedSetPrompt {
 	
@@ -24,16 +25,16 @@ public class TypePrompt extends FixedSetPrompt {
 	
 	@Override
 	protected Prompt acceptValidatedInput(ConversationContext c, String s) {
-		c.setSessionData("GameType", GameType.valueOf(s));
+		c.setSessionData("GameType", MiniGameManager.getInstance().getMiniGame(s).name());
 		return new PlayersCount("MaxPlayers", "maximum players");//TODO add another prompt
 	}
 	
 	@Override
 	protected boolean isInputValid(ConversationContext c, String s)
 	{
-		for(GameType t : GameType.getAllTypes())
+		for(MiniGame mg : MiniGameManager.getInstance().getAllMiniGames())
 		{
-			if(t.getGame().equalsIgnoreCase(s))
+			if(mg.name().equalsIgnoreCase(s))
 			{
 				return true;
 			}

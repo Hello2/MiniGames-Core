@@ -22,8 +22,8 @@ public class Players extends SubCommand {
 		
 		if(ArenaManager.getArenaManager().isInGame(p)||ArenaManager.getArenaManager().isSpectator(p))
 		{
-			ArrayList<String> pl = ArenaManager.getArenaManager().getArena(p).getPlayers();
-			for(String s : ArenaManager.getArenaManager().getArena(p).getSpectators())
+			ArrayList<String> pl = ArenaManager.getArenaManager().getArena(p).getPlayersInArena();
+			for(String s : ArenaManager.getArenaManager().getArena(p).getPlayersSpectating())
 			{
 				pl.add(s);
 			}
@@ -47,15 +47,15 @@ public class Players extends SubCommand {
 				
 			}
 			
-			ChatUtils.sendMessage(p, ChatColor.WHITE+"Players in arena "+ArenaManager.getArenaManager().getArena(p).getID()+". "+ChatColor.GREEN+"Green means ready"+ChatColor.WHITE+", "+ChatColor.AQUA+"Aqua means spectating"+ChatColor.WHITE+", and "+ChatColor.RED+"red means not ready.", MessageLevel.INFO);
-			ChatUtils.sendMessage(p, names, MessageLevel.INFO);
+			ChatUtils.sendMessage(ChatColor.WHITE+"Players in arena "+ArenaManager.getArenaManager().getArena(p).getID()+". "+ChatColor.GREEN+"Green means ready"+ChatColor.WHITE+", "+ChatColor.AQUA+"Aqua means spectating"+ChatColor.WHITE+", and "+ChatColor.RED+"red means not ready.", MessageLevel.INFO, p);
+			ChatUtils.sendMessage(names, MessageLevel.INFO, p);
 			return;
 		}
 		else if(args[0]!=null)
 		{
-			ArrayList<String> pl = ArenaManager.getArenaManager().getArena(args[0]).getPlayers();
+			ArrayList<String> pl = ArenaManager.getArenaManager().getArena(args[0]).getPlayersInArena();
 			if(pl==null) return;
-			for(String s : ArenaManager.getArenaManager().getArena(args[0]).getSpectators())
+			for(String s : ArenaManager.getArenaManager().getArena(args[0]).getPlayersSpectating())
 			{
 				pl.add(s);
 			}
@@ -79,13 +79,13 @@ public class Players extends SubCommand {
 				
 			}
 			
-			ChatUtils.sendMessage(p, ChatColor.WHITE+"Players in arena "+args[0]+". "+ChatColor.GREEN+"Green means ready"+ChatColor.WHITE+", "+ChatColor.AQUA+"Aqua means spectating"+ChatColor.WHITE+", and "+ChatColor.RED+"red means not ready.", MessageLevel.INFO);
-			ChatUtils.sendMessage(p, names, MessageLevel.INFO);
+			ChatUtils.sendMessage(ChatColor.WHITE+"Players in arena "+args[0]+". "+ChatColor.GREEN+"Green means ready"+ChatColor.WHITE+", "+ChatColor.AQUA+"Aqua means spectating"+ChatColor.WHITE+", and "+ChatColor.RED+"red means not ready.", MessageLevel.INFO, p);
+			ChatUtils.sendMessage(names, MessageLevel.INFO, p);
 			return;
 		}
 		else
 		{
-			ChatUtils.sendMessage(p, "You must either be in an arena or specify an arena!", MessageLevel.WARNING);
+			ChatUtils.sendMessage("You must either be in an arena or specify an arena!", MessageLevel.WARNING, p);
 			return;
 		}
 		

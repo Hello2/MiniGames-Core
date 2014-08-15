@@ -40,11 +40,11 @@ public class SignListener extends MGListener {
 		if(e.getLines().length<2)
 		{
 			e.getBlock().breakNaturally();
-			ChatUtils.sendMessage(e.getPlayer(), "The sign was not formatted properly, please try again.", MessageLevel.WARNING);
+			ChatUtils.sendMessage("The sign was not formatted properly, please try again.", MessageLevel.WARNING,e.getPlayer());
 		}
 		//TODO add check for sign permission & other things.
 		
-		e.setLine(0, ChatUtils.getPrefix());//TODO check for minigames
+		e.setLine(0, ChatUtils.prefix());//TODO check for minigames
 		e.setLine(1, "");//TODO add check for arena
 	}
 }

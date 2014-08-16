@@ -3,9 +3,15 @@
 #The name of the arena
 name: 'Paintball1'
 minigame_folder: 'paintball-minigame.yml'
+#Not sure if it's necessary
+minigame_des: "An arena for Paintball"
 
 gameplay:
   playercounts:
+    #overflow meaning 3 extra staff can join, ignoring the max :) 
+    #(can of course be used for VIP people, maybe newer members can temporarily join full games
+    #to attract them and get them to stay)
+    overflow: 35
     maximum: 32
     minimum: 12
     #In general, this should be the same as minimum
@@ -13,7 +19,34 @@ gameplay:
   blocks:
     #Whether or not players can edit blocks in the arena
     player_edit: false
+     #if true:
+     #seperated by comma, blacklist overrides whitelist if there's values in both
+     #(or other way around, doesn't matter), if player_edit is false, then ignore the values in lists
+     #if nothing is in the lists, then that means everything is allowed
+     blacklist: ''
+     whitelist: ''
     mob_edit: false
+      #same as above, ignore any values from the black/white lists if mob_edit = false
+      #perhaps limit which blocks a creeper can blow up etc
+      blacklist: ''
+      whitelist: ''
+  items:
+    #Whether or not players can collect these items, and if they can drop them
+    #(not sure if this should go in MG config instead, confuzzled again, but that's for you to decide :D)
+    #also not sure if this is already done in other plugins, seems famililar somewhat
+    player_pick: true
+      blacklist: ''
+      whitelist: ''
+    player_drop: true
+      blacklist: ''
+      whitelist: ''
+    mob_pick: false
+      blacklist: ''
+      whitelist: ''
+    mob_drop: false
+      blacklist: ''
+      whitelist: ''
+    
   timers:
     lobby_time: 120
     game_time: 600
